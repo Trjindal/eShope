@@ -1,0 +1,5 @@
+# Project exclude paths
+/EshopeCommon/target/
+/eShopeWebParrent/eShopeBackend/target/
+/eShopeWebParrent/eShopeFrontend/target/
+/eShopeWebParrent/target/
