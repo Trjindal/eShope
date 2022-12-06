@@ -42,6 +42,7 @@
         <div class="row contact-block">
             <div class="col-md-7 contact-right">
                 <ul>
+                    <li class="alert alert-danger" role="alert" th:if="${emailNotUnique!=null}" th:text="${emailNotUnique}"></li>
                     <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('user.*')}" th:text="${error}" />
                 </ul>
                 <form action="/eShopeAdmin/users/saveUser" method="post" class="signin-form" th:object="${user}">

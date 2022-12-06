@@ -43,6 +43,16 @@ public class UserController {
 
     @PostMapping("/users/saveUser")
     public String saveUser( RedirectAttributes redirectAttributes,@Valid @ModelAttribute(value = "user") User user, Errors errors,Model model){
+        System.out.println(user);
+        if(user.getEmail()!=""&&!userService.isEmailUnique(user.getEmail())){
+            System.out.println(user.getEmail()!="");
+            System.out.println("InSIDE MY LOOP");
+            log.error("Contact form validation failed due to email ") ;
+            model.addAttribute("emailNotUnique","There is another user having same email id");
+            List<Role> listAllRoles=userService.listAllRoles();
+            model.addAttribute("listAllRoles",listAllRoles);
+            return "userForm.html";
+        }
         if(errors.hasErrors()){
             log.error("Contact form validation failed due to : " + errors.toString());
             List<Role> listAllRoles=userService.listAllRoles();
