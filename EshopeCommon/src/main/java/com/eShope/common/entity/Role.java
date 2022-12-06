@@ -23,18 +23,18 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "name='" + name + '\'' +
-                '}';
-    }
 
     @Column(length = 40,nullable = false,unique = true)
     private String name;
 
     @Column(length = 150,nullable = false)
     private String description;
+
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 
     public Role(String name,String description){
         this.name=name;

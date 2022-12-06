@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eShope - Best eCommerce Website for you</title>
+    <!-- Google fonts -->
+    <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Template CSS Style link -->
+    <link rel="stylesheet" href="../assets/css/style-starter.css">
+</head>
+
+<body>
+
+<!-- header -->
+<div th:replace="~{header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5">
+        <div class="container pt-4 pb-sm-4">
+            <h4 class="inner-text-title pt-5">Users</h4>
+            <ul class="breadcrumbs-custom-path">
+                <li><a th:href="@{/home}">Dashboard</a></li>
+                <li><i class="fas fa-angle-right"></i><a th:href="@{/users}">Users</a></li>
+                <li class="active"><i class="fas fa-angle-right"></i>New user</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+    <div class="container py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+            <p class="text-uppercase">Create New User</p>
+            <h3 class="title-style">Registration Form</h3>
+        </div>
+        <div class="row contact-block">
+            <div class="col-md-7 contact-right">
+                <ul>
+                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('user.*')}" th:text="${error}" />
+                </ul>
+                <form action="/eShopeAdmin/users/saveUser" method="post" class="signin-form" th:object="${user}">
+                    <div class="input-grids">
+                        <input type="email" th:field="*{email}" placeholder=" Email" name="email"
+                               class="contact-input" />
+                        <input type="text" th:field="*{firstName}" placeholder="First Name"
+                               class="contact-input" />
+                        <input type="text" th:field="*{lastName}" placeholder="Last Name"
+                               class="contact-input" />
+                        <input type="password" th:field="*{password}" placeholder="Password"
+                               class="contact-input" />
+
+                        <div class="form-group row ">
+                            <label class="col-sm-4 col-form-label">Roles :</label>
+                            <div class="col-sm-8">
+                                <div th:each="role : ${listAllRoles}" class="row">
+                                    <input id="my-chkbox" class="col-4" type="checkbox" name="roles"
+                                           th:field="*{roles}" th:value="${role.id}">
+                                    <label class="col-8" id="my-txt" th:text="${role.name}">Role1</label>
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-form-label col-4">User Enable : </label>
+                            <input type="checkbox" id="my-chkbox" checked class="col-8"/>
+                        </div>
+                        <!--&lt;!&ndash;                    -->
+                        <div class="text-start">
+                            <button type="submit" class="btn btn-style btn-style-3">Save User</button>
+                            <button type="button" value="cancel" class="btn btn-style btn-style-3" id="buttonCancel"><a th:href="@{/users}">Cancel</a></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="col-md-5 ps-lg-5 mt-md-0 mt-5">
+                <div class="contact-left">
+                    <div class="cont-details">
+                        <div class="d-flex contact-grid">
+                            <div class="cont-left text-center me-3">
+                                <i class="fas fa-duotone fa-user-secret"></i>
+                            </div>
+                            <div class="cont-right">
+                                <h3>Roles Description</h3>
+
+                            </div>
+                        </div>
+                        <div class="d-flex contact-grid mt-4 pt-lg-2" th:each="role : ${listAllRoles}">
+                            <div class="cont-left text-center me-3">
+                                <h6 th:text="${role.name}"></h6>
+                            </div>
+                            <div class="cont-right">
+                                <p th:text="${role.description}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Js scripts -->
+<!-- move top -->
+<button onclick="topFunction()" id="movetop" title="Go to top">
+    <span class="fas fa-level-up-alt" aria-hidden="true"></span>
+</button>
+<script>
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+            } else {
+                document.getElementById("movetop").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+
+
+
+
+</script>
+<!-- //move top -->
+
+<!-- common jquery plugin -->
+<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<!-- //common jquery plugin -->
+
+<!-- theme switch js (light and dark)-->
+<script src="../assets/js/theme-change.js"></script>
+<!-- //theme switch js (light and dark)-->
+
+<!-- MENU-JS -->
+<script>
+        $(window).on("scroll", function () {
+            var scroll = $(window).scrollTop();
+
+            if (scroll >= 80) {
+                $("#site-header").addClass("nav-fixed");
+            } else {
+                $("#site-header").removeClass("nav-fixed");
+            }
+        });
+
+        //Main navigation Active Class Add Remove
+        $(".navbar-toggler").on("click", function () {
+            $("header").toggleClass("active");
+        });
+        $(document).on("ready", function () {
+            if ($(window).width() > 991) {
+                $("header").removeClass("active");
+            }
+            $(window).on("resize", function () {
+                if ($(window).width() > 991) {
+                    $("header").removeClass("active");
+                }
+            });
+        });
+
+
+
+
+
+</script>
+<!-- //MENU-JS -->
+
+<!-- disable body scroll which navbar is in active -->
+<script>
+        $(function () {
+            $('.navbar-toggler').click(function () {
+                $('body').toggleClass('noscroll');
+            })
+        });
+
+
+
+
+</script>
+<!-- //disable body scroll which navbar is in active -->
+
+<!-- bootstrap -->
+<script src="../assets/js/bootstrap.min.js"></script>
+<!-- //bootstrap -->
+<!-- //Js scripts -->
+</body>
+
+</html>

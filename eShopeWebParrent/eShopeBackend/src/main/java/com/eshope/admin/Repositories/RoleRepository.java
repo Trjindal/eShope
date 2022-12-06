@@ -1,4 +1,4 @@
-package com.eshope.admin.user;
+package com.eshope.admin.Repositories;
 
 
 import com.eShope.common.entity.Role;
