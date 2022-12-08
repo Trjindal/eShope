@@ -15,14 +15,15 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().anyRequest().permitAll()
+        SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable().cors().disable().authorizeRequests().anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();
 

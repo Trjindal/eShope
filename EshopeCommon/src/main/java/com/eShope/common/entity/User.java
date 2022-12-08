@@ -1,9 +1,8 @@
 package com.eShope.common.entity;
 
+import com.eShope.common.annotation.ChangePasswordValidator;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,9 +26,13 @@ public class User {
     @Email(message = "Please provide a valid email address" )
     private String email;
     @Column(length = 64,nullable = false)
-    @NotBlank(message="Password must not be blank")
     @Size(min=5, message="Password must be at least 5 characters long")
     private String password;
+
+//    @Size(min=5, message="Password must be at least 5 characters long")
+    @ChangePasswordValidator
+    @Transient
+    private String changePassword;
     @Column(name = "first_name",length = 45,nullable = false)
     @NotBlank(message="First name must not be blank")
     @Size(min=3, message="First name must be at least 3 characters long")
