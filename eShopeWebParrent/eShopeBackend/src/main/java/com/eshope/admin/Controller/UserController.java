@@ -81,26 +81,32 @@ public class UserController {
     @GetMapping("/users/edit/{id}")
     public String editUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
         try{
-        User user=userService.getUserById(id);
-        model.addAttribute("user",user);
-        List<Role> listAllRoles=userService.listAllRoles();
-        model.addAttribute("listAllRoles",listAllRoles);
-        session.setAttribute("userId",id);
+            User user=userService.getUserById(id);
+            model.addAttribute("user",user);
+            session.setAttribute("id",id);
+            List<Role> listAllRoles=userService.listAllRoles();
+            model.addAttribute("listAllRoles",listAllRoles);
+            session.setAttribute("userId",id);
             return "userUpdateForm.html";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
             return "redirect:/users";
         }
+
     }
 
     @PostMapping("/users/editUser")
     public String editUser( RedirectAttributes redirectAttributes,@Valid @ModelAttribute(value = "user") User user, Errors errors,Model model,HttpSession session) {
-         Integer id= (Integer) session.getAttribute("userId");
-         String savedPassword=userService.getUserById(id).getPassword();
+//         User existingUser= (User) model.getAttribute("user");
+         Integer id= (Integer) session.getAttribute("id");
+         log.error(String.valueOf(id));
+         User existingUser=userService.getUserById(id);
+         String savedPassword=existingUser.getPassword();
 
+        log.error(String.valueOf(existingUser.getId()));
 
         //TO CHECK UNIQUE EMAIL ID
-        if(id!=null&&userService.getUserById(id)!=null&&!(userService.getUserById(id).getEmail().matches(user.getEmail()))) {
+        if(existingUser!=null&&userService.getUserById(existingUser.getId())!=null&&!(userService.getUserById(existingUser.getId()).getEmail().matches(user.getEmail()))) {
             if (user.getEmail() != "" && !userService.isEmailUnique(user.getEmail())) {
                 log.error("Contact form validation failed due to email ");
                 model.addAttribute("emailNotUnique", "There is another user having same email id");
@@ -118,14 +124,26 @@ public class UserController {
             model.addAttribute("listAllRoles",listAllRoles);
             return "userUpdateForm.html";
         }
-
-        if(user.getChangePassword()!=null||user.getChangePassword()!=""){
-            user.setPassword(user.getChangePassword());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setRoles(user.getRoles());
+        existingUser.setEnabled(user.isEnabled());
+        log.error("Previous password"+savedPassword);
+        log.error("Changed password"+user.getChangePassword());
+        if(!(user.getChangePassword().isEmpty())){
+            existingUser.setPassword(user.getChangePassword());
+            log.error("Password in existingUser "+existingUser.getPassword());
+            log.error("CPassword in existingUser"+existingUser.getChangePassword());
+            log.error("Password in User "+user.getPassword());
+            log.error("CPassword in User"+user.getChangePassword());
             user.setChangePassword("");
         }
 
         //SAVE DETAILS
-        userService.editUser(user);
+        log.error("AFTER Changing password"+existingUser.getPassword());
+        log.error("MATCHING with previous "+ savedPassword.matches(existingUser.getPassword()));
+        userService.editUser(existingUser);
         redirectAttributes.addFlashAttribute("message","The user has been edited successfully");
         return "redirect:/users";
 

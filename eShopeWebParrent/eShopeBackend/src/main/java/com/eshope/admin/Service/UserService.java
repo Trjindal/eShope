@@ -53,7 +53,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void editUser(User user){
+    public void editUser(User user) {
         encodePassword(user);
 //        userRepository.save(user);
         userRepository.editUserByMyId(user.getEmail(),user.getPassword(),user.getFirstName(),user.getLastName(),user.isEnabled(),user.getId());
@@ -76,5 +76,13 @@ public class UserService {
             throw new UsernameNotFoundException("Could not find any user with Id"+ id);
         }
 
+    }
+
+    public void delete(Integer id) throws UsernameNotFoundException{
+        Long countById=userRepository.countById(id);
+        if(countById==null||countById==0){
+            throw new UsernameNotFoundException("Could not found any user with Id "+id);
+        }
+        userRepository.deleteById(id);
     }
 }
