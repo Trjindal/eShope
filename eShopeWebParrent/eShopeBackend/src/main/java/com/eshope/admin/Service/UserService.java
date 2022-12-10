@@ -53,10 +53,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void editUser(User user) {
+    public User editUser(User user) {
         encodePassword(user);
 //        userRepository.save(user);
         userRepository.editUserByMyId(user.getEmail(),user.getPassword(),user.getFirstName(),user.getLastName(),user.isEnabled(),user.getId());
+        return userRepository.save(user);
     }
 
     private void encodePassword(User user){

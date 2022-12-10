@@ -72,7 +72,10 @@
             <tbody>
             <tr th:each="user: ${listAllUsers}">
                 <td th:text="${user.id}"></td>
-                <td><span  class="fas fa-thin fa-image-portrait fa-2x"></span></td>
+                <td>
+                    <span th:if="${user.photos==null}"  class="fas fa-thin fa-image-portrait fa-2x"></span>
+                    <img  th:if="${user.photos!=null}" th:src="@{${user.photosImagePath}}">
+                </td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>

@@ -73,4 +73,10 @@ public class User {
     public void addRole(Role role){
         this.roles.add(role);
     }
+
+    public String getPhotosImagePath(){
+        if((Object) id==null ||photos==null) return "/assets/images/users/default-user.png";
+
+        return "/user-photos/"+this.id+"/"+this.photos;
+    }
 }

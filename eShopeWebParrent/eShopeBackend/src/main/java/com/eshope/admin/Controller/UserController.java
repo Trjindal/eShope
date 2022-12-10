@@ -3,6 +3,7 @@ package com.eshope.admin.Controller;
 import com.eShope.common.entity.Role;
 import com.eShope.common.entity.User;
 import com.eshope.admin.Service.UserService;
+import com.eshope.admin.Utility.FileUploadUtil;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @PostMapping("/users/saveUser")
-    public String saveUser( RedirectAttributes redirectAttributes,@Valid @ModelAttribute(value = "user") User user, Errors errors,Model model,HttpSession session){
+    public String saveUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model, HttpSession session, @RequestParam("image")MultipartFile multipartFile) throws IOException {
 
 
 
@@ -71,9 +72,18 @@ public class UserController {
             return "userForm.html";
         }
 
+//       UPLOAD PHOTOS AND SAVE
+
+        if(!multipartFile.isEmpty()){
+            String fileName= StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            user.setPhotos(fileName);
+            User savedUser=userService.saveUser(user);
+            String uploadDir="user-photos/"+savedUser.getId();
+            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+        }
 
         //SAVE DETAILS
-        userService.saveUser(user);
+        User savedUser=userService.saveUser(user);
         redirectAttributes.addFlashAttribute("message","The user has been saved successfully");
         return "redirect:/users";
     }
@@ -96,7 +106,7 @@ public class UserController {
     }
 
     @PostMapping("/users/editUser")
-    public String editUser( RedirectAttributes redirectAttributes,@Valid @ModelAttribute(value = "user") User user, Errors errors,Model model,HttpSession session) {
+    public String editUser( RedirectAttributes redirectAttributes,@Valid @ModelAttribute(value = "user") User user, Errors errors,Model model,HttpSession session ,@RequestParam("image")MultipartFile multipartFile) throws IOException{
 //         User existingUser= (User) model.getAttribute("user");
          Integer id= (Integer) session.getAttribute("id");
          log.error(String.valueOf(id));
@@ -129,6 +139,7 @@ public class UserController {
         existingUser.setLastName(user.getLastName());
         existingUser.setRoles(user.getRoles());
         existingUser.setEnabled(user.isEnabled());
+//        existingUser.setPhotos(user.getPhotos());
         log.error("Previous password"+savedPassword);
         log.error("Changed password"+user.getChangePassword());
         if(!(user.getChangePassword().isEmpty())){
@@ -140,10 +151,24 @@ public class UserController {
             user.setChangePassword("");
         }
 
+        //        PHOTOS SAVE
+
+        if(!multipartFile.isEmpty()){
+            String fileName= StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            existingUser.setPhotos(fileName);
+            User savedUser=userService.editUser(existingUser);
+            String uploadDir="user-photos/"+savedUser.getId();
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+        }else{
+            if(existingUser.getPhotos().isEmpty()) existingUser.setPhotos(null);
+            userService.saveUser(existingUser);
+        }
+
         //SAVE DETAILS
         log.error("AFTER Changing password"+existingUser.getPassword());
         log.error("MATCHING with previous "+ savedPassword.matches(existingUser.getPassword()));
-        userService.editUser(existingUser);
+//        userService.editUser(existingUser);
         redirectAttributes.addFlashAttribute("message","The user has been edited successfully");
         return "redirect:/users";
 
