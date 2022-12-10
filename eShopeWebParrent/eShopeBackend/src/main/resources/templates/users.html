@@ -80,11 +80,42 @@
                 <td th:text="${user.enabled}"></td>
                 <td><a class="fas fa-light fa-pen-to-square" th:href="@{'/users/edit/'+${user.id}}" title="edit this user"></a>
                     &nbsp;
-                    <span class="fas fa-light fa-trash"></span></td>
+<!--                    data-bs-toggle="modal" data-bs-target="#deleteUser"-->
+                    <a class="fas fa-light fa-trash link-delete"  type="button"  data-bs-toggle="modal" data-bs-target="#deleteUserModal" th:attr="data-whatever=${user.Id}"   th:href="@{'/users/delete/' + ${user.id}}"  ></a></td>
             </tr>
             </tbody>
         </table>
     </div>
+    <!--    tabindex="-1"
+             aria-labelledby="deleteUserModalLabel" aria-hidden="true"-->
+    <div class="modal fade " id="deleteUserModal"  >
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="deleteUserLabel">Delete Confirmation</h5>
+
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span id="confirmText"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="col-md-2 login-center text-start">
+                        <a  type="button"  class="btn btn-style btn-style-3 text-left" id="yesButton" >Yes</a>
+                    </div>
+                    <div class="col-md-2 login-center text-start">
+                        <button class="btn btn-style btn-style-3 text-left" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <div class="col-md-2 login-center text-start">
         <a th:href="@{/home}">
             <button class="btn btn-style btn-style-3 text-left">BACK</button>
@@ -99,6 +130,8 @@
     <span class="fas fa-level-up-alt" aria-hidden="true"></span>
 </button>
 <script>
+
+
         // When the user scrolls down 20px from the top of the document, show the button
         window.onscroll = function () {
             scrollFunction()
@@ -154,8 +187,30 @@
                 }
             });
         });
+
     </script>
 <!-- //MENU-JS -->
+
+<!--DELETE USER MODAL-->
+<script>
+
+
+$('#deleteUserModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var recipient = button.data('whatever')
+  var modal = $(this)
+
+  modal.find('.modal-body span').text("Are you sure you want to delete this user Id "+recipient+" ??")
+   let yesButton=document.getElementById('yesButton')
+  yesButton.addEventListener('click',()=>{
+    window.open("/eShopeAdmin/users/delete/"+recipient,"_self")
+  })
+})
+
+
+</script>
+
+
 
 <!-- disable body scroll which navbar is in active -->
 <script>
