@@ -69,13 +69,13 @@
             </div>
             <div class="row form-group">
               <label class="col-form-label col-4">User Enable : </label>
-              <input type="checkbox" id="my-chkbox" name="enabled"  class="col-8"/>
+              <input type="checkbox" id="my-chkbox" name="enabled"  class="col-8 "/>
             </div>
 
             <div class="row form-group">
-              <label class="col-form-label col-4">Photos : </label>
-              <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image" accept="image/png,image/jpeg">
-              <img id="thumbnail" alt="Photos Preview" class="img-fluid" th:src="@{${user.photosImagePath}}">
+              <label class="col-form-label col-sm-4">Photos : </label>
+              <input type="file" id="fileImage" class="col-form-label col-sm-8 mb-2" name="image" accept="image/png,image/jpeg">
+              <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${user.photosImagePath}}">
             </div>
             <!--&lt;!&ndash;                    -->
             <div class="text-start">

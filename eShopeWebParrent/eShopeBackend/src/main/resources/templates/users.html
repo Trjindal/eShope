@@ -74,7 +74,7 @@
                 <td th:text="${user.id}"></td>
                 <td>
                     <span th:if="${user.photos==null}"  class="fas fa-thin fa-image-portrait fa-2x"></span>
-                    <img  th:if="${user.photos!=null}" th:src="@{${user.photosImagePath}}">
+                    <img  th:if="${user.photos!=null}" th:src="@{${user.photosImagePath}}" class="img-fluid" id="usersImg">
                 </td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.firstName}"></td>
@@ -122,6 +122,52 @@
         </div>
     </div>
 
+    <div class="text-center m-1" th:if="${totalItems>0}">
+        <span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]] </span>
+    </div>
+    <div class="text-center m-1" th:unless="${totalItems>0}">
+        <span>No Users Found</span>
+    </div>
+
+    <!-- pagination -->
+    <div class="pagination-style text-center mt-5 mb-5">
+        <ul>
+            <li>
+                <a th:if="${currentPage > 1}" th:href="@{'/users/page/1' }">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
+                <a th:unless="${currentPage > 1}" class="not-allowed" disabled="">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
+                <a th:if="${currentPage > 1}" th:href="@{'/users/page/' + ${currentPage - 1}}">
+                    <span class="fa fa-angle-left" aria-hidden="true"></span>
+                </a>
+                <a th:unless="${currentPage > 1}" class="not-allowed" disabled="">
+                    <span class="fa fa-angle-left" aria-hidden="true"></span>
+                </a>
+            </li>
+            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+            <li>
+                <a th:if="${currentPage != i}" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+                <a class="active" th:unless="${currentPage != i}">[[${i}]]</a>
+            </li>
+            </span>
+            <li>
+                <a th:if="${currentPage < totalPages}" th:href="@{'/users/page/' + ${currentPage + 1}}">
+                    <span class="fa fa-angle-right" aria-hidden="true"></span>
+                </a>
+                <a th:unless="${currentPage < totalPages}" class="not-allowed" disabled="">
+                    <span class="fa fa-angle-right" aria-hidden="true"></span>
+                </a>
+                <a th:if="${currentPage < totalPages}" th:href="@{'/users/page/' + ${totalPages}}">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                </a>
+                <a th:unless="${currentPage < totalPages}" class="not-allowed" disabled="">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
     <div class="col-md-2 login-center text-start">
         <a th:href="@{/home}">

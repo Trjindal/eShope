@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -33,8 +34,26 @@ public class UserController {
 
     @GetMapping("/users")
     public String listAllUsers(Model model){
-        List<User> listAllUsers=userService.listAllUsers();
-        model.addAttribute("listAllUsers",listAllUsers);
+        return listByPage(1,model);
+    }
+
+    @GetMapping("/users/page/{pageNum}")
+    public String listByPage(@PathVariable(name="pageNum") int pageNum,Model model){
+        Page<User> page=userService.listByPage(pageNum);
+        List<User> listUsers=page.getContent();
+
+        long startCount =(pageNum-1)*UserService.USERS_PER_PAGE+1;
+        long endCount=startCount+UserService.USERS_PER_PAGE-1;
+        if(endCount>page.getTotalElements()){
+            endCount=page.getTotalElements();
+        }
+
+        model.addAttribute("currentPage",pageNum);
+        model.addAttribute("startCount",startCount);
+        model.addAttribute("totalPages",page.getTotalPages());
+        model.addAttribute("endCount",endCount);
+        model.addAttribute("totalItems",page.getTotalElements());
+        model.addAttribute("listAllUsers",listUsers);
         return "users";
     }
 
@@ -87,6 +106,8 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message","The user has been saved successfully");
         return "redirect:/users";
     }
+
+
 
     @GetMapping("/users/edit/{id}")
     public String editUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
