@@ -22,4 +22,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     int editUserByMyId(String email,String password,String firstName,String lastName,Boolean enabled,int id);
 
     public long countById(Integer id);
+
+    @Transactional
+    @Modifying
+    @Query("Update User u SET u.enabled=?2 where u.id=?1")
+    public void updateEnableStatus(Integer id,boolean enabled);
 }

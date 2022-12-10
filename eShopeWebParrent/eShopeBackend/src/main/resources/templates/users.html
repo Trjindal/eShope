@@ -77,7 +77,11 @@
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>
                 <td th:text="${user.roles}"></td>
-                <td th:text="${user.enabled}"></td>
+                <td>
+                    <a th:if="${user.enabled==true}" class="fas fa-thin fa-circle-check" th:href="@{'/users/'+${user.id}+'/enabled/false'}" title="Disable this User"></a>
+                    <a th:if="${user.enabled==false}" class="fas fa-thin fa-circle-xmark" th:href="@{'/users/'+${user.id}+'/enabled/true'}" title="Enable this User"></a>
+                </td>
+
                 <td><a class="fas fa-light fa-pen-to-square" th:href="@{'/users/edit/'+${user.id}}" title="edit this user"></a>
                     &nbsp;
 <!--                    data-bs-toggle="modal" data-bs-target="#deleteUser"-->
