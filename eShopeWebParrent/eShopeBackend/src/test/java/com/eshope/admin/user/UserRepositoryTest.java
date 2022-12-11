@@ -124,4 +124,20 @@ public class UserRepositoryTest {
         assertThat(listUsers.size()).isEqualTo(pageSize);
     }
 
+    @Test
+    public void testSearchUsers(){
+        String keyword="bruce";
+
+        int pageNumber=0;
+        int pageSize=4;
+
+        Pageable pageable= (Pageable) PageRequest.of(pageNumber,pageSize);
+        Page<User> page=userRepository.findAll(keyword,(org.springframework.data.domain.Pageable) pageable);
+
+        List<User> listUsers=page.getContent();
+        listUsers.forEach(user-> System.out.println(user));
+
+        assertThat(listUsers.size()).isGreaterThan(0);
+    }
+
 }

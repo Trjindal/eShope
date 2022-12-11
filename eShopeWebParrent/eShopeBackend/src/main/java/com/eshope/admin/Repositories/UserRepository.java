@@ -2,6 +2,8 @@ package com.eshope.admin.Repositories;
 
 import com.eShope.common.entity.User;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -27,10 +29,17 @@ public interface UserRepository extends PagingAndSortingRepository<User,Integer>
     public void updateEnableStatus(Integer id,boolean enabled);
 
 
+    @Query("SELECT u FROM User u WHERE CONCAT(u.id,' ',u.email,' ',u.firstName,' ',u.lastName) LIKE %?1%")
+    public Page<User> findAll(String keyword, Pageable pageable);
+
+    @Transactional
+    @Modifying
     public User save(User user);
 
     public Optional<User> findById(int i);
 
+    @Transactional
+    @Modifying
     public User deleteById(Integer id);
 
     public  Iterable<User> findAll();
