@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
-@Slf4j
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig  {
@@ -26,7 +25,6 @@ public class WebSecurityConfig  {
 
 
     protected void defaultSecurityFilterChain(AuthenticationManagerBuilder managerBuilder) throws Exception {
-        log.error("Inside      protected void configure(AuthenticationManagerBuilder managerBuilder) throws Exception{\n");
         managerBuilder.authenticationProvider(authenticationProvider());
     }
 
@@ -39,9 +37,9 @@ public class WebSecurityConfig  {
     public UserDetailsService userDetailsService(){
         return new EshopeUserDetailsService();
     }
-@Bean
+
+    @Bean
     public DaoAuthenticationProvider authenticationProvider(){
-        log.error("Inside DaoAuthenticationProvider");
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());

@@ -67,17 +67,18 @@
                 <!--            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
                 <a th:href="@{/menu}" class="nav-link">Menu</a>
             </li>
+<!--            <li class="nav-item" >-->
+<!--                &lt;!&ndash;            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"&ndash;&gt;-->
+<!--                -->
+<!--            </li>-->
             <li class="nav-item" >
-                <!--            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
-                <a th:href="@{/setting}" class="nav-link">Setting</a>
-            </li>
-            <li class="nav-item" >
-                <span class="fas fa-user"></span>
-               <div sec:authentication="name"></div>
-                <div sec:authentication="principal.authorities"></div>
-<!--                <a  th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
-<!--                    th:href="@{/logout}" class="nav-link">Logout</a>-->
-                <a class="nav-link"  sec:authentication="principal.authorities"></a>
+<!--                <span class="fas fa-user"></span>-->
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span th:text="${fullName}"></span></a>
+                 <div class="dropdown-menu">
+                     <a th:href="@{/setting}" class="dropdown-item "> <span class="fas fa-solid fa-gear"></span> Setting</a>
+                    <a class="dropdown-item " th:href="@{/logout}"><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>
+
+                </div>
             </li>
         </ul>
       </div>

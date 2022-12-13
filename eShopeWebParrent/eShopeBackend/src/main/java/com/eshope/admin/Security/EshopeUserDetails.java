@@ -64,4 +64,8 @@ public class EshopeUserDetails implements UserDetails {
     public boolean isEnabled() {
         return user.isEnabled();
     }
+
+    public String fullName(){
+        return this.user.getFirstName()+" "+this.user.getLastName();
+    }
 }
