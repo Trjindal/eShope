@@ -1,7 +1,17 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
+    <!-- Google fonts -->
+    <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Template CSS Style link -->
+    <link rel="stylesheet" href="/eShopeAdmin/assets/css/style-starter.css">
+    <link rel="stylesheet" href="/eShopeAdmin/assets/css/all.css">
+    <!-- common jquery plugin -->
+    <script src="/eShopeAdmin/assets/js/jquery-3.3.1.min.js}"></script>
+    <!-- bootstrap -->
+    <script src="/eShopeAdmin/assets/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -60,6 +70,14 @@
             <li class="nav-item" >
                 <!--            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
                 <a th:href="@{/setting}" class="nav-link">Setting</a>
+            </li>
+            <li class="nav-item" >
+                <span class="fas fa-user"></span>
+               <div sec:authentication="name"></div>
+                <div sec:authentication="principal.authorities"></div>
+<!--                <a  th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
+<!--                    th:href="@{/logout}" class="nav-link">Logout</a>-->
+                <a class="nav-link"  sec:authentication="principal.authorities"></a>
             </li>
         </ul>
       </div>

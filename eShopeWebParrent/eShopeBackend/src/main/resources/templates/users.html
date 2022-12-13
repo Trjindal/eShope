@@ -72,23 +72,13 @@
         <table class="table table-striped table-hover">
             <thead class="table-dark w-100">
             <tr>
-                <th class="sorting" scope="col">
-                    <a th:href="@{'/users/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">User ID</a>
-                </th>
+                <th th:replace="fragments::column_link('id','User Id')"></th>
                 <th scope="col">Photos</th>
-                <th class="sorting" scope="col">
-                    <a th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">Email</a>
-                </th>
-                <th class="sorting" scope="col">
-                    <a th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">First Name</a>
-                </th>
-                <th class="sorting" scope="col">
-                    <a th:href="@{'/users/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">Last Name</a>
-                </th>
+                <th th:replace="fragments::column_link('email','Email')"></th>
+                <th th:replace="fragments::column_link('firstName','First Name')"></th>
+                <th th:replace="fragments::column_link('lastName','Last Name')"></th>
                 <th scope="col">Roles</th>
-                <th class="sorting" scope="col">
-                    <a th:href="@{'/users/page/' + ${currentPage} + '?sortField=enabled&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+$keyword:''}}">Enabled</a>
-                </th>
+                <th th:replace="fragments::column_link('enabled','Enabled')"></th>
                 <th class="sorting" scope="col"></th>
             </tr>
             </thead>

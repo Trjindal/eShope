@@ -42,7 +42,7 @@
 body {
   margin: 0;
   font-family: var(--bs-font-sans-serif);
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
@@ -21688,4 +21688,11 @@ border-radius:var(--border-radius);
     outline: none;
 
     border-radius: var(--border-radius);
-    }
+}
+
+th > a {
+    color: #fff;
+    text-decoration: none;
+    background-color: transparent;
+    font:10px;
+}
