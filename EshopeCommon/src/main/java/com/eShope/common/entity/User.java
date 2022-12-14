@@ -32,6 +32,7 @@ public class User {
 //    @Size(min=5, message="Password must be at least 5 characters long")
     @ChangePasswordValidator
     @Transient
+    @Column(length = 64,nullable = true)
     private String changePassword;
     @Column(name = "first_name",length = 45,nullable = false)
     @NotBlank(message="First name must not be blank")
@@ -47,7 +48,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name="user_roles",joinColumns = @JoinColumn(name = "user_id"),
+            name="users_roles",joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name="role_id")
     )
     private Set<Role> roles=new HashSet<>();

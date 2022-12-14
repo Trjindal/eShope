@@ -71,8 +71,8 @@ public class UserService {
     }
 
     public User editUser(User user) {
-        encodePassword(user);
-//        userRepository.save(user);
+        encodePasswordEdit(user);
+
         userRepository.editUserByMyId(user.getEmail(),user.getPassword(),user.getFirstName(),user.getLastName(),user.isEnabled(),user.getId());
         return userRepository.save(user);
     }
@@ -80,6 +80,14 @@ public class UserService {
     private void encodePassword(User user){
         String encodePassword=passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
+    }
+
+    private void encodePasswordEdit(User user){
+        if(!(user.getChangePassword().isEmpty())){
+            String encodePassword=passwordEncoder.encode(user.getChangePassword());
+            user.setPassword(encodePassword);
+            user.setChangePassword("");
+        }
     }
 
     public boolean isEmailUnique(String email){

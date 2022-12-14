@@ -1,7 +1,6 @@
 package com.eshope.admin.Config;
 
 
-
 import com.eshope.admin.Security.EshopeUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,8 @@ public class WebSecurityConfig  {
     protected void defaultSecurityFilterChain(AuthenticationManagerBuilder managerBuilder) throws Exception {
         managerBuilder.authenticationProvider(authenticationProvider());
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -58,7 +59,7 @@ public class WebSecurityConfig  {
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").permitAll()
-                .defaultSuccessUrl("/",true).failureUrl("/login?error=true").permitAll()
+                .defaultSuccessUrl("/users/edit/26",true).failureUrl("/login?error=true").permitAll()
                 .and().logout().logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true).permitAll()
                 .and().httpBasic();

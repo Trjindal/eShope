@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymleaf.org">
+<html lang="en" xmlns:th="http://www.thymleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -34,113 +35,23 @@
         </div>
     </div>
 </section>
-<!-- //inner banner -->
 
-<!--&lt;!&ndash; Welcome block &ndash;&gt;-->
-<!--<section class="w3l-contact py-1" id="contact">-->
-<!--    <div class="container py-md-1 py-1">-->
-<!--        <div class="title-main text-center mx-auto mb-md-1 mb-1" style="max-width:500px;">-->
-<!--            <h3 class="title-style" th:text="${'Welcome - ' + username}"></h3>-->
-<!--            <p class="" th:text="${'You logged in as - ' + roles}"></p>-->
-<!--            <p class="" th:if="${!#strings.isEmpty(enrolledClass)}" th:text="${'Your assigned class is - [' + enrolledClass+']'}"></p>-->
-<!--        </div>-->
 
-<!--    </div>-->
-<!--</section>-->
-<!--&lt;!&ndash; //Welcome block &ndash;&gt;-->
+<!-- Welcome block -->
+<section class="w3l-contact py-1" id="contact">
+    <div class="container py-md-1 py-1">
+        <div class="title-main text-center mx-auto mb-md-1 mb-1" style="max-width:500px;">
+            <h3 class="title-style" sec:authentication="name">BOB</h3>
 
-<!--<div class="container py-md-5 py-4">-->
-<!--    <div class="section__content section__content&#45;&#45;p30">-->
-<!--        <div class="container-fluid">-->
-<!--            <div class="row m-t-25">-->
-<!--                <div class="col-sm-6 col-lg-3">-->
-<!--                    <a th:href="@{/displayProfile}">-->
-<!--                        <div class="overview-item overview-item&#45;&#45;c4">-->
-<!--                            <div class="overview__inner">-->
-<!--                                <div class="overview-box clearfix">-->
-<!--                                    <div class="icon">-->
-<!--                                        <i class="fas fa-id-card"></i>-->
-<!--                                    </div>-->
-<!--                                    <div class="text">-->
-<!--                                        <h2>Profile</h2>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                <div class="col-sm-6 col-lg-3">-->
-<!--                    <a th:href="@{/displayMessages/page/1?sortField=name&sortDir=desc}">-->
-<!--                        <div class="overview-item overview-item&#45;&#45;c3">-->
-<!--                            <div class="overview__inner">-->
-<!--                                <div class="overview-box clearfix">-->
-<!--                                    <div class="icon">-->
-<!--                                        <i class="fas fa-envelope-open-text"></i>-->
-<!--                                    </div>-->
-<!--                                    <div class="text">-->
-<!--                                        <h2>Messages</h2>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                <div class="col-sm-6 col-lg-3">-->
-<!--                    <a th:href="@{/admin/displayClasses}">-->
-<!--                        <div class="overview-item overview-item&#45;&#45;c1">-->
-<!--                            <div class="overview__inner">-->
-<!--                                <div class="overview-box clearfix">-->
-<!--                                    <div class="icon">-->
-<!--                                        <i class="fas fa-envelope-open-text"></i>-->
-<!--                                    </div>-->
-<!--                                    <div class="text">-->
-<!--                                        <h2>Classes</h2>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                <div class="col-sm-6 col-lg-3">-->
-<!--                    <a th:href="@{/admin/displayCourses}">-->
-<!--                        <div class="overview-item overview-item&#45;&#45;c2">-->
-<!--                            <div class="overview__inner">-->
-<!--                                <div class="overview-box clearfix">-->
-<!--                                    <div class="icon">-->
-<!--                                        <i class="fas fa-envelope-open-text"></i>-->
-<!--                                    </div>-->
-<!--                                    <div class="text">-->
-<!--                                        <h2>Courses</h2>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--                <div class="col-sm-6 col-lg-3" >-->
-<!--                    <a th:href="@{/student/displayCourses}">-->
-<!--                        <div class="overview-item overview-item&#45;&#45;c3">-->
-<!--                            <div class="overview__inner">-->
-<!--                                <div class="overview-box clearfix">-->
-<!--                                    <div class="icon">-->
-<!--                                        <i class="fas fa-envelope-open-text"></i>-->
-<!--                                    </div>-->
-<!--                                    <div class="text">-->
-<!--                                        <h2>Courses</h2>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+            <a class="nav-link" th:href="@{/account_details}"><b sec:authentication="details.fullName"/></a>
+            <a class="nav-link" th:href="@{/account_details}"><b sec:authentication="details"/></a>
+            <p class="" th:text="${'You logged in as - ' + roles}"></p>
+        </div>
 
-<!--&lt;!&ndash; footer block &ndash;&gt;-->
-<!--<div th:replace="footer :: footer">...</div>-->
-<!--&lt;!&ndash; //footer block &ndash;&gt;-->
+    </div>
+</section>
+<!-- //Welcome block -->
+
 
 <!-- Js scripts -->
 <!-- move top -->

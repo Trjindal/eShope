@@ -2,7 +2,7 @@ package com.eshope.admin.Security;
 
 import com.eShope.common.entity.Role;
 import com.eShope.common.entity.User;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Slf4j
 public class EshopeUserDetails implements UserDetails {
 
 
@@ -27,16 +26,14 @@ public class EshopeUserDetails implements UserDetails {
         Set<Role> roles=user.getRoles();
         List<SimpleGrantedAuthority> authorities=new ArrayList<>();
         for(Role role:roles){
-            log.error(role.getName());
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-        log.error("authoroties: "+ authorities);
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        log.error("User Password stored"+user.getPassword());
+
         return user.getPassword();
     }
 

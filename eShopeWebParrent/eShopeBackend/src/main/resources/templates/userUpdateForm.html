@@ -44,7 +44,7 @@
       <div class="col-md-7 contact-right">
         <ul>
           <li class="alert alert-danger" role="alert" th:if="${emailNotUnique!=null}" th:text="${emailNotUnique}"></li>
-<!--          <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('user.*')}" th:text="${error}" ></li>-->
+          <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('user.*')}" th:text="${error}" ></li>
         </ul>
         <form action="/eShopeAdmin/users/editUser" method="post" class="signin-form" th:object="${user}" enctype="multipart/form-data">
           <div class="input-grids">
@@ -75,7 +75,7 @@
             <div class="row form-group">
               <label class="col-form-label col-sm-4">Photos : </label>
               <input type="file" id="fileImage" class="col-form-label col-sm-8 mb-2" name="image" accept="image/png,image/jpeg">
-              <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${user.photosImagePath}}">
+              <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${users.photosImagePath}}">
             </div>
             <!--&lt;!&ndash;                    -->
             <div class="text-start">

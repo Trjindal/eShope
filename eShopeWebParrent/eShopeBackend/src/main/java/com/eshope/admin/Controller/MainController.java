@@ -10,14 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
+
 @Controller
 @Slf4j
 public class MainController {
 
     @GetMapping({"", "/home","/"})
-    public String viewHomePage(Model model) {
+    public String viewHomePage(Model model,Principal principale) {
+
         EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String fullName=principal.fullName();
+        model.addAttribute("principale",principale);
         model.addAttribute("fullName",fullName);
         return "index";
     }

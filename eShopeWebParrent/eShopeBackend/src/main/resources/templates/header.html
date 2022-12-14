@@ -31,7 +31,7 @@
       <div class="collapse navbar-collapse" id="navbarScroll">
         <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
           <li class="nav-item" >
-            <a th:href="@{/users}" class="nav-link" aria-current="page">Users</a>
+            <a th:href="@{/users}" class="nav-link" sec:autorize="hasAuthority('Admin')" aria-current="page">Users</a>
 <!--                    th:classappend="${#httpServletRequest.getRequestURI() == '/home' ? 'active':''}"-->
 
           </li>
@@ -71,13 +71,12 @@
 <!--                &lt;!&ndash;            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"&ndash;&gt;-->
 <!--                -->
 <!--            </li>-->
-            <li class="nav-item" >
+            <li class="nav-item dropdown" >
 <!--                <span class="fas fa-user"></span>-->
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span th:text="${fullName}"></span></a>
                  <div class="dropdown-menu">
                      <a th:href="@{/setting}" class="dropdown-item "> <span class="fas fa-solid fa-gear"></span> Setting</a>
                     <a class="dropdown-item " th:href="@{/logout}"><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>
-
                 </div>
             </li>
         </ul>

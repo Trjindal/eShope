@@ -2,7 +2,7 @@ package com.eshope.admin.Controller;
 
 import com.eShope.common.entity.Role;
 import com.eShope.common.entity.User;
-import com.eshope.admin.Security.EshopeUserDetails;
+//import com.eshope.admin.Security.EshopeUserDetails;
 import com.eshope.admin.Service.UserService;
 import com.eshope.admin.Utility.FileUploadUtil;
 import jakarta.servlet.http.HttpSession;
@@ -48,9 +48,11 @@ public class UserController {
         if(endCount>page.getTotalElements()){
             endCount=page.getTotalElements();
         }
-        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String fullName=principal.fullName();
-        model.addAttribute("fullName",fullName);
+//        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String fullName=principal.fullName();
+//        model.addAttribute("fullName",fullName);
+        model.addAttribute("fullName",null);
+
         model.addAttribute("currentPage",pageNum);
         model.addAttribute("startCount",startCount);
         model.addAttribute("totalPages",page.getTotalPages());
@@ -67,13 +69,15 @@ public class UserController {
     @GetMapping("/users/new")
     public String newUser( Model model){
         List<Role> listAllRoles=userService.listAllRoles();
-        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String fullName=principal.fullName();
+//        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String fullName=principal.fullName();
 
         User user=new User();
 
         user.setEnabled(true);
-        model.addAttribute("fullName",fullName);
+//        model.addAttribute("fullName",fullName);
+        model.addAttribute("fullName",null);
+
         model.addAttribute("user",user);
         model.addAttribute("listAllRoles",listAllRoles);
         return "userForm.html";
@@ -123,11 +127,13 @@ public class UserController {
     @GetMapping("/users/edit/{id}")
     public String editUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
         try{
-            EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String fullName=principal.fullName();
-            model.addAttribute("fullName",fullName);
+//            EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            String fullName=principal.fullName();
+//            model.addAttribute("fullName",fullName);
+            model.addAttribute("fullName",null);
             User user=userService.getUserById(id);
             model.addAttribute("user",user);
+            model.addAttribute("users",user);
             session.setAttribute("id",id);
             List<Role> listAllRoles=userService.listAllRoles();
             model.addAttribute("listAllRoles",listAllRoles);
@@ -142,13 +148,10 @@ public class UserController {
 
     @PostMapping("/users/editUser")
     public String editUser( RedirectAttributes redirectAttributes,@Valid @ModelAttribute(value = "user") User user, Errors errors,Model model,HttpSession session ,@RequestParam("image")MultipartFile multipartFile) throws IOException{
-//         User existingUser= (User) model.getAttribute("user");
+
         Integer id= (Integer) session.getAttribute("id");
-        log.error(String.valueOf(id));
         User existingUser=userService.getUserById(id);
         String savedPassword=existingUser.getPassword();
-
-        log.error(String.valueOf(existingUser.getId()));
 
         //TO CHECK UNIQUE EMAIL ID
         if(existingUser!=null&&userService.getUserById(existingUser.getId())!=null&&!(userService.getUserById(existingUser.getId()).getEmail().matches(user.getEmail()))) {
@@ -167,6 +170,7 @@ public class UserController {
             log.error("Contact form validation failed due to : " + errors.toString());
             List<Role> listAllRoles=userService.listAllRoles();
             model.addAttribute("listAllRoles",listAllRoles);
+            model.addAttribute("users",existingUser);
             return "userUpdateForm.html";
         }
         existingUser.setEmail(user.getEmail());
@@ -174,17 +178,21 @@ public class UserController {
         existingUser.setLastName(user.getLastName());
         existingUser.setRoles(user.getRoles());
         existingUser.setEnabled(user.isEnabled());
+        existingUser.setChangePassword(user.getChangePassword());
+        user.setChangePassword("");
 //        existingUser.setPhotos(user.getPhotos());
-        log.error("Previous password"+savedPassword);
-        log.error("Changed password"+user.getChangePassword());
-        if(!(user.getChangePassword().isEmpty())){
-            existingUser.setPassword(user.getChangePassword());
-            log.error("Password in existingUser "+existingUser.getPassword());
-            log.error("CPassword in existingUser"+existingUser.getChangePassword());
-            log.error("Password in User "+user.getPassword());
-            log.error("CPassword in User"+user.getChangePassword());
-            user.setChangePassword("");
-        }
+//        log.error("Previous password"+savedPassword);
+//        log.error("Changed password"+user.getChangePassword());
+//        log.error(String.valueOf("CPassword Null? "+user.getChangePassword()==null));
+//        log.error("CPassword empty? "+user.getChangePassword().isEmpty());
+//        if(!(user.getChangePassword().isEmpty())){
+//            existingUser.setPassword(user.getChangePassword());
+//            log.error("Password in existingUser "+existingUser.getPassword());
+//            log.error("CPassword in existingUser"+existingUser.getChangePassword());
+//            log.error("Password in User "+user.getPassword());
+//            log.error("CPassword in User"+user.getChangePassword());
+//            user.setChangePassword("");
+//        }
 
         //        PHOTOS SAVE
 
@@ -195,12 +203,12 @@ public class UserController {
             String uploadDir="user-photos/"+savedUser.getId();
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
-        }else{
-            if(existingUser.getPhotos().isEmpty()) existingUser.setPhotos(null);
-            userService.saveUser(existingUser);
         }
 
         //SAVE DETAILS
+        userService.editUser(existingUser);
+
+
         log.error("AFTER Changing password"+existingUser.getPassword());
         log.error("MATCHING with previous "+ savedPassword.matches(existingUser.getPassword()));
 //        userService.editUser(existingUser);
