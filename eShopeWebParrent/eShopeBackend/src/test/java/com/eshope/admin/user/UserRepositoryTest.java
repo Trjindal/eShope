@@ -4,16 +4,23 @@ package com.eshope.admin.user;
 import com.eShope.common.entity.Role;
 import com.eShope.common.entity.User;
 import com.eshope.admin.Repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
+
+import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Slf4j
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
 public class UserRepositoryTest {
@@ -88,6 +95,49 @@ public class UserRepositoryTest {
         String email="maanik@eshope";
         User user=userRepository.getUserByEmail(email);
         assertThat(user).isNotNull();
+    }
+
+    @Test
+    public void testCountById(){
+        Integer id=1;
+        Long countById=userRepository.countById(id);
+        assertThat(countById).isNotNull().isGreaterThan(0);
+    }
+@Test
+    public void testDisableUser(){
+        Integer id=18;
+        userRepository.updateEnableStatus(id,true);
+    }
+
+
+    @Test
+    public void testListFirstPage(){
+        int pageNumber=1;
+        int pageSize=4;
+
+        Pageable pageable= (Pageable) PageRequest.of(pageNumber,pageSize);
+        Page<User> page=userRepository.findAll((org.springframework.data.domain.Pageable) pageable);
+
+        List<User> listUsers=page.getContent();
+        listUsers.forEach(user-> System.out.println(user));
+
+        assertThat(listUsers.size()).isEqualTo(pageSize);
+    }
+
+    @Test
+    public void testSearchUsers(){
+        String keyword="bruce";
+
+        int pageNumber=0;
+        int pageSize=4;
+
+        Pageable pageable= (Pageable) PageRequest.of(pageNumber,pageSize);
+        Page<User> page=userRepository.findAll(keyword,(org.springframework.data.domain.Pageable) pageable);
+
+        List<User> listUsers=page.getContent();
+        listUsers.forEach(user-> System.out.println(user));
+
+        assertThat(listUsers.size()).isGreaterThan(0);
     }
 
 }

@@ -1,7 +1,17 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
+    <!-- Google fonts -->
+    <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Template CSS Style link -->
+    <link rel="stylesheet" href="/eShopeAdmin/assets/css/style-starter.css">
+    <link rel="stylesheet" href="/eShopeAdmin/assets/css/all.css">
+    <!-- common jquery plugin -->
+    <script src="/eShopeAdmin/assets/js/jquery-3.3.1.min.js}"></script>
+    <!-- bootstrap -->
+    <script src="/eShopeAdmin/assets/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -21,7 +31,7 @@
       <div class="collapse navbar-collapse" id="navbarScroll">
         <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
           <li class="nav-item" >
-            <a th:href="@{/users}" class="nav-link" aria-current="page">Users</a>
+            <a th:href="@{/users}" class="nav-link"  aria-current="page">Users</a>
 <!--                    th:classappend="${#httpServletRequest.getRequestURI() == '/home' ? 'active':''}"-->
 
           </li>
@@ -57,9 +67,17 @@
                 <!--            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
                 <a th:href="@{/menu}" class="nav-link">Menu</a>
             </li>
-            <li class="nav-item" >
-                <!--            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
-                <a th:href="@{/setting}" class="nav-link">Setting</a>
+<!--            <li class="nav-item" >-->
+<!--                &lt;!&ndash;            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"&ndash;&gt;-->
+<!--                -->
+<!--            </li>-->
+            <li class="nav-item dropdown" >
+<!--                <span class="fas fa-user"></span>-->
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span th:text="${fullName}"></span></a>
+                 <div class="dropdown-menu">
+                     <a th:href="@{/setting}" class="dropdown-item "> <span class="fas fa-solid fa-gear"></span> Setting</a>
+                    <a class="dropdown-item " th:href="@{/logout}"><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>
+                </div>
             </li>
         </ul>
       </div>

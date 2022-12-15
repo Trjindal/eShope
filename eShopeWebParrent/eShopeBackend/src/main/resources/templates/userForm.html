@@ -46,7 +46,7 @@
                     <li class="alert alert-danger" role="alert" th:if="${emailNotUnique!=null}" th:text="${emailNotUnique}"></li>
                     <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('user.*')}" th:text="${error}" />
                 </ul>
-                <form action="/eShopeAdmin/users/saveUser" method="post" class="signin-form" th:object="${user}">
+                <form action="/eShopeAdmin/users/saveUser" method="post" class="signin-form" th:object="${user}" enctype="multipart/form-data">
                     <div class="input-grids">
                         <input type="email" th:field="*{email}" placeholder=" Email" name="email"
                                class="contact-input" />
@@ -72,11 +72,17 @@
                             <label class="col-form-label col-4">User Enable : </label>
                             <input type="checkbox" id="my-chkbox" name="enabled"  class="col-8"/>
                         </div>
+                        <div class="row form-group">
+                            <label class="col-form-label col-4">Photos : </label>
+                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image" accept="image/png,image/jpeg">
+                            <img id="thumbnail" alt="Photos Preview" class="img-fluid" th:src="@{../assets/images/users/default-user.png}">
+                        </div>
                         <!--&lt;!&ndash;                    -->
                         <div class="text-start">
                             <button type="submit" class="btn btn-style btn-style-3">Save User</button>
-                            <button type="button" value="cancel" class="btn btn-style btn-style-3" id="buttonCancel"><a th:href="@{/users}">Cancel</a></button>
+                            <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/users}">Cancel</a>
                         </div>
+
                     </div>
                 </form>
             </div>
@@ -177,12 +183,36 @@
             });
         });
 
-
-
-
-
 </script>
 <!-- //MENU-JS -->
+
+<!--SHOW IMAGE THUMBNAIL-->
+<script>
+
+    $(document).ready(function(){
+    $("#fileImage").change(function(){
+    fileSize=this.files[0].size;
+<!--    alert("File size : " +fileSize);-->
+
+    if(fileSize>1048576){
+    this.setCustomValidity("You miust choose an image less than 1 MB!");
+    this.reportValidity("");
+    }else{
+        this.setCustomValidity("");
+        showImageThumbnail(this);
+        }
+    });
+    });
+
+    function showImageThumbnail(fileInput){
+        var file=fileInput.files[0];
+        var reader=new FileReader();
+        reader.onload=function(e){
+        $('#thumbnail').attr("src",e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
 
 <!-- disable body scroll which navbar is in active -->
 <script>
