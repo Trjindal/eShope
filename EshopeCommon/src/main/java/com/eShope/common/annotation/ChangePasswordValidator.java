@@ -1,8 +1,9 @@
 package com.eShope.common.annotation;
 
 import com.eShope.common.validations.PasswordChangeValidator;
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented

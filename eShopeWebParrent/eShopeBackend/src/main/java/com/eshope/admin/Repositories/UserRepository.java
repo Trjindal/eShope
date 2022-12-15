@@ -1,7 +1,7 @@
 package com.eshope.admin.Repositories;
 
 import com.eShope.common.entity.User;
-import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 public interface UserRepository extends PagingAndSortingRepository<User,Integer> {
@@ -40,7 +40,7 @@ public interface UserRepository extends PagingAndSortingRepository<User,Integer>
 
     @Transactional
     @Modifying
-    public User deleteById(Integer id);
+    public void deleteById(Integer id);
 
     public  Iterable<User> findAll();
 }

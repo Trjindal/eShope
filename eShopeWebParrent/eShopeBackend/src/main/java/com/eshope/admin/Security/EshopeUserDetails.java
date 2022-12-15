@@ -65,4 +65,8 @@ public class EshopeUserDetails implements UserDetails {
     public String fullName(){
         return this.user.getFirstName()+" "+this.user.getLastName();
     }
+
+    public String getFullName() {
+        return fullName();
+    }
 }

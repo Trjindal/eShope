@@ -2,11 +2,14 @@ package com.eshope.admin.Controller;
 
 import com.eShope.common.entity.Role;
 import com.eShope.common.entity.User;
-//import com.eshope.admin.Security.EshopeUserDetails;
+import com.eshope.admin.Security.EshopeUserDetails;
 import com.eshope.admin.Service.UserService;
 import com.eshope.admin.Utility.FileUploadUtil;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
+
+
+import com.eshope.admin.exporter.UserCsvExporter;
+import com.eshope.admin.exporter.UserExcelExporter;
+import com.eshope.admin.exporter.UserPdfExporter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.util.StringUtils;
 
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -48,11 +55,10 @@ public class UserController {
         if(endCount>page.getTotalElements()){
             endCount=page.getTotalElements();
         }
-//        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String fullName=principal.fullName();
-//        model.addAttribute("fullName",fullName);
-        model.addAttribute("fullName",null);
+        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String fullName=principal.fullName();
 
+        model.addAttribute("fullName",fullName);
         model.addAttribute("currentPage",pageNum);
         model.addAttribute("startCount",startCount);
         model.addAttribute("totalPages",page.getTotalPages());
@@ -69,15 +75,14 @@ public class UserController {
     @GetMapping("/users/new")
     public String newUser( Model model){
         List<Role> listAllRoles=userService.listAllRoles();
-//        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String fullName=principal.fullName();
+        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String fullName=principal.fullName();
 
         User user=new User();
 
         user.setEnabled(true);
-//        model.addAttribute("fullName",fullName);
-        model.addAttribute("fullName",null);
 
+        model.addAttribute("fullName",fullName);
         model.addAttribute("user",user);
         model.addAttribute("listAllRoles",listAllRoles);
         return "userForm.html";
@@ -127,10 +132,10 @@ public class UserController {
     @GetMapping("/users/edit/{id}")
     public String editUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
         try{
-//            EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            String fullName=principal.fullName();
-//            model.addAttribute("fullName",fullName);
-            model.addAttribute("fullName",null);
+            EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String fullName=principal.fullName();
+            model.addAttribute("fullName",fullName);
+
             User user=userService.getUserById(id);
             model.addAttribute("user",user);
             model.addAttribute("users",user);
@@ -141,13 +146,14 @@ public class UserController {
             return "userUpdateForm.html";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
+
             return "redirect:/users";
         }
 
     }
 
     @PostMapping("/users/editUser")
-    public String editUser( RedirectAttributes redirectAttributes,@Valid @ModelAttribute(value = "user") User user, Errors errors,Model model,HttpSession session ,@RequestParam("image")MultipartFile multipartFile) throws IOException{
+    public String editUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model, HttpSession session , @RequestParam("image")MultipartFile multipartFile) throws IOException{
 
         Integer id= (Integer) session.getAttribute("id");
         User existingUser=userService.getUserById(id);
@@ -238,6 +244,31 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message",message);
         return "redirect:/users";
     }
+
+    @GetMapping("/users/export/csv")
+    public void exportToCSV(HttpServletResponse response) throws IOException {
+        List<User> listUsers=userService.listAllUsers();
+        UserCsvExporter exporter=new UserCsvExporter();
+        exporter.export(listUsers,response);
+    }
+
+
+    @GetMapping("/users/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        List<User> listUsers=userService.listAllUsers();
+
+        UserExcelExporter exporter=new UserExcelExporter();
+        exporter.export(listUsers,response);
+    }
+
+    @GetMapping("/users/export/pdf")
+    public void exportToPdf(HttpServletResponse response) throws IOException {
+        List<User> listUsers=userService.listAllUsers();
+
+        UserPdfExporter exporter=new UserPdfExporter();
+        exporter.export(listUsers,response);
+    }
+
 
 
 }

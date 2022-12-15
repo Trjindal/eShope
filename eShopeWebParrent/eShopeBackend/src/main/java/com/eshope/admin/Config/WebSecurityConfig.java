@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,20 +54,32 @@ public class WebSecurityConfig  {
         SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/eShopeAdmin/**").authenticated()
-                .requestMatchers("/assets/**", "/assets/js/**").permitAll()
+                .authorizeHttpRequests().antMatchers("/eShopeAdmin/**").authenticated()
+                .antMatchers("/assets/**", "/assets/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").permitAll()
-                .defaultSuccessUrl("/users/edit/26",true).failureUrl("/login?error=true").permitAll()
+                .defaultSuccessUrl("/", true).failureUrl("/login?error=true").permitAll()
                 .and().logout().logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true).permitAll()
                 .and().httpBasic();
+
+        http.headers().frameOptions().sameOrigin();
+
+        http.authenticationProvider(authenticationProvider());
+
+
         return http.build();
 
     }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**");
     }
+
+
+    }
+
 
 
 

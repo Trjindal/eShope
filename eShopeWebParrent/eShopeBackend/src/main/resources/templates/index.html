@@ -41,10 +41,10 @@
 <section class="w3l-contact py-1" id="contact">
     <div class="container py-md-1 py-1">
         <div class="title-main text-center mx-auto mb-md-1 mb-1" style="max-width:500px;">
-            <h3 class="title-style" sec:authentication="name">BOB</h3>
+            <h3 class="title-style" sec:authentication="principal.fullName">BOB</h3>
 
-            <a class="nav-link" th:href="@{/account_details}"><b sec:authentication="details.fullName"/></a>
-            <a class="nav-link" th:href="@{/account_details}"><b sec:authentication="details"/></a>
+<!--            <a class="nav-link" th:href="@{/account_details}"><b sec:authentication="details.fullName"/></a>-->
+<!--            <a class="nav-link" th:href="@{/account_details}"><b sec:authentication="details"/></a>-->
             <p class="" th:text="${'You logged in as - ' + roles}"></p>
         </div>
 
@@ -128,7 +128,7 @@
 <!-- //disable body scroll which navbar is in active -->
 
 <!-- bootstrap -->
-<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
 <!-- //bootstrap -->
 <!-- //Js scripts -->
 </body>
