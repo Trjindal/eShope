@@ -115,4 +115,8 @@ public class UserService {
     public void updateUserEnabledStatus(Integer id, boolean enabled) {
         userRepository.updateEnableStatus(id,enabled);
     }
+
+    public User getUserByEmail(String email) {
+       return userRepository.getUserByEmail(email);
+    }
 }

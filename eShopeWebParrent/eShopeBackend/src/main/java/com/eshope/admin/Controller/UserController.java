@@ -75,14 +75,10 @@ public class UserController {
     @GetMapping("/users/new")
     public String newUser( Model model){
         List<Role> listAllRoles=userService.listAllRoles();
-        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String fullName=principal.fullName();
 
         User user=new User();
-
         user.setEnabled(true);
 
-        model.addAttribute("fullName",fullName);
         model.addAttribute("user",user);
         model.addAttribute("listAllRoles",listAllRoles);
         return "userForm.html";
@@ -132,9 +128,6 @@ public class UserController {
     @GetMapping("/users/edit/{id}")
     public String editUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
         try{
-            EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String fullName=principal.fullName();
-            model.addAttribute("fullName",fullName);
 
             User user=userService.getUserById(id);
             model.addAttribute("user",user);

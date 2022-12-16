@@ -13,50 +13,77 @@
   <link rel="stylesheet" th:href="@{/assets/css/all.css}">
 </head>
 
-
 <body>
 
 <!-- header -->
-<div th:replace="header :: header">...</div>
+<div th:replace="~{header :: header}">...</div>
 <!-- //header -->
 
 <!-- inner banner -->
 <section class="inner-banner py-5">
   <div class="w3l-breadcrumb py-lg-5">
     <div class="container pt-4 pb-sm-4">
-      <h4 class="inner-text-title pt-5">Oops...</h4>
+      <h4 class="inner-text-title pt-5">My Profile</h4>
       <ul class="breadcrumbs-custom-path">
-        <li><a th:href="@{'/'}">Home</a></li>
-        <li class="active"><i class="fas fa-angle-right"></i>Error</li>
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>My Account</li>
       </ul>
     </div>
   </div>
 </section>
 <!-- //inner banner -->
 
-<!-- error block -->
-<section class="page_404">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 ">
-        <div class="col-sm-10 col-sm-offset-1  text-center">
-          <div class="four_zero_four_bg">
-            <h1 class="text-center">oops...</h1>
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="container py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+      <p class="text-uppercase">My Account</p>
+      <h3 class="title-style">Update Account</h3>
+    </div>
+    <div class="row contact-block">
+      <div class="col-md-7 contact-right">
+        <ul>
+          <li class="alert alert-success text-center" role="alert" th:if="${message!=null}">[[${message}]] </li>
+          <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('user.*')}"  >[[${error}]]</li>
+        </ul>
+        <form th:action="@{/account/update}" method="post" class="signin-form" th:object="${user}" enctype="multipart/form-data">
+          <div class="input-grids">
+            <input type="email" th:field="*{email}" placeholder=" Email" name="email"
+                   class="contact-input" readonly="readonly"/>
+            <input type="text" th:field="*{firstName}" placeholder="First Name"
+                   class="contact-input" />
+            <input type="text" th:field="*{lastName}" placeholder="Last Name"
+                   class="contact-input" />
+            <input  type="password" th:field="*{changePassword}"  placeholder="Password"
+                    class="contact-input" />
+
+            <div class="form-group row contact-input mb-4">
+              <label class="col-sm-4 col-form-label">Assigned Roles :</label>
+              <div class="col-sm-8 col-form-label">
+                [[${user.roles}]]
+              </div>
+            </div>
+            <div class="row form-group">
+              <label class="col-form-label col-4">User Enable : </label>
+              <input type="checkbox" id="my-chkbox" name="enabled"  class="col-8"/>
+            </div>
+            <div class="row form-group">
+              <label class="col-form-label col-4">Photos : </label>
+              <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image" accept="image/png,image/jpeg">
+              <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${user.photosImagePath}}">
+            </div>
+            <!--&lt;!&ndash;                    -->
+            <div class="text-start">
+              <button type="submit" class="btn btn-style btn-style-3">Save User</button>
+              <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/users}">Cancel</a>
+            </div>
+
           </div>
-          <div class="contant_box_404">
-            <h3 class="h2">
-              Look like you're lost
-            </h3>
-            <p th:text="${'Error Message - ' + errormsg}"></p>
-            <a th:href="@{/home}" class="link_404 btn btn-style btn-style-3">Go to Home</a>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
 </section>
-<!-- //error block -->
-
 
 
 <!-- Js scripts -->

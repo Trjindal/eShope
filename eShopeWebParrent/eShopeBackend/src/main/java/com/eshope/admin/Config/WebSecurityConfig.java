@@ -54,7 +54,18 @@ public class WebSecurityConfig  {
         SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
-                .authorizeHttpRequests().antMatchers("/eShopeAdmin/**").authenticated()
+                .authorizeHttpRequests()
+                .antMatchers("/users/**").hasAuthority("Admin")
+                .antMatchers("categories/**").hasAnyAuthority("Admin","Editor")
+                .antMatchers("brands/**").hasAnyAuthority("Admin","Editor")
+                .antMatchers("products/**").hasAnyAuthority("Admin","Editor","Salesperson","Shipper")
+                .antMatchers("customers/**").hasAnyAuthority("Admin","Salesperson")
+                .antMatchers("shipping/**").hasAnyAuthority("Admin","Salesperson")
+                .antMatchers("report/**").hasAnyAuthority("Admin","Salesperson")
+                .antMatchers("orders/**").hasAnyAuthority("Admin","Salesperson","Shipper")
+                .antMatchers("articles/**").hasAnyAuthority("Admin","Editor")
+                .antMatchers("menu/**").hasAnyAuthority("Admin","Editor")
+                .antMatchers("setting/**").hasAnyAuthority("Admin")
                 .antMatchers("/assets/**", "/assets/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")
@@ -62,6 +73,8 @@ public class WebSecurityConfig  {
                 .defaultSuccessUrl("/", true).failureUrl("/login?error=true").permitAll()
                 .and().logout().logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true).permitAll()
+                .and().rememberMe().key("Abcdefghijjklmnopqrs_1234567890")
+                .tokenValiditySeconds(7*24*60*60)
                 .and().httpBasic();
 
         http.headers().frameOptions().sameOrigin();

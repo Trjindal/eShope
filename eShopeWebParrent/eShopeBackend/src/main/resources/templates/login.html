@@ -55,9 +55,14 @@
 <!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
                     </div>
                     <div class="col-md-8 login-center text-start">
-                        <input type="submit" class="btn btn-style btn-style-3 text-left">Log In</input>
-<!--                        <a th:href="@{/public/register}" class="new-user text-right">New User ?</a>-->
+                        <input type="submit" class="btn btn-style btn-style-3 text-left">
+
+                        <!--                        <a th:href="@{/public/register}" class="new-user text-right">New User ?</a>-->
                     </div>
+                    <div class="col-md-8">
+                        <input type="checkbox" class="rememberMeChkBox" name="remember-me"><lable>Remember Me</lable></input>
+                    </div>
+
                 </form>
             </div>
         </div>
