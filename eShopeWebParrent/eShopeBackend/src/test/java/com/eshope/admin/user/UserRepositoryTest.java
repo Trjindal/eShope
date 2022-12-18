@@ -3,7 +3,7 @@ package com.eshope.admin.user;
 
 import com.eShope.common.entity.Role;
 import com.eShope.common.entity.User;
-import com.eshope.admin.Repositories.UserRepository;
+import com.eshope.admin.Main.Repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
