@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Getter
 @Setter
 @Entity
@@ -32,16 +31,27 @@ public class Category {
     private boolean enabled;
 
     @OneToOne
-    @JoinColumn(name="parent_id")
+    @JoinColumn(name = "parent_id")
     private Category parent;
 
     @OneToMany(mappedBy = "parent")
-    private Set<Category> children=new HashSet<>();
+
+    private Set<Category> children =new HashSet<>();
+
+
 
 
     public Category(String name) {
         this.name=name;
         this.alias=name;
         this.image="default.png";
+    }
+    public Category(String name,Category parent) {
+       this(name);
+       this.parent=parent;
+    }
+
+    public Category(Integer id) {
+        this.id=id;
     }
 }

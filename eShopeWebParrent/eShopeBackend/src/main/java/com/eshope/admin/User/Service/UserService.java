@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 @Service
 public class UserService {
 
-    public static final int USERS_PER_PAGE=4;
+    public static final int USERS_PER_PAGE=5;
     @Autowired
     private UserRepository userRepository;
 

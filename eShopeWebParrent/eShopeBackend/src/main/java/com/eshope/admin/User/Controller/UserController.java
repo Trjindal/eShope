@@ -55,10 +55,7 @@ public class UserController {
         if(endCount>page.getTotalElements()){
             endCount=page.getTotalElements();
         }
-        EshopeUserDetails principal = (EshopeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String fullName=principal.fullName();
 
-        model.addAttribute("fullName",fullName);
         model.addAttribute("currentPage",pageNum);
         model.addAttribute("startCount",startCount);
         model.addAttribute("totalPages",page.getTotalPages());
@@ -91,7 +88,7 @@ public class UserController {
 
         //TO CHECK UNIQUE EMAIL ID
         if (user.getEmail() != "" && !userService.isEmailUnique(user.getEmail())) {
-            log.error("Contact form validation failed due to email ");
+            log.error("New User form validation failed due to email ");
             model.addAttribute("emailNotUnique", "There is another user having same email id");
             List<Role> listAllRoles = userService.listAllRoles();
             model.addAttribute("listAllRoles", listAllRoles);
@@ -101,7 +98,7 @@ public class UserController {
 
         //DISPLAYING ERROR MESSAGES
         if(errors.hasErrors()){
-            log.error("Contact form validation failed due to : " + errors.toString());
+            log.error("New User form validation failed due to : " + errors.toString());
             List<Role> listAllRoles=userService.listAllRoles();
             model.addAttribute("listAllRoles",listAllRoles);
             return "Users/userForm.html";
