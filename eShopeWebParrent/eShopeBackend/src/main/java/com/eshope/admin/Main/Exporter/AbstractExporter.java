@@ -8,10 +8,10 @@ import java.util.Date;
 
 public class AbstractExporter {
 
-    public void setResponseHeader(HttpServletResponse response,String contentType,String extension) throws IOException {
+    public void setResponseHeader(String prefix,HttpServletResponse response,String contentType,String extension) throws IOException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String timeStamp = dateFormat.format(new Date());
-        String fileName = "users_" + timeStamp +extension;
+        String fileName = prefix + timeStamp +extension;
 
         response.setContentType(contentType);
 

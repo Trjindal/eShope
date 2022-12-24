@@ -37,7 +37,7 @@ public class CategoryRepositoryTest {
     public void testCreateSubCategory(){
 
      Category parent=new Category(7);
-     Category subCategory =new Category("iPhone ",parent);
+     Category subCategory =new Category("iphones",parent);
      Category savedCategory =categoryRepository.save(subCategory);
         assertThat(savedCategory.getId()).isGreaterThan(0);
 
@@ -53,6 +53,11 @@ public class CategoryRepositoryTest {
             System.out.println(subCategory.getName());
         }
         assertThat(children.size()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testGetCategoryId(){
+
     }
 
     @Test

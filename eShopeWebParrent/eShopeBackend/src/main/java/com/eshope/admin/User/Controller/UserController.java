@@ -2,7 +2,6 @@ package com.eshope.admin.User.Controller;
 
 import com.eShope.common.entity.Role;
 import com.eShope.common.entity.User;
-import com.eshope.admin.Main.Security.EshopeUserDetails;
 import com.eshope.admin.User.Service.UserService;
 import com.eshope.admin.Main.Utility.FileUploadUtil;
 
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -117,7 +115,7 @@ public class UserController {
         //SAVE DETAILS
         User savedUser=userService.saveUser(user);
         redirectAttributes.addFlashAttribute("message","The user has been saved successfully");
-        return "redirect:/Users/users";
+        return "redirect:/users";
     }
 
 
@@ -137,7 +135,7 @@ public class UserController {
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
 
-            return "redirect:/Users/users";
+            return "redirect:/users";
         }
 
     }
@@ -223,7 +221,7 @@ public class UserController {
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
         }
-        return "redirect:/Users/users";
+        return "redirect:/users";
     }
 
     @GetMapping("/users/{id}/enabled/{status}")

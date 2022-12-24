@@ -27,7 +27,7 @@
             <ul class="breadcrumbs-custom-path">
                 <li><a th:href="@{/home}">Dashboard</a></li>
                 <li><i class="fas fa-angle-right"></i><a th:href="@{/categories}">Categories</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>New Category</li>
+                <li class="active"><i class="fas fa-angle-right"></i>Edit Category</li>
             </ul>
         </div>
     </div>
@@ -37,16 +37,18 @@
 <section class="w3l-contact py-5" id="contact">
     <div class="container py-md-5 py-4">
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <p class="text-uppercase">CREATE NEW CATEGORY</p>
+            <p class="text-uppercase">Edit Existing Category</p>
             <h3 class="title-style">Registration Form</h3>
         </div>
         <div class="row contact-block">
             <div class="col-md-7 contact-right">
                 <ul>
-                    <li class="alert alert-danger" role="alert" th:if="${nameNotUnique!=null}" th:text="${nameNotUnique}"></li>
-                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('category.*')}" th:text="${error}"/>
+                    <li class="alert alert-danger" role="alert" th:if="${nameNotUnique!=null}"
+                        th:text="${nameNotUnique}"></li>
+                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('category.*')}"
+                        th:text="${error}"/>
                 </ul>
-                <form action="/eShopeAdmin/categories/saveCategory" method="post" class="signing-form"
+                <form action="/eShopeAdmin/categories/editCategory" method="post" class="signing-form"
                       th:object="${category}" enctype="multipart/form-data">
                     <div class="input-grids">
                         <input type="text" th:field="*{name}" placeholder="Name"
@@ -67,15 +69,15 @@
                             <label class="col-form-label col-4">Category Enable : </label>
                             <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled" class="col-8"/>
                         </div>
-<!--                        <div class="row form-group">-->
-<!--                            <label class="col-form-label col-4">Photos : </label>-->
-<!--                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"-->
-<!--                                   accept="image/png,image/jpeg">-->
-<!--                            <img id="thumbnail" alt="Photos Preview" class="img-fluid"-->
-<!--                                 th:src="@{../assets/images/users/default-user.png}">-->
-<!--                        </div>-->
-<!--                        <input type="file" id="fileImage" name="image" accept="image/png, image/jpeg" class="img-fluid">-->
-<!--                        <img id="thumbnail" alt="Image preview" th:src="@{../assets/images/users/default-user.png}">-->
+                        <!--                        <div class="row form-group">-->
+                        <!--                            <label class="col-form-label col-4">Photos : </label>-->
+                        <!--                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"-->
+                        <!--                                   accept="image/png,image/jpeg">-->
+                        <!--                            <img id="thumbnail" alt="Photos Preview" class="img-fluid"-->
+                        <!--                                 th:src="@{../assets/images/users/default-user.png}">-->
+                        <!--                        </div>-->
+                        <!--                        <input type="file" id="fileImage" name="image" accept="image/png, image/jpeg" class="img-fluid">-->
+                        <!--                        <img id="thumbnail" alt="Image preview" th:src="@{../assets/images/users/default-user.png}">-->
                         <div class="text-start">
                             <button type="submit" class="btn btn-style btn-style-3">Save Category</button>
                             <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/categories}">Cancel</a>
@@ -157,6 +159,7 @@
         });
 
 
+
 </script>
 <!-- //MENU-JS -->
 
@@ -169,7 +172,7 @@
 <!--    alert("File size : " +fileSize);-->
 
     if(fileSize>1048576){
-    this.setCustomValidity("You must choose an image less than 1 MB!");
+    this.setCustomValidity("You miust choose an image less than 1 MB!");
     this.reportValidity("");
     }else{
         this.setCustomValidity("");

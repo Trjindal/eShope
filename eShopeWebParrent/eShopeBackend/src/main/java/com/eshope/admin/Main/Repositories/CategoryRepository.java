@@ -21,9 +21,13 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
     @Query("SELECT c FROM Category c WHERE c.name=:name")
     public Category getCategoryByName(@Param("name") String name);
 
+    public long countById(Integer id);
+
     @Transactional
     @Modifying
     @Query("Update Category c SET c.enabled=?2 where c.id=?1")
     public void updateEnableStatus(Integer id,boolean enabled);
+
+
 
 }
