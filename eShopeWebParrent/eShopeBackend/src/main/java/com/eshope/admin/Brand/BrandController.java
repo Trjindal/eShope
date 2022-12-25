@@ -2,18 +2,29 @@ package com.eshope.admin.Brand;
 
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Category;
+import com.eShope.common.entity.Role;
 import com.eshope.admin.Category.Service.CategoryService;
+import com.eshope.admin.Main.Repositories.BrandRepository;
+import com.eshope.admin.Main.Utility.FileUploadUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class BrandController {
 
 
@@ -22,6 +33,9 @@ public class BrandController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    BrandRepository brandRepository;
 
     @GetMapping("/brands")
     public String listAllBrands(Model model){
@@ -62,6 +76,75 @@ public class BrandController {
 
         return "Brand/brandForm.html";
     }
+
+    @PostMapping("/brands/saveBrand")
+    public String saveBrand(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "brand") Brand brand, Errors errors, Model model , @RequestParam("image") MultipartFile multipartFile) throws IOException {
+
+//        log.error(multipartFile.getOriginalFilename());
+//        log.error(String.valueOf(multipartFile.isEmpty()));
+//        log.error(String.valueOf(errors.hasFieldErrors()));
+////        errors.reject("typeMismatch","Please Upload a photo");
+//        log.error(String.valueOf(errors.getFieldError()));
+//        errors.rejectValue("image","typeMismatch","Please Upload a photo");
+
+
+        //TO CHECK UNIQUE NAME
+        if (brand.getName() != "" && !brandService.isNameUnique(brand.getName())) {
+            log.error("Contact form validation failed due to name ");
+            model.addAttribute("nameNotUnique", "There is another brand having same name");
+            List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+            model.addAttribute("listCategories", listCategories);
+            return "Brand/brandForm.html";
+        }
+
+        //DISPLAY ERROR FOR CATEGORY
+        if(brand.getCategories().isEmpty()){
+            log.error("Contact form validation failed due to category ");
+            model.addAttribute("categoryNotProvided","Please specify at least 1 category");
+            List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+            model.addAttribute("listCategories", listCategories);
+            return "Brand/brandForm.html";
+        }
+
+
+
+////        DISPLAYING ERROR MESSAGES
+//        if (errors.hasErrors()) {
+//            for(ObjectError error:errors.getAllErrors()){
+////                if(!(error.getCode().matches("typeMismatch"))){
+//                    log.error(error.getCode());
+//                    log.error(String.valueOf(error));
+//                    log.error("New Brand form validation failed due to : " + errors.toString());
+//                    List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+//                    model.addAttribute("listCategories", listCategories);
+//                    return "Brand/brandForm.html";
+//                }
+//            }
+////        }
+
+        //DISPLAYING ERROR MESSAGES
+        if(errors.hasErrors()){
+
+            log.error("New Brand form validation failed due to : " + errors.toString());
+            List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+            model.addAttribute("listCategories", listCategories);
+            return "Brand/brandForm.html";
+        }
+
+        if (!multipartFile.isEmpty()) {
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            brand.setLogo(fileName);
+            log.error(brand.getLogo());
+            Brand savedBrand=brandRepository.save(brand);
+            String uploadDir = "brand-photos/" + savedBrand.getId();
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            redirectAttributes.addFlashAttribute("message", "The Brand has been saved successfully");
+            return "redirect:/brands";
+        }
+        return "Brand/brandForm.html";
+    }
+
+
 
 
 

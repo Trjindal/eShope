@@ -96,7 +96,7 @@
                 <td scope="row" th:text="${brand.id}"></td>
                 <td>
                     <span th:if="${brand.logo==null}"  class="fas fa-thin fa-image-portrait fa-2x"></span>
-<!--                    <img  th:if="${brand.logo!=null}" th:src="@{${brand.photosImagePath}}" class="img-fluid" id="usersImg">-->
+                    <img  th:if="${brand.logo!=null}" th:src="@{${brand.getLogoPath}}" class="img-fluid" id="usersImg">
                 </td>
                 <td th:text="${brand.name}"></td>
                 <td>

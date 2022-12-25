@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +21,8 @@ public class Brand {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message="Name must not be blank")
+    @Size(min=3, message="Name must be at least 3 characters long")
     @Column(nullable = false,length = 45,unique = true)
     private String name;
 
@@ -43,6 +47,8 @@ public class Brand {
     public String getLogoPath(){
         if(this.id==null)
             return "";
-        return "/brand-logos/"+this.id+"/"+this.logo;
+        return "/brand-photos/"+this.id+"/"+this.logo;
     }
+
+
 }

@@ -12,4 +12,6 @@ public interface BrandRepository extends PagingAndSortingRepository<Brand,Intege
 
     @Query("SELECT b FROM Brand b WHERE CONCAT(b.id,' ',b.name) LIKE %?1%")
     public Page<Brand> findAll(String keyword, Pageable pageable);
+
+    Brand getCategoryByName(String name);
 }

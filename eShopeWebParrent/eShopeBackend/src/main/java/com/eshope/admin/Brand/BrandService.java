@@ -2,6 +2,7 @@ package com.eshope.admin.Brand;
 
 
 import com.eShope.common.entity.Brand;
+import com.eShope.common.entity.Category;
 import com.eshope.admin.Main.Repositories.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,12 @@ public class BrandService {
         }
 
         return brandRepository.findAll(pageable);
+    }
+
+    public boolean isNameUnique(String name) {
+        Brand brandByName = brandRepository.getCategoryByName(name);
+
+        return brandByName == null;
     }
 
 }
