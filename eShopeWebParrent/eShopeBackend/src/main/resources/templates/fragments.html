@@ -22,6 +22,14 @@
 </th>
 <!--/CATEGORY.HTML ROW HEADINGS-->
 
+<!--CATEGORY.HTML ROW HEADINGS-->
+<th class="sorting" scope="col" th:fragment="brand_column_link(fieldName,columnLabel)">
+    <a th:href="@{'/brands/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">[[${columnLabel}]]</a>
+    <span th:if="${sortField!=fieldName}" class="fas fa-sort-up" style="font-size:8px;"></span>
+    <span th:if="${sortField==fieldName}" th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}" style="font-size:8px;"></span>
+</th>
+<!--/CATEGORY.HTML ROW HEADINGS-->
+
 
 
 
