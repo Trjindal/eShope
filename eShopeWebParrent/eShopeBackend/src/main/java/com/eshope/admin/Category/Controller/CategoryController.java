@@ -224,8 +224,13 @@ public class CategoryController {
     @GetMapping("/categories/delete/{id}")
     public String deleteCategory(@PathVariable(name="id")Integer id,Model model,RedirectAttributes redirectAttributes){
         try{
-            categoryService.delete(id);
-            redirectAttributes.addFlashAttribute("message","The Category ID "+id+"has been deleted successfully");
+            if(categoryService.getCategoryById(id).getChildren().isEmpty()){
+                categoryService.delete(id);
+                redirectAttributes.addFlashAttribute("message","The Category ID "+id+" has been deleted successfully");
+            }
+            else{
+                redirectAttributes.addFlashAttribute("message","The Category ID "+id+" can't be deleted because it has further subcategories");
+            }
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
         }
