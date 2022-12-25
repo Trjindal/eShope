@@ -1,6 +1,8 @@
 package com.eshope.admin.Brand;
 
 import com.eShope.common.entity.Brand;
+import com.eShope.common.entity.Category;
+import com.eshope.admin.Category.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +19,9 @@ public class BrandController {
 
     @Autowired
     BrandService brandService;
+
+    @Autowired
+    CategoryService categoryService;
 
     @GetMapping("/brands")
     public String listAllBrands(Model model){
@@ -46,6 +51,18 @@ public class BrandController {
         model.addAttribute("keyword", keyword );
         return "Brand/brand";
     }
+
+    @GetMapping("/brands/new")
+    public String newBrand( Model model){
+        Brand brand=new Brand();
+        List<Category> listCategories =categoryService.listCategoriesUsedInForm();
+
+        model.addAttribute("brand",brand);
+        model.addAttribute("listCategories",listCategories);
+
+        return "Brand/brandForm.html";
+    }
+
 
 
 }

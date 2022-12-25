@@ -100,7 +100,9 @@
                 </td>
                 <td th:text="${brand.name}"></td>
                 <td>
-                    <span class="badge myBadge badge-secondary" th:each="category: ${brand.categories}" th:text="${category.name}"></span>
+                    <th:block  th:each="category: ${brand.categories}">
+                        <span class="badge myBadge badge-secondary" th:text="${category.name}"></span>
+                    </th:block>
                 </td>
                 <td>
                     <a class="fas fa-light fa-pen-to-square" th:href="@{'/brands/edit/'+${brand.id}}" title="edit this brand"></a>
