@@ -69,15 +69,12 @@
                             <label class="col-form-label col-4">Category Enable : </label>
                             <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled" class="col-8"/>
                         </div>
-                        <!--                        <div class="row form-group">-->
-                        <!--                            <label class="col-form-label col-4">Photos : </label>-->
-                        <!--                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"-->
-                        <!--                                   accept="image/png,image/jpeg">-->
-                        <!--                            <img id="thumbnail" alt="Photos Preview" class="img-fluid"-->
-                        <!--                                 th:src="@{../assets/images/users/default-user.png}">-->
-                        <!--                        </div>-->
-                        <!--                        <input type="file" id="fileImage" name="image" accept="image/png, image/jpeg" class="img-fluid">-->
-                        <!--                        <img id="thumbnail" alt="Image preview" th:src="@{../assets/images/users/default-user.png}">-->
+                        <div class="row form-group">
+                            <label class="col-form-label col-4">Photos : </label>
+                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"
+                                   accept="image/png,image/jpeg">
+                            <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${category.photosImagePath}}">
+                        </div>
                         <div class="text-start">
                             <button type="submit" class="btn btn-style btn-style-3">Save Category</button>
                             <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/categories}">Cancel</a>
@@ -114,6 +111,7 @@
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
+
 
 
 
@@ -160,6 +158,7 @@
 
 
 
+
 </script>
 <!-- //MENU-JS -->
 
@@ -190,6 +189,7 @@
         reader.readAsDataURL(file);
     }
 
+
 </script>
 
 <!-- disable body scroll which navbar is in active -->
@@ -199,6 +199,7 @@
                 $('body').toggleClass('noscroll');
             })
         });
+
 
 
 

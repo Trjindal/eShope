@@ -96,6 +96,7 @@ public class UserController {
 
         //DISPLAYING ERROR MESSAGES
         if(errors.hasErrors()){
+
             log.error("New User form validation failed due to : " + errors.toString());
             List<Role> listAllRoles=userService.listAllRoles();
             model.addAttribute("listAllRoles",listAllRoles);
@@ -207,7 +208,7 @@ public class UserController {
         log.error("MATCHING with previous "+ savedPassword.matches(existingUser.getPassword()));
 //        userService.editUser(existingUser);
         redirectAttributes.addFlashAttribute("message","The user has been edited successfully");
-        return "redirect:/users";
+        return "redirect:/Users/users";
 
     }
 
@@ -221,7 +222,7 @@ public class UserController {
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
         }
-        return "redirect:/users";
+        return "redirect:/Users/users";
     }
 
     @GetMapping("/users/{id}/enabled/{status}")
@@ -230,7 +231,7 @@ public class UserController {
         String status=enabled?"enabled":"disabled";
         String message="The user Id "+id+" has been "+status;
         redirectAttributes.addFlashAttribute("message",message);
-        return "redirect:/users";
+        return "redirect:/Users/users";
     }
 
     @GetMapping("/users/export/csv")

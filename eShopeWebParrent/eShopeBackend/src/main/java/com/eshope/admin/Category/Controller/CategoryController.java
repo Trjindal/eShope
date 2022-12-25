@@ -3,11 +3,13 @@ package com.eshope.admin.Category.Controller;
 import com.eShope.common.entity.Category;
 
 
+import com.eShope.common.entity.User;
 import com.eshope.admin.Category.Exporter.CategoryCsvExporter;
 import com.eshope.admin.Category.Exporter.CategoryExcelExporter;
 import com.eshope.admin.Category.Exporter.CategoryPdfExporter;
 import com.eshope.admin.Category.Service.CategoryService;
 
+import com.eshope.admin.Main.Utility.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -73,7 +77,7 @@ public class CategoryController {
 
         Category category=new Category();
         category.setEnabled(true);
-//        category.setImage("default-user.png");
+
         List<Category> listCategories =categoryService.listCategoriesUsedInForm();
 
         model.addAttribute("category",category);
@@ -87,34 +91,55 @@ public class CategoryController {
 
 //    ,@RequestParam("image") MultipartFile multipartFile) throws IOException {
     @PostMapping("/categories/saveCategory")
-    public String saveCategory(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model){
+    public String saveCategory(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model ,@RequestParam("image") MultipartFile multipartFile,BindingResult binder) throws IOException {
+
+        log.error(multipartFile.getOriginalFilename());
+        log.error(String.valueOf(multipartFile.isEmpty()));
+        log.error(String.valueOf(errors.hasFieldErrors()));
+//        errors.reject("typeMismatch","Please Upload a photo");
+        log.error(String.valueOf(errors.getFieldError()));
+        errors.rejectValue("image","typeMismatch","Please Upload a photo");
+
 
         //TO CHECK UNIQUE NAME
         if (category.getName() != "" && !categoryService.isNameUnique(category.getName())) {
             log.error("Contact form validation failed due to name ");
             model.addAttribute("nameNotUnique", "There is another category having same name");
-            List<Category> listCategories =categoryService.listCategoriesUsedInForm();
-            model.addAttribute("listCategories",listCategories);
+            List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+            model.addAttribute("listCategories", listCategories);
             return "Category/categoryForm.html";
         }
 
-        //DISPLAYING ERROR MESSAGES
-        else if(errors.hasErrors()){
-            log.error("New Category form validation failed due to : " + errors.toString());
-            List<Category> listCategories =categoryService.listCategoriesUsedInForm();
-            model.addAttribute("listCategories",listCategories);
-            return "Category/categoryForm.html";
+
+
+//        DISPLAYING ERROR MESSAGES
+        if (errors.hasErrors()) {
+            for(ObjectError error:errors.getAllErrors()){
+                if(!(error.getCode().matches("typeMismatch"))){
+                    log.error(error.getCode());
+                    log.error(String.valueOf(error));
+                    log.error("New Category form validation failed due to : " + errors.toString());
+                    List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+                    model.addAttribute("listCategories", listCategories);
+                    return "Category/categoryForm.html";
+                }
+            }
         }
-        else {
-//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//            category.setImage(fileName);
-            Category saveCategory = categoryService.saveCategory(category);
-//            String uploadDir = "../category-images/" + saveCategory.getId();
-//            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-            redirectAttributes.addFlashAttribute("message","The category has been saved successfully");
+
+        if (!multipartFile.isEmpty()) {
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            category.setImage(fileName);
+            log.error(category.getImage());
+            Category savedCategory = categoryService.saveCategory(category);
+            String uploadDir = "category-photos/" + savedCategory.getId();
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            redirectAttributes.addFlashAttribute("message", "The category has been saved successfully");
             return "redirect:/categories";
         }
+        return "Category/categoryForm.html";
     }
+
+
 
 
     @GetMapping("/categories/{id}/enabled/{status}")
@@ -145,9 +170,9 @@ public class CategoryController {
 
     }
 
-//    , @RequestParam("image")MultipartFile multipartFile) throws IOException{
+//
     @PostMapping("/categories/editCategory")
-    public String editCategorySave(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model, HttpSession session ){
+    public String editCategorySave(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model, HttpSession session , @RequestParam("image")MultipartFile multipartFile) throws IOException{
 
         Integer id= (Integer) session.getAttribute("id");
         log.error(String.valueOf(id));
@@ -166,12 +191,18 @@ public class CategoryController {
         }
 
 
-        //DISPLAYING ERROR MESSAGES
-        else if(errors.hasErrors()){
-            log.error("New Category form validation failed due to : " + errors.toString());
-            List<Category> listCategories =categoryService.listCategoriesUsedInForm();
-            model.addAttribute("listCategories",listCategories);
-            return "Category/categoryUpdateForm.html";
+//        DISPLAYING ERROR MESSAGES
+        if (errors.hasErrors()) {
+            for(ObjectError error:errors.getAllErrors()){
+                if(!(error.getCode().matches("typeMismatch"))){
+                    log.error(error.getCode());
+                    log.error(String.valueOf(error));
+                    log.error("New Category form validation failed due to : " + errors.toString());
+                    List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+                    model.addAttribute("listCategories", listCategories);
+                    return "Category/categoryUpdateForm.html";
+                }
+            }
         }
         existingCategory.setName(category.getName());
         existingCategory.setAlias(category.getAlias());

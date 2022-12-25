@@ -67,13 +67,13 @@
                             <label class="col-form-label col-4">Category Enable : </label>
                             <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled" class="col-8"/>
                         </div>
-<!--                        <div class="row form-group">-->
-<!--                            <label class="col-form-label col-4">Photos : </label>-->
-<!--                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"-->
-<!--                                   accept="image/png,image/jpeg">-->
-<!--                            <img id="thumbnail" alt="Photos Preview" class="img-fluid"-->
-<!--                                 th:src="@{../assets/images/users/default-user.png}">-->
-<!--                        </div>-->
+                        <div class="row form-group">
+                            <label class="col-form-label col-4">Photos : </label>
+                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"
+                                   accept="image/png,image/jpeg">
+                            <img id="thumbnail" alt="Photos Preview" class="img-fluid"
+                                 th:src="@{../assets/images/users/default-user.png}">
+                        </div>
 <!--                        <input type="file" id="fileImage" name="image" accept="image/png, image/jpeg" class="img-fluid">-->
 <!--                        <img id="thumbnail" alt="Image preview" th:src="@{../assets/images/users/default-user.png}">-->
                         <div class="text-start">
@@ -160,7 +160,7 @@
 </script>
 <!-- //MENU-JS -->
 
-<!--SHOW IMAGE THUMBNAIL-->
+<!--  SHOW IMAGE THUMBNAIL-->
 <script>
 
     $(document).ready(function(){
@@ -170,7 +170,7 @@
 
     if(fileSize>1048576){
     this.setCustomValidity("You must choose an image less than 1 MB!");
-    this.reportValidity("");
+    this.reportValidity();
     }else{
         this.setCustomValidity("");
         showImageThumbnail(this);

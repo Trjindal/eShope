@@ -50,7 +50,6 @@ public class Category {
     public Category(String name) {
         this.name=name;
         this.alias=name;
-        this.image="default.png";
     }
     public Category(String name,Category parent) {
        this(name);
@@ -67,5 +66,15 @@ public class Category {
 
     public String getImage() {
         return image;
+    }
+
+
+    public String getPhotosImagePath(){
+        if((Object) id==null ||this.image=="default-user.png")
+            return "/assets/images/users/default-user.png";
+
+//        return "/assets/images/users/default-user.png";
+
+        return "/category-photos/"+this.id+"/"+this.image;
     }
 }
