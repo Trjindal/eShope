@@ -71,7 +71,7 @@
     <div class="dropdown" >
       <!--                <span class="fas fa-user"></span>-->
       <a class="dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-regular fa-download">&nbsp;</span> Download</a>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu" id="myMenu">
         <a th:href="@{/categories/export/csv}" class="dropdown-item "><i class="fa-solid fa-file-csv"></i>Export to CSV</a>
         <a th:href="@{/categories/export/excel}" class="dropdown-item "><i class="fa-solid fa-file-excel"></i>Export to Excel</a>
         <a th:href="@{/categories/export/pdf}" class="dropdown-item "><i class="fa-solid fa-file-pdf"></i>Export to PDF</a>
@@ -120,7 +120,7 @@
 <!-- DELETE MODAL -->
   <div class="modal fade " id="deleteCategoryModal" role="dialog" >
     <div class="modal-dialog modal-dialog-centered" >
-      <div class="modal-content">
+      <div class="modal-content" id="myModal">
         <div class="modal-header border-bottom-0">
           <h5 class="modal-title" id="deleteCategoryLabel">Delete Confirmation</h5>
 
@@ -315,6 +315,36 @@ $('#deleteCategoryModal').on('show.bs.modal', function (event) {
     window.location="[[@{/categories}]]";
     }
 
+</script>
+
+
+<!--THEME CHANGE-->
+
+<script>
+    if(toggleSwitch.checked==true){
+     document.getElementById('myMenu').style.backgroundColor="black";
+      document.getElementById('myModal').style.backgroundColor="black";
+      console.log("dark");
+    }else{
+    document.getElementById('myMenu').style.backgroundColor="white";
+    document.getElementById('myModal').style.backgroundColor="white";
+    console.log("white");
+    }
+
+
+toggleSwitch.addEventListener('click',()=>{
+    if(toggleSwitch.checked==true){
+     document.getElementById('myMenu').style.backgroundColor="black";
+      document.getElementById('myModal').style.backgroundColor="black";
+      console.log("dark");
+    }
+    else{
+      document.getElementById('myMenu').style.backgroundColor="white";
+      document.getElementById('myModal').style.backgroundColor="white";
+      console.log("white");
+    }
+
+});
 </script>
 
 <!-- bootstrap -->
