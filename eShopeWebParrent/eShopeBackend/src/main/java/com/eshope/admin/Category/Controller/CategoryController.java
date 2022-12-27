@@ -98,6 +98,7 @@ public class CategoryController {
         log.error(String.valueOf(errors.hasFieldErrors()));
 //        errors.reject("typeMismatch","Please Upload a photo");
         log.error(String.valueOf(errors.getFieldError()));
+
         errors.rejectValue("image","typeMismatch","Please Upload a photo");
 
 
@@ -125,7 +126,8 @@ public class CategoryController {
         if (errors.hasErrors()) {
             for(ObjectError error:errors.getAllErrors()){
                 if(!(error.getCode().matches("typeMismatch"))){
-                    log.error(error.getCode());
+
+                    log.error( error.getCode());
                     log.error(String.valueOf(error));
                     log.error("New Category form validation failed due to : " + errors.toString());
                     List<Category> listCategories = categoryService.listCategoriesUsedInForm();

@@ -29,7 +29,7 @@ public class CategoryPdfExporter  extends AbstractExporter {
         font.setSize(18);
         font.setColor(Color.BLUE);
 
-        Paragraph paragraph=new Paragraph("List of  Users",font);
+        Paragraph paragraph=new Paragraph("List of  Category",font);
         paragraph.setAlignment(paragraph.ALIGN_CENTER);
 
         document.add(paragraph);

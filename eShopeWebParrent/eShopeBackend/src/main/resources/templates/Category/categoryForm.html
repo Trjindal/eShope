@@ -45,7 +45,10 @@
                 <ul>
                     <li class="alert alert-danger" role="alert" th:if="${nameNotUnique!=null}" th:text="${nameNotUnique}"></li>
                     <li class="alert alert-danger" role="alert" th:if="${aliasNotUnique!=null}" th:text="${aliasNotUnique}"></li>
-                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('category.*')}" th:text="${error}"/>
+                    <div th:each="error : ${#fields.errors('category.*')}">
+                        <li th:if="${!(error.startsWith('Failed to convert property value of type org.springframework.web.multipart'))}" class="alert alert-danger" role="alert" th:text="${error}"></li>
+                    </div>
+<!--                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('category.*')}" th:text="${error}"/>-->
                 </ul>
                 <form action="/eShopeAdmin/categories/saveCategory" method="post" class="signing-form"
                       th:object="${category}" enctype="multipart/form-data">
