@@ -14,4 +14,6 @@ public interface BrandRepository extends PagingAndSortingRepository<Brand,Intege
     public Page<Brand> findAll(String keyword, Pageable pageable);
 
     Brand getCategoryByName(String name);
+
+
 }

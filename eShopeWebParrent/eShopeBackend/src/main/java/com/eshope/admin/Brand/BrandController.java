@@ -3,6 +3,9 @@ package com.eshope.admin.Brand;
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Category;
 import com.eShope.common.entity.Role;
+import com.eshope.admin.Category.Exporter.CategoryCsvExporter;
+import com.eshope.admin.Category.Exporter.CategoryExcelExporter;
+import com.eshope.admin.Category.Exporter.CategoryPdfExporter;
 import com.eshope.admin.Category.Service.CategoryService;
 import com.eshope.admin.Main.Repositories.BrandRepository;
 import com.eshope.admin.Main.Utility.FileUploadUtil;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -144,6 +148,30 @@ public class BrandController {
         return "Brand/brandForm.html";
     }
 
+
+    @GetMapping("/brands/export/csv")
+    public void exportToCSV(HttpServletResponse response) throws IOException {
+        List<Brand> listBrands=brandService.listAllBrands();
+        BrandCsvExporter exporter=new BrandCsvExporter();
+        exporter.export(listBrands,response);
+    }
+
+
+    @GetMapping("/brands/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        List<Category> listCategories=categoryService.listAllCategories();
+        CategoryExcelExporter exporter=new CategoryExcelExporter();
+        exporter.export(listCategories,response);
+    }
+
+    @GetMapping("/brands/export/pdf")
+    public void exportToPdf(HttpServletResponse response) throws IOException {
+        log.error("Inside PDFFF");
+        List<Category> listCategories=categoryService.listAllCategories();
+
+        CategoryPdfExporter exporter=new CategoryPdfExporter();
+        exporter.export(listCategories,response);
+    }
 
 
 
