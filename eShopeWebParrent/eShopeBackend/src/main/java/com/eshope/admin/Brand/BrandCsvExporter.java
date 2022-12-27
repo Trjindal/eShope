@@ -19,8 +19,8 @@ public class BrandCsvExporter extends AbstractExporter {
         ICsvBeanWriter csvBeanWriter=new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
 
-        String[] csvHeader={"Brand Id","Name"};
-        String[] fieldMapping={"id","name"};
+        String[] csvHeader={"Brand Id","Name","Categories"};
+        String[] fieldMapping={"id","name","categories"};
 
         csvBeanWriter.writeHeader(csvHeader);
 

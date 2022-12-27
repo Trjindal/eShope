@@ -77,14 +77,14 @@ public class BrandController {
 
         model.addAttribute("brand",brand);
         model.addAttribute("listCategories",listCategories);
-
+        log.error(String.valueOf(brand.getLogoPath()==""));
         return "Brand/brandForm.html";
     }
 
     @PostMapping("/brands/saveBrand")
     public String saveBrand(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "brand") Brand brand, Errors errors, Model model , @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
-//        log.error(multipartFile.getOriginalFilename());
+        log.error(String.valueOf(brand.getCategories()==null));
 //        log.error(String.valueOf(multipartFile.isEmpty()));
 //        log.error(String.valueOf(errors.hasFieldErrors()));
 ////        errors.reject("typeMismatch","Please Upload a photo");
@@ -95,6 +95,7 @@ public class BrandController {
         //TO CHECK UNIQUE NAME
         if (brand.getName() != "" && !brandService.isNameUnique(brand.getName())) {
             log.error("Contact form validation failed due to name ");
+            model.addAttribute("brand",brand);
             model.addAttribute("nameNotUnique", "There is another brand having same name");
             List<Category> listCategories = categoryService.listCategoriesUsedInForm();
             model.addAttribute("listCategories", listCategories);
@@ -104,6 +105,7 @@ public class BrandController {
         //DISPLAY ERROR FOR CATEGORY
         if(brand.getCategories().isEmpty()){
             log.error("Contact form validation failed due to category ");
+            model.addAttribute("brand",brand);
             model.addAttribute("categoryNotProvided","Please specify at least 1 category");
             List<Category> listCategories = categoryService.listCategoriesUsedInForm();
             model.addAttribute("listCategories", listCategories);
@@ -159,18 +161,16 @@ public class BrandController {
 
     @GetMapping("/brands/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
-        List<Category> listCategories=categoryService.listAllCategories();
-        CategoryExcelExporter exporter=new CategoryExcelExporter();
-        exporter.export(listCategories,response);
+        List<Brand> listBrands=brandService.listAllBrands();
+        BrandExcelExporter exporter=new BrandExcelExporter();
+        exporter.export(listBrands,response);
     }
 
     @GetMapping("/brands/export/pdf")
     public void exportToPdf(HttpServletResponse response) throws IOException {
-        log.error("Inside PDFFF");
-        List<Category> listCategories=categoryService.listAllCategories();
-
-        CategoryPdfExporter exporter=new CategoryPdfExporter();
-        exporter.export(listCategories,response);
+        List<Brand> listBrands=brandService.listAllBrands();
+        BrandPdfExporter exporter=new BrandPdfExporter();
+        exporter.export(listBrands,response);
     }
 
 
