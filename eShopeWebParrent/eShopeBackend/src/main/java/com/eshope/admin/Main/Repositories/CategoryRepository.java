@@ -28,6 +28,6 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
     @Query("Update Category c SET c.enabled=?2 where c.id=?1")
     public void updateEnableStatus(Integer id,boolean enabled);
 
-
-
+    @Query("SELECT c FROM Category c WHERE c.alias=:alias")
+    Category getCategoryByAlias(String alias);
 }

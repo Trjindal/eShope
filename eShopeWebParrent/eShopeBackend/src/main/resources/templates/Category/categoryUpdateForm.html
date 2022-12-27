@@ -45,6 +45,8 @@
                 <ul>
                     <li class="alert alert-danger" role="alert" th:if="${nameNotUnique!=null}"
                         th:text="${nameNotUnique}"></li>
+                    <li class="alert alert-danger" role="alert" th:if="${aliasNotUnique!=null}"
+                        th:text="${aliasNotUnique}"></li>
                     <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('category.*')}"
                         th:text="${error}"/>
                 </ul>

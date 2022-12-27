@@ -36,6 +36,7 @@ public class AccountController {
         User user=userService.getUserByEmail(email);
 
         model.addAttribute("user",user);
+        model.addAttribute("users",user);
 
         return "account_form.html";
     }
@@ -48,12 +49,13 @@ public class AccountController {
 
         String savedPassword=existingUser.getPassword();
 
+        log.error(String.valueOf(existingUser.getRoles()));
 
         //DISPLAYING ERROR MESSAGES
         if(errors.hasErrors()){
             log.error("Edit form validation failed due to : " + errors.toString());
             model.addAttribute("users",existingUser);
-            return "redirect:/account";
+            return "account_form.html";
         }
 
         existingUser.setFirstName(user.getFirstName());

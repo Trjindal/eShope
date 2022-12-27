@@ -91,7 +91,7 @@ public class CategoryController {
 
 //    ,@RequestParam("image") MultipartFile multipartFile) throws IOException {
     @PostMapping("/categories/saveCategory")
-    public String saveCategory(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model ,@RequestParam("image") MultipartFile multipartFile,BindingResult binder) throws IOException {
+    public String saveCategory(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model ,@RequestParam("image") MultipartFile multipartFile) throws IOException {
 
         log.error(multipartFile.getOriginalFilename());
         log.error(String.valueOf(multipartFile.isEmpty()));
@@ -105,6 +105,15 @@ public class CategoryController {
         if (category.getName() != "" && !categoryService.isNameUnique(category.getName())) {
             log.error("Contact form validation failed due to name ");
             model.addAttribute("nameNotUnique", "There is another category having same name");
+            List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+            model.addAttribute("listCategories", listCategories);
+            return "Category/categoryForm.html";
+        }
+
+        //TO CHECK UNIQUE ALIAS
+        if (category.getAlias() != "" && !categoryService.isAliasUnique(category.getAlias())) {
+            log.error("Contact form validation failed due to alias ");
+            model.addAttribute("aliasNotUnique", "There is another category having same alias");
             List<Category> listCategories = categoryService.listCategoriesUsedInForm();
             model.addAttribute("listCategories", listCategories);
             return "Category/categoryForm.html";
@@ -190,6 +199,17 @@ public class CategoryController {
             }
         }
 
+
+        //TO CHECK UNIQUE ALIAS
+        if (existingCategory!=null && !(existingCategory.getAlias().matches(category.getAlias()))) {
+            if (category.getAlias() != "" && !categoryService.isAliasUnique(category.getAlias())) {
+                log.error("Contact form validation failed due to alias ");
+                model.addAttribute("aliasNotUnique", "There is another category having same alias");
+                List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+                model.addAttribute("listCategories", listCategories);
+                return "Category/categoryUpdateForm.html";
+            }
+        }
 
 //        DISPLAYING ERROR MESSAGES
         if (errors.hasErrors()) {

@@ -208,7 +208,7 @@ public class UserController {
         log.error("MATCHING with previous "+ savedPassword.matches(existingUser.getPassword()));
 //        userService.editUser(existingUser);
         redirectAttributes.addFlashAttribute("message","The user has been edited successfully");
-        return "redirect:/Users/users";
+        return "redirect:/users";
 
     }
 
@@ -222,7 +222,7 @@ public class UserController {
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
         }
-        return "redirect:/Users/users";
+        return "redirect:/users";
     }
 
     @GetMapping("/users/{id}/enabled/{status}")
@@ -231,7 +231,7 @@ public class UserController {
         String status=enabled?"enabled":"disabled";
         String message="The user Id "+id+" has been "+status;
         redirectAttributes.addFlashAttribute("message",message);
-        return "redirect:/Users/users";
+        return "redirect:/users";
     }
 
     @GetMapping("/users/export/csv")

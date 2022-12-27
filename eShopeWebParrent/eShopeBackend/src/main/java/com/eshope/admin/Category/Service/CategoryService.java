@@ -112,6 +112,12 @@ public class CategoryService {
             throw new UsernameNotFoundException("Could not find any category with Id"+ id);
         }
     }
+
+    public boolean isAliasUnique(String alias) {
+        Category categoryByAlias = categoryRepository.getCategoryByAlias(alias);
+
+        return categoryByAlias == null;
+    }
 }
 
 

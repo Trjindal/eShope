@@ -60,7 +60,7 @@
             <div class="form-group row contact-input mb-4">
               <label class="col-sm-4 col-form-label">Assigned Roles :</label>
               <div class="col-sm-8 col-form-label">
-                [[${user.roles}]]
+                [[${users.roles}]]
               </div>
             </div>
             <div class="row form-group">
@@ -70,7 +70,7 @@
             <div class="row form-group">
               <label class="col-form-label col-4">Photos : </label>
               <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image" accept="image/png,image/jpeg">
-              <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${user.photosImagePath}}">
+              <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${users.photosImagePath}}">
             </div>
             <!--&lt;!&ndash;                    -->
             <div class="text-start">
