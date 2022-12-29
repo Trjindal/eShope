@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +89,6 @@ public class CategoryController {
     }
 
 
-//    ,@RequestParam("image") MultipartFile multipartFile) throws IOException {
     @PostMapping("/categories/saveCategory")
     public String saveCategory(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model ,@RequestParam("image") MultipartFile multipartFile) throws IOException {
 
@@ -230,6 +229,18 @@ public class CategoryController {
         existingCategory.setAlias(category.getAlias());
         existingCategory.setParent(category.getParent());
         existingCategory.setEnabled(category.isEnabled());
+
+        //        PHOTOS SAVE
+
+        if(!multipartFile.isEmpty()){
+            String fileName= StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            existingCategory.setImage(fileName);
+            Category savedCategory=categoryService.editCategory(existingCategory);
+            String uploadDir="category-photos/"+savedCategory.getId();
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+        }
+
 
 
         //SAVE DETAILS

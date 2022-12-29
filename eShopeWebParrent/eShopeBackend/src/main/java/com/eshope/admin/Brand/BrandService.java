@@ -4,16 +4,20 @@ package com.eshope.admin.Brand;
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Category;
 import com.eshope.admin.Main.Repositories.BrandRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
+
 public class BrandService {
 
     @Autowired
@@ -35,9 +39,25 @@ public class BrandService {
     }
 
     public boolean isNameUnique(String name) {
-        Brand brandByName = brandRepository.getCategoryByName(name);
 
+        Brand brandByName = brandRepository.getBrandByName(name);
         return brandByName == null;
+    }
+
+    public Brand getBrandById(Integer id) {
+        try{
+            return brandRepository.findById(id).get();
+        }catch (NoSuchElementException ex){
+            throw new UsernameNotFoundException("Could not find any brand with Id"+ id);
+        }
+    }
+
+    public void delete(Integer id) throws UsernameNotFoundException {
+        Long countById=brandRepository.countById(id);
+        if(countById==null||countById==0){
+            throw new UsernameNotFoundException("Could not found any brand with Id "+id);
+        }
+        brandRepository.deleteById(id);
     }
 
     public List<Brand> listAllBrands(){

@@ -118,6 +118,12 @@ public class CategoryService {
 
         return categoryByAlias == null;
     }
+
+
+
+    public Category editCategory(Category existingCategory) {
+        return categoryRepository.save(existingCategory);
+    }
 }
 
 

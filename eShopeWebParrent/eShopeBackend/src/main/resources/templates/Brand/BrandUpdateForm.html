@@ -27,7 +27,7 @@
             <ul class="breadcrumbs-custom-path">
                 <li><a th:href="@{/home}">Dashboard</a></li>
                 <li><i class="fas fa-angle-right"></i><a th:href="@{/brands}">Brands</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>New Brand</li>
+                <li class="active"><i class="fas fa-angle-right"></i>Edit Brand</li>
             </ul>
         </div>
     </div>
@@ -37,7 +37,7 @@
 <section class="w3l-contact py-5" id="contact">
     <div class="container py-md-5 py-4">
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <p class="text-uppercase">CREATE NEW BRAND</p>
+            <p class="text-uppercase">Edit Existing Brand</p>
             <h3 class="title-style">Registration Form</h3>
         </div>
         <div class="row contact-block">
@@ -50,7 +50,7 @@
                     <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('brand.*')}"
                         th:text="${error}"/>
                 </ul>
-                <form action="/eShopeAdmin/brands/saveBrand" method="post" class="signing-form"
+                <form action="/eShopeAdmin/brands/editBrand" method="post" class="signing-form"
                       th:object="${brand}" enctype="multipart/form-data">
                     <div class="input-grids">
                         <input type="text" th:field="*{name}" placeholder="Name"
@@ -74,8 +74,8 @@
                         <div class="row form-group">
                             <label class="col-form-label col-4">Photos : </label>
                             <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"
-                                   accept="image/png,image/jpeg" required>
-                            <img  id="thumbnail" alt="Photos Preview" class="img-fluid"  th:src="@{../assets/images/users/default-user.png}">
+                                   accept="image/png,image/jpeg" >
+                            <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${brands.LogoPath}}">
                         </div>
                         <div class="text-start">
                             <button type="submit" class="btn btn-style btn-style-3">Save Brand</button>
@@ -87,6 +87,7 @@
         </div>
     </div>
 </section>
+
 
 
 <!-- Js scripts -->
@@ -220,7 +221,7 @@
             divChosenCategories.empty();
             showChosenCategories();
         });
-          showChosenCategories();
+         showChosenCategories();
     });
 
     function showChosenCategories(){
