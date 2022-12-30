@@ -11,6 +11,8 @@
     <!-- Template CSS Style link -->
     <link rel="stylesheet" th:href="@{/assets/css/style-starter.css}">
     <link rel="stylesheet" th:href="@{/assets/css/all.css}">
+    <link rel="stylesheet" th:href="@{/assets/richtext/richtext.min.css}" />
+
 
 
 </head>
@@ -68,16 +70,24 @@
                                 <li class="nav-item">
                                     <a class="nav-link"  data-toggle="tab" href="#details" role="tab">Details</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"  data-toggle="tab" href="#shipping" role="tab">Shipping</a>
+                                </li>
                             </ul>
 
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active p-3" id="overview" role="tabpanel" >
+                                <div class="tab-pane  p-3" id="overview" role="tabpanel" >
                                     <div th:replace="Product/product_overview :: content"></div>
                                 </div>
-                                <div class="tab-pane" id="description" role="tabpanel" >Description</div>
-                                <div class="tab-pane" id="images" role="tabpanel">Images</div>
-                                <div class="tab-pane" id="details" role="tabpanel" >Details</div>
+                                <div class="tab-pane p-3 active " id="description" role="tabpanel" >
+                                    <div th:replace="Product/product_description :: content"></div>
+                                </div>
+                                <div class="tab-pane p-3 " id="images" role="tabpanel">Images</div>
+                                <div class="tab-pane p-3 " id="details" role="tabpanel" >Details</div>
+                                <div class="tab-pane p-3 " id="shipping" role="tabpanel" >
+                                    <div th:replace="Product/product_shipping :: content"></div>
+                                </div>
                             </div>
 
 <!--                            SAVE BUTTON-->
@@ -128,6 +138,7 @@
 
 <!-- common jquery plugin -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script th:src="@{/assets/richtext/jquery.richtext.min.js}"></script>
 <!--<script th:src="@{/assets/js/jquery-3.3.1.min.js}"></script>-->
 <!-- common jquery plugin -->
 <script th:src="@{/assets/js/jquery.number.min.js}"></script>
@@ -222,6 +233,9 @@
 
 
     $(document).ready(function(){
+
+
+
      dropDownCategory=$("#category")
         dropDownBrands.change(function(){
             dropDownCategory.empty();
@@ -245,10 +259,39 @@
 
 </script>
 
+<!--THEME CHANGE-->
+
 <script>
+    richTextEditor=document.getElementsByClassName('richText-editor');
+    richText=document.getElementsByClassName('richText');
+    $("#shortDescription").richText();
+    $("#fullDescription").richText();
+
+     setTimeout(myTheme, 30);
+
+
+    function myTheme(){
+    if(toggleSwitch.checked==true){
+         for(var i=0, len=richTextEditor.length; i<len; i++)
+        {
+            richText[i].style.backgroundColor = "#434242";
+            richTextEditor[i].style.backgroundColor = "#F3EFE0";
+        }
+    }else{
+     for(var i=0, len=richTextEditor.length; i<len; i++)
+    {
+        richText[i].style.backgroundColor = "#fafafa";
+        richTextEditor[i].style.backgroundColor = "white";
+    }
+    console.log("1 white");
+    }
+    }
+
+
+toggleSwitch.addEventListener('click',myTheme)
+
 
 </script>
-
 
 <!-- bootstrap -->
 <script th:src="@{/assets/js/bootstrap.min.js}"></script>

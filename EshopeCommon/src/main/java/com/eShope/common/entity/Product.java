@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -24,16 +25,21 @@ public class Product {
     @Size(min=3, message="Name must be at least 3 characters long")
     private String name;
 
-
     @Column(unique = true,length = 256,nullable = false)
     @NotBlank(message="Alias must not be blank")
     @Size(min=3, message="Alias must be at least 3 characters long")
     private String alias;
 
     @Column(length = 512,nullable = false)
+    @NotBlank(message="Short Description must not be blank")
+    @Size(min=10, message="Short Description must be at least 10 characters long")
     private String shortDescription;
+
     @Column(length = 4096,nullable = false)
+    @NotBlank(message="Full Description must not be blank")
+    @Size(min=10, message="Full Description must be at least 10 characters long")
     private String fullDescription;
+
     @Column(name = "created_time")
     private Date createdTime;
     @Column(name = "updated_time")
@@ -48,6 +54,7 @@ public class Product {
     private float price;
     private float discountPercentage;
 
+    @Digits(integer = 4,fraction = 2,message = "Length issue")
     private float length;
     private float width;
     private float height;
