@@ -26,8 +26,6 @@ public class Product {
     private String name;
 
     @Column(unique = true,length = 256,nullable = false)
-    @NotBlank(message="Alias must not be blank")
-    @Size(min=3, message="Alias must be at least 3 characters long")
     private String alias;
 
     @Column(length = 512,nullable = false)
@@ -75,4 +73,6 @@ public class Product {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+
 }

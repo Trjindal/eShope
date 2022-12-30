@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -65,6 +66,7 @@ public class ProductController {
         Product product=new Product();
         product.setInStock(true);
         product.setEnabled(true);
+        product.setFullDescription("");
 
         List<Brand> listBrands=brandService.listAllBrands();
 
@@ -76,13 +78,14 @@ public class ProductController {
     @PostMapping("/products/saveProduct")
     public String saveProduct(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "product") Product product, Errors errors, Model model) {
 
-        log.error(product.getName());
-        log.error(String.valueOf(product.getBrand().getId()));
-        log.error(String.valueOf(product.getCategory().getId()));
+//        log.error(product.getName());
+//        log.error(String.valueOf(product.getBrand().getId()));
+//        log.error(String.valueOf(product.getCategory().getId()));
+//        log.error(String.valueOf(product.getFullDescription()));
 
 
         List<Brand> listBrands=brandService.listAllBrands();
-        model.addAttribute("listBrands",listBrands);
+
 
         //DISPLAYING ERROR MESSAGES
         if (errors.hasErrors()) {
@@ -90,6 +93,38 @@ public class ProductController {
             log.error("New Product form validation failed due to : " + errors.toString());
             model.addAttribute("listBrands", listBrands);
             return "Product/productForm.html";
+        }
+
+        //TO CHECK UNIQUE NAME
+        if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
+            log.error("Product form validation failed due to name ");
+            model.addAttribute("nameNotUnique", "There is another product having same name");
+            model.addAttribute("listBrands", listBrands);
+            return "Product/productForm.html";
+        }
+
+        productService.save(product);
+        redirectAttributes.addFlashAttribute("message","The product has been saved successfully.");
+        return "redirect:/products";
+    }
+
+
+    @GetMapping("/products/{id}/enabled/{status}")
+    public String updateProductEnabledStatus(@PathVariable("id") Integer id,@PathVariable("status") boolean enabled,RedirectAttributes redirectAttributes){
+        productService.updateProductEnabledStatus(id,enabled);
+        String status=enabled?"enabled":"disabled";
+        String message="The product Id "+id+" has been "+status;
+        redirectAttributes.addFlashAttribute("message",message);
+        return "redirect:/products";
+    }
+
+    @GetMapping("/products/delete/{id}")
+    public String deleteProduct(@PathVariable(name="id")Integer id,Model model,RedirectAttributes redirectAttributes){
+        try{
+            productService.delete(id);
+            redirectAttributes.addFlashAttribute("message","The product ID "+id+" has been deleted successfully");
+        }catch (UsernameNotFoundException ex){
+            redirectAttributes.addFlashAttribute("message",ex.getMessage());
         }
         return "redirect:/products";
     }

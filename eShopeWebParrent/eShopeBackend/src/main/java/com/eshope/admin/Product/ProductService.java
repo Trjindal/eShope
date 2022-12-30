@@ -1,6 +1,7 @@
 package com.eshope.admin.Product;
 
 
+import com.eShope.common.entity.Category;
 import com.eShope.common.entity.Product;
 
 import com.eshope.admin.Main.Repositories.ProductRepository;
@@ -9,7 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 
 @Service
@@ -32,4 +36,40 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public Product save(Product product){
+
+        //SETTING CREATED TIME
+        if(product.getId()==null){
+            product.setCreatedTime(new Date());
+        }
+
+        //SETTING ALIAS WITH UNDERSCORE
+        if(product.getAlias()==null || product.getAlias().isEmpty()){
+            String defaultAlias=product.getName().replaceAll(" ","_");
+            product.setAlias(defaultAlias);
+        }else {
+            product.setAlias(product.getAlias().replaceAll(" ","_"));
+        }
+
+        product.setUpdateTime(new Date());
+
+        return productRepository.save(product);
+    }
+
+    public boolean isNameUnique(String name) {
+        Product productByName = productRepository.getProductByName(name);
+        return productByName == null;
+    }
+
+    public void updateProductEnabledStatus(Integer id, boolean enabled) {
+        productRepository.updateEnableStatus(id,enabled);
+    }
+
+    public void delete(Integer id) throws UsernameNotFoundException {
+        Long countById=productRepository.countById(id);
+        if(countById==null||countById==0){
+            throw new UsernameNotFoundException("Could not found any user with Id "+id);
+        }
+        productRepository.deleteById(id);
+    }
 }

@@ -57,7 +57,7 @@
                               th:object="${product}" enctype="multipart/form-data">
 
                             <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <ul class="nav nav-tabs " id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active"  data-toggle="tab" href="#overview" role="tab" >Overview</a>
                                 </li>
@@ -77,10 +77,10 @@
 
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane  p-3" id="overview" role="tabpanel" >
+                                <div class="tab-pane  p-3 active" id="overview" role="tabpanel" >
                                     <div th:replace="Product/product_overview :: content"></div>
                                 </div>
-                                <div class="tab-pane p-3 active " id="description" role="tabpanel" >
+                                <div class="tab-pane p-3  " id="description" role="tabpanel" >
                                     <div th:replace="Product/product_description :: content"></div>
                                 </div>
                                 <div class="tab-pane p-3 " id="images" role="tabpanel">Images</div>
