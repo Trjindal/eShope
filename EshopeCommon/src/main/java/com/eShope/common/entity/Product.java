@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 
@@ -17,9 +20,16 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(unique = true,length = 256,nullable = false)
+    @NotBlank(message="Name must not be blank")
+    @Size(min=3, message="Name must be at least 3 characters long")
     private String name;
+
+
     @Column(unique = true,length = 256,nullable = false)
+    @NotBlank(message="Alias must not be blank")
+    @Size(min=3, message="Alias must be at least 3 characters long")
     private String alias;
+
     @Column(length = 512,nullable = false)
     private String shortDescription;
     @Column(length = 4096,nullable = false)

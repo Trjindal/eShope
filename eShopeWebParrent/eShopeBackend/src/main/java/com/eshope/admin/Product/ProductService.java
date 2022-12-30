@@ -17,7 +17,7 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public static final int PRODUCTS_PER_PAGE = 5;
+    public static final int PRODUCTS_PER_PAGE = 10;
 
     public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
         Sort sort = Sort.by(sortField);

@@ -21719,3 +21719,35 @@ display: inline-block;
     background-color:#fbb034;
 }
 
+
+.product-block input,
+.product-block textarea{
+color: var(--heading-color);
+    background: var(--bg-grey);
+    font-size: 16px;
+    padding: 14px;
+    border: 2px solid var(--border-color-light);
+    outline: none;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+}
+
+.my-form-control {
+    display: block;
+
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+   color: var(--heading-color);
+    background: var(--bg-grey);
+    background-clip: padding-box;
+     border: 2px solid var(--border-color-light);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: var(--border-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+outline: none;
+margin-bottom: 20px;
+}

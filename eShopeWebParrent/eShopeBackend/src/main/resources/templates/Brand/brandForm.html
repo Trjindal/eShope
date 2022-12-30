@@ -213,10 +213,10 @@
 
 
     $(document).ready(function(){
-        dropdownCategories=$("#categories");
+        dropDownCategory=$("#categories");
         divChosenCategories=$("#chosenCategories");
 
-        dropdownCategories.change(function(){
+        dropDownCategory.change(function(){
             divChosenCategories.empty();
             showChosenCategories();
         });
@@ -224,7 +224,7 @@
     });
 
     function showChosenCategories(){
-        dropdownCategories.children("option:selected").each(function(){
+        dropDownCategory.children("option:selected").each(function(){
             selectedCategory= $(this);
             categoryId=selectedCategory.val()
             categoryName=selectedCategory.text().replace(/-/g,"");

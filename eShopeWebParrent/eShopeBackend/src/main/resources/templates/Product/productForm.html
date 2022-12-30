@@ -11,6 +11,8 @@
     <!-- Template CSS Style link -->
     <link rel="stylesheet" th:href="@{/assets/css/style-starter.css}">
     <link rel="stylesheet" th:href="@{/assets/css/all.css}">
+
+
 </head>
 
 <body>
@@ -23,11 +25,11 @@
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-4 pb-sm-4">
-            <h4 class="inner-text-title pt-5">Brands</h4>
+            <h4 class="inner-text-title pt-5">Products</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a th:href="@{/home}">Dashboard</a></li>
-                <li><i class="fas fa-angle-right"></i><a th:href="@{/brands}">Brands</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>Edit Brand</li>
+                <li><i class="fas fa-angle-right"></i><a th:href="@{/products}">Products</a></li>
+                <li class="active"><i class="fas fa-angle-right"></i>New Product</li>
             </ul>
         </div>
     </div>
@@ -37,57 +39,57 @@
 <section class="w3l-contact py-5" id="contact">
     <div class="container py-md-5 py-4">
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <p class="text-uppercase">Edit Existing Brand</p>
+            <p class="text-uppercase">CREATE NEW Product</p>
             <h3 class="title-style">Registration Form</h3>
         </div>
-        <div class="row contact-block">
-            <div class="col-md-7 contact-right">
-                <ul>
-                    <li class="alert alert-danger" role="alert" th:if="${nameNotUnique!=null}"
-                        th:text="${nameNotUnique}"></li>
-                    <li class="alert alert-danger" role="alert" th:if="${categoryNotProvided!=null}"
-                        th:text="${categoryNotProvided}"></li>
-                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('brand.*')}"
-                        th:text="${error}"/>
-                </ul>
-                <form action="/eShopeAdmin/brands/editBrand" method="post" class="signing-form"
-                      th:object="${brand}" enctype="multipart/form-data">
-                    <div class="input-grids">
-                        <input type="text" th:field="*{name}" placeholder="Name"
-                               class="contact-input"/>
-                        <div class="row form-group">
-                            <label class="col-form-label col-4">Categories : </label>
-                            <select class="form-control select-toggle" th:field="*{categories}" aria-multiselectable="true" multiple="multiple">
-                                <option th:each="category : ${listCategories}" th:value="${category.id}" >[[${category.name}]]</option>
-                            </select>
-                        </div>
+                <div class="row product-block">
+                        <ul>
+                            <li class="alert alert-danger" role="alert" th:if="${nameNotUnique!=null}"
+                                th:text="${nameNotUnique}"></li>
+                            <li class="alert alert-danger" role="alert" th:if="${categoryNotProvided!=null}"
+                                th:text="${categoryNotProvided}"></li>
+                            <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('product.*')}"
+                                th:text="${error}"/>
+                        </ul>
+                        <form action="/eShopeAdmin/products/saveProduct" method="post" class="signing-form"
+                              th:object="${product}" enctype="multipart/form-data">
 
-                        <div class="row form-group mt-3">
-                            <label class="col-sm-4 col-form-label">Chosen Categories: </label>
-                            <div class="col-sm-8">
-                                <div id="chosenCategories">
-                                    <span class='badge myBadge m1'  th:if="${brand.categories==null}" th:each="category : ${categories}" th:text="category.name"></span>
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active"  data-toggle="tab" href="#overview" role="tab" >Overview</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#description" role="tab">Description</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#images" role="tab">Images</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"  data-toggle="tab" href="#details" role="tab">Details</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active p-3" id="overview" role="tabpanel" >
+                                    <div th:replace="Product/product_overview :: content"></div>
                                 </div>
+                                <div class="tab-pane" id="description" role="tabpanel" >Description</div>
+                                <div class="tab-pane" id="images" role="tabpanel">Images</div>
+                                <div class="tab-pane" id="details" role="tabpanel" >Details</div>
                             </div>
-                        </div>
-                        <br>
-                        <div class="row form-group">
-                            <label class="col-form-label col-4">Photos : </label>
-                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"
-                                   accept="image/png,image/jpeg" >
-                            <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${brands.LogoPath}}">
-                        </div>
-                        <div class="text-start">
-                            <button type="submit" class="btn btn-style btn-style-3">Save Brand</button>
-                            <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/brands}">Cancel</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+
+<!--                            SAVE BUTTON-->
+                            <div class="text-start">
+                                <button type="submit" class="btn btn-style btn-style-3">Save User</button>
+                                <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/users}">Cancel</a>
+                            </div>
+
+                        </form>
+                </div>
     </div>
 </section>
-
 
 
 <!-- Js scripts -->
@@ -125,7 +127,10 @@
 <!-- //move top -->
 
 <!-- common jquery plugin -->
-<script th:src="@{/assets/js/jquery-3.3.1.min.js}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<!--<script th:src="@{/assets/js/jquery-3.3.1.min.js}"></script>-->
+<!-- common jquery plugin -->
+<script th:src="@{/assets/js/jquery.number.min.js}"></script>
 <!-- //common jquery plugin -->
 
 <!-- theme switch js (light and dark)-->
@@ -209,29 +214,33 @@
 <!--DISPLAY CATEGORIES-->
 <script>
 
-    moduleURL="[[@{/brands}]]";
+    moduleURL="[[@{/products}]]";
+    brandModuleURL="[[@{/brands}]]";
 
+    dropDownBrands=$("#brand");
+    dropDownCategory=$("#category")
 
 
     $(document).ready(function(){
-        dropDownCategory=$("#categories");
-        divChosenCategories=$("#chosenCategories");
-
-        dropDownCategory.change(function(){
-            divChosenCategories.empty();
-            showChosenCategories();
+     dropDownCategory=$("#category")
+        dropDownBrands.change(function(){
+            dropDownCategory.empty();
+            getCategories();
         });
-         showChosenCategories();
+          getCategories();
     });
 
-    function showChosenCategories(){
-        dropDownCategory.children("option:selected").each(function(){
-            selectedCategory= $(this);
-            categoryId=selectedCategory.val()
-            categoryName=selectedCategory.text().replace(/-/g,"");
+    function getCategories(){
+        brandId=dropDownBrands.val();
+        url=brandModuleURL+"/"+brandId+"/categories";
 
-            divChosenCategories.append("<span class='badge myBadge m1' th:field='*{categories}'>"+ categoryName+"</span>");
+
+        $.get(url,function(responseJson){
+          $.each(responseJson,function(index,category){
+               $("<option>").val(category.id).text(category.name).appendTo(dropDownCategory);
+          });
         });
+
     }
 
 </script>

@@ -43,6 +43,19 @@ public class Brand {
         this.logo="brand-logo";
     }
 
+    public Brand(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Brand{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     @Transient
     public String getLogoPath(){
         if(this.id==null)

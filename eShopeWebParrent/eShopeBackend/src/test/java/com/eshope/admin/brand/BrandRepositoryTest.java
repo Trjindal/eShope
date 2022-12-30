@@ -55,6 +55,7 @@ public class BrandRepositoryTest {
     @Test
     public void testFindAllBrand(){
         Iterable<Brand> brands=brandRepository.findAll();
+        brands.forEach(System.out::println);
         assertThat(brands).isNotEmpty();
     }
 

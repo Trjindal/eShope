@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface BrandRepository extends PagingAndSortingRepository<Brand,Integer> {
 
 
@@ -15,6 +17,8 @@ public interface BrandRepository extends PagingAndSortingRepository<Brand,Intege
     public Page<Brand> findAll(String keyword, Pageable pageable);
 
 
+    @Query("Select NEW Brand(b.id,b.name) FROM Brand b ORDER BY b.name ASC")
+    public List<Brand> findAll();
 
     Long countById(Integer id);
 
