@@ -43,12 +43,12 @@ public class ProductService {
             product.setCreatedTime(new Date());
         }
 
-        //SETTING ALIAS WITH UNDERSCORE
+        //SETTING ALIAS WITH HYPHEN
         if(product.getAlias()==null || product.getAlias().isEmpty()){
-            String defaultAlias=product.getName().replaceAll(" ","_");
+            String defaultAlias=product.getName().replaceAll(" ","-");
             product.setAlias(defaultAlias);
         }else {
-            product.setAlias(product.getAlias().replaceAll(" ","_"));
+            product.setAlias(product.getAlias().replaceAll(" ","-"));
         }
 
         product.setUpdateTime(new Date());

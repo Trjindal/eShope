@@ -97,8 +97,8 @@
             <tr th:each="product: ${listAllProducts}">
                 <td scope="row" th:text="${product.id}"></td>
                 <td>
-<!--                    <span th:if="${product.logo==null}"  class="fas fa-thin fa-image-portrait fa-2x"></span>-->
-<!--                    <img  th:if="${product.logo!=null}" th:src="@{${product.getLogoPath}}" class="img-fluid" id="usersImg">-->
+                    <span th:if="${product.mainImage==null}"  class="fas fa-thin fa-image-portrait fa-2x"></span>
+                    <img  th:if="${product.mainImage!=null}" th:src="@{${product.getMainImagePath}}" class="img-fluid" id="usersImg">
                 </td>
                 <td th:text="${product.name}"></td>
                 <td th:text="${product.brand.name}"></td>

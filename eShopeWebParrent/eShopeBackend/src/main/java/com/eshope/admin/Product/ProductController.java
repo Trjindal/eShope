@@ -5,6 +5,7 @@ import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Category;
 import com.eShope.common.entity.Product;
 import com.eshope.admin.Brand.BrandService;
+import com.eshope.admin.Main.Utility.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,20 +78,12 @@ public class ProductController {
     }
 
     @PostMapping("/products/saveProduct")
-    public String saveProduct(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "product") Product product, Errors errors, Model model) {
-
-//        log.error(product.getName());
-//        log.error(String.valueOf(product.getBrand().getId()));
-//        log.error(String.valueOf(product.getCategory().getId()));
-//        log.error(String.valueOf(product.getFullDescription()));
-
+    public String saveProduct(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "product") Product product, Errors errors, Model model,@RequestParam("image") MultipartFile multipartFile) throws IOException{
 
         List<Brand> listBrands=brandService.listAllBrands();
 
-
         //DISPLAYING ERROR MESSAGES
         if (errors.hasErrors()) {
-
             log.error("New Product form validation failed due to : " + errors.toString());
             model.addAttribute("listBrands", listBrands);
             return "Product/productForm.html";
@@ -103,8 +97,19 @@ public class ProductController {
             return "Product/productForm.html";
         }
 
-        productService.save(product);
-        redirectAttributes.addFlashAttribute("message","The product has been saved successfully.");
+        if (!multipartFile.isEmpty()) {
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            product.setMainImage(fileName);
+            Product savedProduct = productService.save(product);
+            String uploadDir = "product-photos/" + savedProduct.getId();
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            redirectAttributes.addFlashAttribute("message", "The product has been saved successfully.");
+            return "redirect:/products";
+        }
+
+
+        redirectAttributes.addFlashAttribute("message","The product could not be saved successfully.");
         return "redirect:/products";
     }
 

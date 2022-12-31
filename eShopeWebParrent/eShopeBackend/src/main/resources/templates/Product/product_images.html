@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div class="row form-group">
+        <div class="col-sm-4">
+            <label class="col-form-label col-sm-4 mb-2">Main Image : </label>
+            <img id="thumbnail" alt="Main Image Preview" class="img-fluid row mx-auto mb-2" th:src="@{${product.mainImagePath}}">
+            <input type="file" id="fileImage" class="col-form-label col-sm-12 mb-2" name="image" accept="image/png,image/jpeg">
+        </div>
+    </div>
+</div>
+</body>
+</html>

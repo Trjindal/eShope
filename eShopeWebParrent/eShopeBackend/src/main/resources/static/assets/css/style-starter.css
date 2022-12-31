@@ -21732,6 +21732,14 @@ color: var(--heading-color);
     border-radius: var(--border-radius);
 }
 
+.product-block input[type="file"] {
+   background: none;
+   border: none;
+   outline: none;
+   border-radius: none;
+}
+
+
 .my-form-control {
     display: block;
 
