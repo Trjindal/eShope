@@ -6,12 +6,23 @@
 </head>
 <body>
 <div th:fragment="content" th:remove="tag">
-    <div class="row form-group">
-        <div class="col-sm-4">
-            <label class="col-form-label col-sm-4 mb-2">Main Image : </label>
-            <img id="thumbnail" alt="Main Image Preview" class="img-fluid row mx-auto mb-2" th:src="@{${product.mainImagePath}}">
-            <input type="file" id="fileImage" class="col-form-label col-sm-12 mb-2" name="image" accept="image/png,image/jpeg">
-        </div>
+    <div class="row form-group" id="divProductImages">
+        <div class="col-sm-4 p-2">
+            <div class="myBorder">
+                <div class="p-2">
+                    <label class="my-col-form-label">Main Image : </label>
+                </div>
+                <img id="thumbnail" alt="Main Image Preview" class="thumbnail img-fluid row mx-auto mb-2" th:src="@{/images/image-thumbnail.png}">
+                <input type="file" id="fileImage" class="col-form-label col-sm-12 mb-2" name="image" accept="image/png,image/jpeg">
+           </div></div>
+        <div class="col-sm-4 p-2" id="divExtraImage0">
+            <div class="myBorder">
+                <div id="extraImageHeader0" class="p-2">
+                    <label class="my-col-form-label">Extra Image 1: </label>
+                </div>
+                <img id="extraThumbnail0"  alt="Extra Image 1 Preview" class="img-fluid row mx-auto mb-2 thumbnail" th:src="@{/images/image-thumbnail.png}">
+                <input type="file"  class="col-form-label col-sm-12 mb-2" name="extraImage" accept="image/png,image/jpeg">
+            </div></div>
     </div>
 </div>
 </body>
