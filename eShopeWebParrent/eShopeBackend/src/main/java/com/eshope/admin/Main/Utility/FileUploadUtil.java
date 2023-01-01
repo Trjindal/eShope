@@ -43,4 +43,23 @@ public class FileUploadUtil {
             log.error("Could not list directory: "+dirPath);
         }
     }
+
+    // delete existing directory
+    public static void removeDir(String dir) {
+
+        log.info("FileUploadUtil | removeDir is started");
+
+        log.info("FileUploadUtil | removeDir | dir : " + dir);
+
+        cleanDir(dir);
+
+        log.info("FileUploadUtil | cleanDir(dir) is over");
+
+        try {
+            Files.delete(Paths.get(dir));
+        } catch (IOException e) {
+            log.error("Could not remove directory: " + dir);
+        }
+
+    }
 }

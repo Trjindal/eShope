@@ -48,6 +48,8 @@
                         <ul>
                             <li class="alert alert-danger" role="alert" th:if="${nameNotUnique!=null}"
                                 th:text="${nameNotUnique}"></li>
+                            <li class="alert alert-danger" role="alert" th:if="${mainImageNotProvided!=null}"
+                                th:text="${mainImageNotProvided}"></li>
                             <li class="alert alert-danger" role="alert" th:if="${categoryNotProvided!=null}"
                                 th:text="${categoryNotProvided}"></li>
                             <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('product.*')}"
