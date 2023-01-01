@@ -1,6 +1,7 @@
 var extraImagesCount=0;
-defaultImageThumbnailSrc="http://localhost:8080/eShopeAdmin/images/image-thumbnail.png";
+//defaultImageThumbnailSrc="http://localhost:8080/eShopeAdmin/images/image-thumbnail.png";
 
+//for showing Main image preview
 $(document).ready(function(){
     $("#fileImage").change(function(){
         if(!checkFileSize(this)){
@@ -9,9 +10,13 @@ $(document).ready(function(){
         showImageThumbnail(this);
     });
 
+//for showing Extra image preview
     $("input[name='extraImage']").each(function(index){
      extraImagesCount++;
         $(this).change(function(){
+        if(!checkFileSize(this)){
+                    return;
+                }
              showExtraImageThumbnail(this,index);
         });
     });
@@ -32,7 +37,7 @@ $(document).ready(function(){
         }
     }
 
-     function showExtraImageThumbnail(fileInput,index){
+    function showExtraImageThumbnail(fileInput,index){
         var file=fileInput.files[0];
         var reader=new FileReader();
         reader.onload=function(e){
@@ -74,7 +79,6 @@ $(document).ready(function(){
     function removeExtraImage(index){
         console.log(index);
         $("#divExtraImage"+index).remove();
-
     }
 
     function showImageThumbnail(fileInput){
@@ -86,4 +90,42 @@ $(document).ready(function(){
         reader.readAsDataURL(file);
     }
 
+
+//  FOR DETAILS
+    function addNextDetailSection(){
+
+       allDivDetails=$("[id^='divDetails']");
+       divDetailsCount=allDivDetails.length;
+
+
+        htmlDetailsSection=` <div class="row form-inline" id="divDetails${divDetailsCount}">
+                                <label class="col-form-label col-sm-2 p-3">Name : </label>
+                                <input type="text" placeholder="Name"  class="contact-input col-sm-3" name="detailsName" maxlength="255"/>
+                                <div class="col-sm-1"></div>
+                                <label class="col-form-label col-sm-2 p-3">Value : </label>
+                                <input type="text" placeholder="Value"  class="contact-input col-sm-3" name="detailsValue" maxlength="255"/>
+                              </div>`;
+
+        //ADDING NEW INPUT
+        $("#divProductDetails").append(htmlDetailsSection);
+
+
+//        CODE FOR ADDING REMOVE BUTTON
+        previousDivDetailsSection=allDivDetails.last();
+        previousDivDetailsId=previousDivDetailsSection.attr("id");
+
+        htmlLinkRemove=`<a class=" fas fa-thin fa-circle-xmark fa-2x mybtn col-sm-1 p-3"
+        href="javascript:removeDetailsSectionById('${previousDivDetailsId}')"
+        title="Remove this detail"></a>`;
+
+
+        previousDivDetailsSection.append(htmlLinkRemove);
+
+        //ADDING FOCUS TO LAST INPUT AFTER ADDING DIV
+        $("input[name='detailsName']").last().focus();
+    }
+
+function removeDetailsSectionById(id){
+    $("#"+id).remove();
+}
 

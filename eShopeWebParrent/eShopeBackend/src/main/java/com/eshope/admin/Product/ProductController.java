@@ -78,7 +78,11 @@ public class ProductController {
     }
 
     @PostMapping("/products/saveProduct")
-    public String saveProduct(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "product") Product product, Errors errors, Model model,@RequestParam("image") MultipartFile mainImageMultipart,@RequestParam("extraImage") MultipartFile[] extraImageMultiparts ) throws IOException{
+    public String saveProduct(RedirectAttributes redirectAttributes,
+                              @Valid @ModelAttribute(value = "product") Product product
+            ,Errors errors, Model model,@RequestParam("image") MultipartFile mainImageMultipart
+            ,@RequestParam("extraImage") MultipartFile[] extraImageMultiparts,@RequestParam(name = "detailsName",required = false) String[] detailsName
+    ,@RequestParam(name="detailsValue",required = false)String[] detailsValue) throws IOException{
 
         List<Brand> listBrands=brandService.listAllBrands();
 
@@ -108,6 +112,7 @@ public class ProductController {
         //UPLOADING IMAGES
         setMainImageName(mainImageMultipart,product);
         setExtraImageNames(extraImageMultiparts,product);
+        setProductDetails(detailsName,detailsValue,product);
 
         Product savedProduct = productService.save(product);
 
@@ -119,7 +124,18 @@ public class ProductController {
 
     }
 
+    private void setProductDetails(String[] detailsName, String[] detailsValue, Product product) {
+        if(detailsName==null||detailsName.length==0) return;
 
+        for(int count=0;count<detailsName.length;count++){
+            String name=detailsName[count];
+            String value=detailsValue[count];
+
+            if(!name.isEmpty()&&!value.isEmpty()){
+                product.addDetails(name,value);
+            }
+        }
+    }
 
 
     @GetMapping("/products/{id}/enabled/{status}")
@@ -185,6 +201,7 @@ public class ProductController {
                 }}
 
     }
+
 
 }
 
