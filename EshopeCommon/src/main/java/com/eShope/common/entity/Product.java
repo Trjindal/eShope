@@ -8,9 +8,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Getter
@@ -74,9 +72,8 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    public void addExtraImage(String imageName){
-        this.images.add(new ProductImage(imageName,this));
-    }
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<ProductDetails> details=new ArrayList<>();
 
     @Transient
     public String getMainImagePath(){
@@ -92,7 +89,17 @@ public class Product {
                 '}';
     }
 
+    public void addExtraImage(String imageName){
+        this.images.add(new ProductImage(imageName,this));
+    }
 
+    public void addDetails(String name,String value){
+        this.details.add(new ProductDetails(name,value,this));
+    }
+
+    public void addDetails(Integer id, String name, String value) {
+        this.details.add(new ProductDetails(id, name, value, this));
+    }
 
 
 }
