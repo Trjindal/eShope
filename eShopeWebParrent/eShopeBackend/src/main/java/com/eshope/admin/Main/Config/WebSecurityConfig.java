@@ -51,7 +51,7 @@ public class WebSecurityConfig  {
     @Bean
         SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
+        http.csrf().and()
                 .authorizeHttpRequests()
                 .antMatchers("/users/**").hasAuthority("Admin")
                 .antMatchers("categories/**").hasAnyAuthority("Admin","Editor")

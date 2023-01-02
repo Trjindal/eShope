@@ -1,12 +1,12 @@
 var extraImagesCount=0;
-//defaultImageThumbnailSrc="http://localhost:8080/eShopeAdmin/images/image-thumbnail.png";
+defaultImageThumbnailSrc="http://localhost:8080/eShopeAdmin/images/image-thumbnail.png";
 
 //for showing Main image preview
 $(document).ready(function(){
     $("#fileImage").change(function(){
-        if(!checkFileSize(this)){
-            return;
-        }
+//        if(!checkFileSize(this)){
+//            return;
+//        }
         showImageThumbnail(this);
     });
 
@@ -14,12 +14,26 @@ $(document).ready(function(){
     $("input[name='extraImage']").each(function(index){
      extraImagesCount++;
         $(this).change(function(){
-        if(!checkFileSize(this)){
-                    return;
-                }
+//        if(!checkFileSize(this)){
+//                    return;
+//                }
              showExtraImageThumbnail(this,index);
         });
     });
+
+//FOR DELETING IMAGE IN EDIT MODE
+    $("a[name='linkRemoveExtraImage']").each(function(index){
+        $(this).click(function(){
+            removeExtraImage(index);
+        })
+    })
+
+    //FOR DELETING DETAIL IN EDIT MODE
+     $("a[name='linkRemoveDetail']").each(function(index){
+            $(this).click(function(){
+                removeDetailsSectionByIndex(index);
+            })
+        })
 
 
     });
@@ -127,5 +141,9 @@ $(document).ready(function(){
 
 function removeDetailsSectionById(id){
     $("#"+id).remove();
+}
+
+function removeDetailsSectionByIndex(index){
+    $("#divDetails"+index).remove();
 }
 

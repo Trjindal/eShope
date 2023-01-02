@@ -4,6 +4,7 @@ package com.eshope.admin.Product;
 import com.eShope.common.entity.Category;
 import com.eShope.common.entity.Product;
 
+import com.eShope.common.entity.User;
 import com.eshope.admin.Main.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -68,8 +70,18 @@ public class ProductService {
     public void delete(Integer id) throws UsernameNotFoundException {
         Long countById=productRepository.countById(id);
         if(countById==null||countById==0){
-            throw new UsernameNotFoundException("Could not found any user with Id "+id);
+            throw new UsernameNotFoundException("Could not found any product with Id "+id);
         }
         productRepository.deleteById(id);
     }
+
+    public Product getProductById(Integer id) {
+        try{
+            return productRepository.findById(id).get();
+        }catch (NoSuchElementException ex){
+            throw new UsernameNotFoundException("Could not find any product with Id "+ id);
+        }
+    }
+
+
 }

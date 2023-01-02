@@ -1,9 +1,7 @@
 package com.eshope.admin.Product;
 
 
-import com.eShope.common.entity.Brand;
-import com.eShope.common.entity.Category;
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.*;
 import com.eshope.admin.Brand.BrandService;
 import com.eshope.admin.Main.Utility.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -71,9 +70,11 @@ public class ProductController {
         product.setFullDescription("");
 
         List<Brand> listBrands=brandService.listAllBrands();
+        Integer numberOfExistingExtraImages=product.getImages().size();
 
         model.addAttribute("product",product);
         model.addAttribute("listBrands",listBrands);
+        model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
         return "Product/productForm.html";
     }
 
@@ -102,6 +103,26 @@ public class ProductController {
             return "Product/productForm.html";
         }
 
+        //ERROR FOR MAIN IMAGE SIZE
+        if(mainImageMultipart.getSize()>=512000){
+            log.error("Product form validation failed due to Main Image Size");
+            model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
+            model.addAttribute("listBrands", listBrands);
+            return "Product/productForm.html";
+        }
+
+        //ERROR FOR EXTRA IMAGE SIZE
+        if(extraImageMultiparts.length>0){
+            for(MultipartFile image:extraImageMultiparts){
+                if(image.getSize()>=512000){
+                    log.error("Product form validation failed due to Extra Image Size");
+                    model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
+                    model.addAttribute("listBrands", listBrands);
+                    return "Product/productForm.html";
+                }
+            }
+        }
+
         //DISPLAYING ERROR MESSAGES
         if (errors.hasErrors()) {
             log.error("New Product form validation failed due to : " + errors.toString());
@@ -124,17 +145,26 @@ public class ProductController {
 
     }
 
-    private void setProductDetails(String[] detailsName, String[] detailsValue, Product product) {
-        if(detailsName==null||detailsName.length==0) return;
 
-        for(int count=0;count<detailsName.length;count++){
-            String name=detailsName[count];
-            String value=detailsValue[count];
+    //OPENING EDIT_FORM
+    @GetMapping("/products/edit/{id}")
+    public String editProduct(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
+        try{
+            Product product=productService.getProductById(id);
+            Integer numberOfExistingExtraImages=product.getImages().size();
 
-            if(!name.isEmpty()&&!value.isEmpty()){
-                product.addDetails(name,value);
-            }
+            List<Brand> listBrands=brandService.listAllBrands();
+            model.addAttribute("product",product);
+            model.addAttribute("listBrands",listBrands);
+            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+
+            return "Product/productUpdateForm.html";
+        }catch (UsernameNotFoundException ex){
+            redirectAttributes.addFlashAttribute("message",ex.getMessage());
+
+            return "redirect:/products";
         }
+
     }
 
 
@@ -202,6 +232,18 @@ public class ProductController {
 
     }
 
+    private void setProductDetails(String[] detailsName, String[] detailsValue, Product product) {
+        if(detailsName==null||detailsName.length==0) return;
+
+        for(int count=0;count<detailsName.length;count++){
+            String name=detailsName[count];
+            String value=detailsValue[count];
+
+            if(!name.isEmpty()&&!value.isEmpty()){
+                product.addDetails(name,value);
+            }
+        }
+    }
 
 }
 

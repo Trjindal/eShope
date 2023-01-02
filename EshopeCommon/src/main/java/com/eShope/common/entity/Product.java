@@ -2,10 +2,11 @@ package com.eShope.common.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Email;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -77,7 +78,8 @@ public class Product {
 
     @Transient
     public String getMainImagePath(){
-        if(id==null||mainImage==null) return "/assets/images/users/default-user.png";
+
+        if(id==null||mainImage==null||mainImage.isEmpty()) return "/images/image-thumbnail.png";
         return "/product-photos/"+this.id+"/"+this.mainImage;
     }
 
@@ -100,6 +102,7 @@ public class Product {
     public void addDetails(Integer id, String name, String value) {
         this.details.add(new ProductDetails(id, name, value, this));
     }
+
 
 
 }

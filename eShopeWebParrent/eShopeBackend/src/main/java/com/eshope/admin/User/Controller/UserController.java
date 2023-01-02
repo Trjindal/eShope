@@ -84,6 +84,7 @@ public class UserController {
 
 
 
+
         //TO CHECK UNIQUE EMAIL ID
         if (user.getEmail() != "" && !userService.isEmailUnique(user.getEmail())) {
             log.error("New User form validation failed due to email ");
@@ -92,7 +93,17 @@ public class UserController {
             model.addAttribute("listAllRoles", listAllRoles);
             return "Users/userForm.html";
         }
-//        }
+
+
+
+        //TO CHECK IF ROLE IS ASSIGNED OR NOT
+        if(user.getRoles().isEmpty()){
+            log.error("New User form validation failed due to Roles not assigned ");
+            model.addAttribute("emailNotUnique", "Please assign at least one role to the user.");
+            List<Role> listAllRoles = userService.listAllRoles();
+            model.addAttribute("listAllRoles", listAllRoles);
+            return "Users/userForm.html";
+        }
 
         //DISPLAYING ERROR MESSAGES
         if(errors.hasErrors()){
@@ -157,6 +168,15 @@ public class UserController {
                 model.addAttribute("listAllRoles", listAllRoles);
                 return "Users/userUpdateForm.html";
             }
+        }
+
+        //TO CHECK IF ROLE IS ASSIGNED OR NOT
+        if(user.getRoles().isEmpty()){
+            log.error("New User form validation failed due to Roles not assigned ");
+            model.addAttribute("emailNotUnique", "Please assign at least one role to the user.");
+            List<Role> listAllRoles = userService.listAllRoles();
+            model.addAttribute("listAllRoles", listAllRoles);
+            return "Users/userForm.html";
         }
 
 

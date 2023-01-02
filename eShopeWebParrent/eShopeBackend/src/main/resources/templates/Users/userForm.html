@@ -72,10 +72,10 @@
                             <label class="col-form-label col-4">User Enable : </label>
                             <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled"  class="col-8"/>
                         </div>
-                        <div class="row form-group">
+                        <div class="row form-group form-inline">
                             <label class="col-form-label col-4">Photos : </label>
-                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image" accept="image/png,image/jpeg">
-                            <img id="thumbnail" alt="Photos Preview" class="img-fluid" th:src="@{../assets/images/users/default-user.png}">
+                            <input type="file" id="fileImage" class="col-form-label col-4 mb-2" name="image" accept="image/png,image/jpeg">
+                            <img id="thumbnail" alt="Photos Preview" class="img-fluid col-4" th:src="@{../assets/images/users/default-user.png}">
                         </div>
                         <!--&lt;!&ndash;                    -->
                         <div class="text-start">
