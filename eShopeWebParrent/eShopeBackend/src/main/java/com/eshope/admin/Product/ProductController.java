@@ -72,9 +72,10 @@ public class ProductController {
         List<Brand> listBrands=brandService.listAllBrands();
         Integer numberOfExistingExtraImages=product.getImages().size();
 
+        model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
         model.addAttribute("product",product);
         model.addAttribute("listBrands",listBrands);
-        model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+
         return "Product/productForm.html";
     }
 
@@ -83,21 +84,41 @@ public class ProductController {
                               @Valid @ModelAttribute(value = "product") Product product
             ,Errors errors, Model model,@RequestParam("image") MultipartFile mainImageMultipart
             ,@RequestParam("extraImage") MultipartFile[] extraImageMultiparts,@RequestParam(name = "detailsName",required = false) String[] detailsName
-    ,@RequestParam(name="detailsValue",required = false)String[] detailsValue) throws IOException{
+    ,@RequestParam(name="detailsValue",required = false)String[] detailsValue,HttpSession session) throws IOException {
 
-        List<Brand> listBrands=brandService.listAllBrands();
+        List<Brand> listBrands = brandService.listAllBrands();
+        Integer numberOfExistingExtraImages = product.getImages().size();
+
 
         //TO CHECK UNIQUE NAME
-        if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
-            log.error("Product form validation failed due to name ");
-            model.addAttribute("nameNotUnique", "There is another product having same name");
-            model.addAttribute("listBrands", listBrands);
-            return "Product/productForm.html";
+        if(product.getId()==null) {
+            if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
+                log.error("Product form validation failed due to name ");
+
+                model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
+                model.addAttribute("nameNotUnique", "There is another product having same name");
+                model.addAttribute("listBrands", listBrands);
+                return "Product/productForm.html";
+            }
+        }else{
+            Integer id = (Integer) session.getAttribute("id");
+            Product existingProduct=productService.getProductById(id);
+            if(existingProduct!=null&&!(existingProduct.getName().matches(product.getName()))) {
+                if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
+                    log.error("Product form validation failed due to name ");
+
+                    model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
+                    model.addAttribute("nameNotUnique", "There is another product having same name");
+                    model.addAttribute("listBrands", listBrands);
+                    return "Product/productForm.html";
+                }
+            }
         }
 
         //ERROR FOR MAIN IMAGE
         if(mainImageMultipart.getOriginalFilename().isEmpty()){
             log.error("Product form validation failed due to Main Image ");
+            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
             model.addAttribute("mainImageNotProvided", "Please upload main image.");
             model.addAttribute("listBrands", listBrands);
             return "Product/productForm.html";
@@ -106,6 +127,7 @@ public class ProductController {
         //ERROR FOR MAIN IMAGE SIZE
         if(mainImageMultipart.getSize()>=512000){
             log.error("Product form validation failed due to Main Image Size");
+            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
             model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
             model.addAttribute("listBrands", listBrands);
             return "Product/productForm.html";
@@ -116,6 +138,7 @@ public class ProductController {
             for(MultipartFile image:extraImageMultiparts){
                 if(image.getSize()>=512000){
                     log.error("Product form validation failed due to Extra Image Size");
+                    model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
                     model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
                     model.addAttribute("listBrands", listBrands);
                     return "Product/productForm.html";
@@ -126,6 +149,7 @@ public class ProductController {
         //DISPLAYING ERROR MESSAGES
         if (errors.hasErrors()) {
             log.error("New Product form validation failed due to : " + errors.toString());
+            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
             model.addAttribute("listBrands", listBrands);
             return "Product/productForm.html";
         }
@@ -153,6 +177,7 @@ public class ProductController {
             Product product=productService.getProductById(id);
             Integer numberOfExistingExtraImages=product.getImages().size();
 
+            session.setAttribute("id",id);
             List<Brand> listBrands=brandService.listAllBrands();
             model.addAttribute("product",product);
             model.addAttribute("listBrands",listBrands);
@@ -167,8 +192,119 @@ public class ProductController {
 
     }
 
+    @PostMapping("products/editProduct")
+    public String saveEditProduct(RedirectAttributes redirectAttributes,
+                              @Valid @ModelAttribute(value = "product") Product product
+            ,Errors errors, Model model,@RequestParam("image") MultipartFile mainImageMultipart
+            ,@RequestParam("extraImage") MultipartFile[] extraImageMultiparts,@RequestParam(name = "detailsName",required = false) String[] detailsName
+            ,@RequestParam(name="detailsValue",required = false)String[] detailsValue,HttpSession session) throws IOException {
 
-    @GetMapping("/products/{id}/enabled/{status}")
+        List<Brand> listBrands = brandService.listAllBrands();
+        Integer numberOfExistingExtraImages = product.getImages().size();
+        Integer id = (Integer) session.getAttribute("id");
+        Product existingProduct=productService.getProductById(id);
+
+        //TO CHECK UNIQUE NAME
+        if(existingProduct!=null&&!(existingProduct.getName().matches(product.getName()))) {
+            if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
+                log.error("Product form validation failed due to name ");
+
+                model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
+                model.addAttribute("nameNotUnique", "There is another product having same name");
+                model.addAttribute("listBrands", listBrands);
+                return "Product/productEditForm.html";
+            }
+        }
+
+        //ERROR FOR MAIN IMAGE
+        if(mainImageMultipart.getOriginalFilename().isEmpty()&&existingProduct.getMainImage()==null){
+            log.error("Product form validation failed due to Main Image ");
+            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+            model.addAttribute("mainImageNotProvided", "Please upload main image.");
+            model.addAttribute("listBrands", listBrands);
+            return "Product/productUpdateForm.html";
+        }
+
+        //ERROR FOR MAIN IMAGE SIZE
+        if(mainImageMultipart.getSize()>=512000){
+            log.error("Product form validation failed due to Main Image Size");
+            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+            model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
+            model.addAttribute("listBrands", listBrands);
+            return "Product/productUpdateForm.html";
+        }
+
+        //ERROR FOR EXTRA IMAGE SIZE
+        if(extraImageMultiparts.length>0){
+            for(MultipartFile image:extraImageMultiparts){
+                if(image.getSize()>=512000){
+                    log.error("Product form validation failed due to Extra Image Size");
+                    model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+                    model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
+                    model.addAttribute("listBrands", listBrands);
+                    return "Product/productUpdateForm.html";
+                }
+            }
+        }
+
+        //DISPLAYING ERROR MESSAGES
+        if (errors.hasErrors()) {
+            log.error("New Product form validation failed due to : " + errors.toString());
+            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+            model.addAttribute("listBrands", listBrands);
+            return "Product/productUpdateForm.html";
+        }
+
+        log.error(String.valueOf(product.getDetails()));
+        log.error(String.valueOf(product.getImages()));
+        log.error(product.getMainImage());
+
+        //UPLOADING IMAGES
+        setMainImageName(mainImageMultipart,product);
+        setExtraImageNames(extraImageMultiparts,product);
+        setProductDetails(detailsName,detailsValue,product);
+
+
+
+        product.setId(existingProduct.getId());
+        product.setCreatedTime(existingProduct.getCreatedTime());
+        if(product.getMainImage()==null)
+            product.setMainImage(existingProduct.getMainImage());
+        if(product.getImages()==null)
+            product.setImages(existingProduct.getImages());
+        if(product.getDetails()==null)
+            product.setDetails(existingProduct.getDetails());
+//        existingProduct.setName();
+//        existingProduct.setAlias();
+//        existingProduct.setShortDescription();
+//        existingProduct.setFullDescription();
+//        existingProduct.setInStock();
+//        existingProduct.setEnabled();
+//        existingProduct.setCost();
+//        existingProduct.setPrice();
+//        existingProduct.setDiscountPercentage();
+//        existingProduct.setLength();
+//        existingProduct.setWidth();
+//        existingProduct.setHeight();
+//        existingProduct.setWeight();
+//        existingProduct.setBrand();
+//        existingProduct.setDetails(existingProduct);
+
+        log.error(product.getMainImage());
+
+        Product savedProduct = productService.save(product);
+
+        saveUploadImages(mainImageMultipart,extraImageMultiparts,savedProduct);
+
+
+        redirectAttributes.addFlashAttribute("message", "The product has been edited successfully.");
+        return "redirect:/products";
+
+
+}
+
+
+        @GetMapping("/products/{id}/enabled/{status}")
     public String updateProductEnabledStatus(@PathVariable("id") Integer id,@PathVariable("status") boolean enabled,RedirectAttributes redirectAttributes){
         productService.updateProductEnabledStatus(id,enabled);
         String status=enabled?"enabled":"disabled";

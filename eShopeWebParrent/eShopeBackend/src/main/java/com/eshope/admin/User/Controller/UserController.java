@@ -153,7 +153,7 @@ public class UserController {
     }
 
     @PostMapping("/users/editUser")
-    public String editUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model, HttpSession session , @RequestParam("image")MultipartFile multipartFile) throws IOException{
+    public String saveEditUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model, HttpSession session , @RequestParam("image")MultipartFile multipartFile) throws IOException{
 
         Integer id= (Integer) session.getAttribute("id");
         User existingUser=userService.getUserById(id);

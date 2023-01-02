@@ -31,7 +31,7 @@
             <ul class="breadcrumbs-custom-path">
                 <li><a th:href="@{/home}">Dashboard</a></li>
                 <li><i class="fas fa-angle-right"></i><a th:href="@{/products}">Products</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>Edit Product</li>
+                <li class="active"><i class="fas fa-angle-right"></i>New Product</li>
             </ul>
         </div>
     </div>
@@ -41,7 +41,7 @@
 <section class="w3l-contact py-5" id="contact">
     <div class="container py-md-5 py-4">
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <p class="text-uppercase">EDIT EXISTING Product</p>
+            <p class="text-uppercase">Register New Product</p>
             <h3 class="title-style">Registration Form</h3>
         </div>
         <div class="row product-block">
@@ -55,7 +55,7 @@
                 <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('product.*')}"
                     th:text="${error}"/>
             </ul>
-            <form action="/eShopeAdmin/products/editProduct" method="post" class="signing-form"
+            <form action="/eShopeAdmin/products/saveProduct" method="post" class="signing-form"
                   th:object="${product}" enctype="multipart/form-data">
 
                 <!-- Nav tabs -->
@@ -224,7 +224,7 @@
             dropDownCategory.empty();
             getCategories();
         });
-          getCategoriesForNewForm();
+          getCategories();
     });
 
     function getCategoriesForNewForm(){

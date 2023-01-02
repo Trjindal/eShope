@@ -20,6 +20,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = true)
     private Integer id;
     @Column(unique = true,length = 256,nullable = false)
     @NotBlank(message="Name must not be blank")

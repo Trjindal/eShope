@@ -6,6 +6,7 @@ import com.eShope.common.entity.Product;
 
 import com.eShope.common.entity.User;
 import com.eshope.admin.Main.Repositories.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import java.util.NoSuchElementException;
 
 
 @Service
+@Slf4j
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
@@ -40,6 +42,7 @@ public class ProductService {
 
     public Product save(Product product){
 
+
         //SETTING CREATED TIME
         if(product.getId()==null){
             product.setCreatedTime(new Date());
@@ -54,8 +57,14 @@ public class ProductService {
         }
 
         product.setUpdateTime(new Date());
-
         return productRepository.save(product);
+//
+//        if(product.getId()==null) {
+//            log.error(String.valueOf(product.getId()));
+//            return productRepository.save(product);
+//        }else{
+//            return productRepository.updateProductById(product);
+//        }
     }
 
     public boolean isNameUnique(String name) {

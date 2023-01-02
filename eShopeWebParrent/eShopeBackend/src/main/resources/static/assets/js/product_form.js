@@ -49,7 +49,7 @@ $(document).ready(function(){
             fileInput.setCustomValidity("");
             return true;
         }
-    }
+    }ā
 
     function showExtraImageThumbnail(fileInput,index){
         var file=fileInput.files[0];

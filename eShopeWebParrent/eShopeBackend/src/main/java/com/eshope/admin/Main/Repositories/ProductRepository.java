@@ -25,4 +25,9 @@ public interface ProductRepository extends PagingAndSortingRepository<Product,In
     void updateEnableStatus(Integer id, boolean enabled);
 
     Long countById(Integer id);
+
+    @Transactional
+    @Modifying
+    @Query("Update Product p SET p.name=p.name,p.alias=p.alias,p.shortDescription=p.shortDescription where p.id=?1")
+    Product updateProductById(Product product);
 }
