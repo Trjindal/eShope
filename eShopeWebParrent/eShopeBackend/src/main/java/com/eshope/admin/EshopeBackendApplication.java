@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EntityScan({"com.eshope.admin.user","com.eshope.common.entity"})
-@EnableAspectJAutoProxy
+@EntityScan({"com.eshope.common.entity"})
+//@EnableAspectJAutoProxy
 //@EnableJpaRepositories("com.eshope.admin.Repositories")
 //@EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
 public class EshopeBackendApplication {

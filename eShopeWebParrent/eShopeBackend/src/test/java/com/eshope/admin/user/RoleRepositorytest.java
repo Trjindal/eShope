@@ -1,7 +1,7 @@
 package com.eshope.admin.user;
 
 import com.eShope.common.entity.Role;
-import com.eshope.admin.Main.Repositories.RoleRepository;
+import com.eshope.admin.Repository.RoleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

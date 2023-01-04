@@ -19201,6 +19201,12 @@ header.nav-fixed {
     top: 17px;
   }
 
+  .cont-ser-position1 {
+      position: absolute;
+      right: 80px;
+      top: 12px;
+    }
+
   .navbar .search-right .close {
     margin-right: 3em;
   }
@@ -21781,3 +21787,49 @@ float:right;
 .extraImageHeader{
 margin:10px;
 }
+
+@media only screen and (max-width: 768px) {
+
+
+  div.full-details{
+  display:none
+  }
+    div.less-details{
+    display:block
+    }
+    .table-responsive-class {
+         margin: none;
+          width: 100% !important;
+      }
+      .tablePhotosHeader,.tablePhotos{
+        display:none;
+      }
+    .userName{
+          display:none;
+     }
+     #usersImg {
+         width: 15vw;
+         border-radius:50px;
+     }
+}
+@media only screen and (min-width: 768px) {
+     div.full-details{
+      display:block
+      }
+        div.less-details{
+        display:none
+        }
+
+
+}
+
+/*
+@media only screen and (max-width: 991px) {
+.userName,.firstName,.lastName{
+    display:none;
+}
+}
+*/
+
+
+

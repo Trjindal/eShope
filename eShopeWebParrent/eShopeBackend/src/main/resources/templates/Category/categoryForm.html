@@ -50,7 +50,7 @@
                     </div>
 <!--                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('category.*')}" th:text="${error}"/>-->
                 </ul>
-                <form action="/eShopeAdmin/categories/saveCategory" method="post" class="signing-form"
+                <form th:action="@{/categories/saveCategory}" method="post" class="signing-form"
                       th:object="${category}" enctype="multipart/form-data">
                     <div class="input-grids">
                         <input type="text" th:field="*{name}" placeholder="Name"

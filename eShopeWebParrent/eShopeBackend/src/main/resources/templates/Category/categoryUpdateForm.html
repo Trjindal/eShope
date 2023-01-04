@@ -51,7 +51,7 @@
                         <li th:if="${!(error.startsWith('Failed to convert property value of type org.springframework.web.multipart'))}" class="alert alert-danger" role="alert" th:text="${error}"></li>
                     </div>
                 </ul>
-                <form action="/eShopeAdmin/categories/editCategory" method="post" class="signing-form"
+                <form th:action="@{/categories/editCategory}" method="post" class="signing-form"
                       th:object="${category}" enctype="multipart/form-data">
                     <div class="input-grids">
                         <input type="text" th:field="*{name}" placeholder="Name"
@@ -76,7 +76,7 @@
                             <label class="col-form-label col-4">Photos : </label>
                             <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"
                                    accept="image/png,image/jpeg">
-                            <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${category.photosImagePath}}">
+                            <img id="thumbnail" alt="Photos Preview" class="img-fluid col-sm-12"  th:src="@{${category1.photosImagePath}}">
                         </div>
                         <div class="text-start">
                             <button type="submit" class="btn btn-style btn-style-3">Save Category</button>

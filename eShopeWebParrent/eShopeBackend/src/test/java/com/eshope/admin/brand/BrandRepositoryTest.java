@@ -4,7 +4,7 @@ package com.eshope.admin.brand;
 
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Category;
-import com.eshope.admin.Main.Repositories.BrandRepository;
+import com.eshope.admin.Repository.BrandRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

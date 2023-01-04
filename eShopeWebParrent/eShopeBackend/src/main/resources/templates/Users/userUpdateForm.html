@@ -46,7 +46,7 @@
           <li class="alert alert-danger" role="alert" th:if="${emailNotUnique!=null}" th:text="${emailNotUnique}"></li>
           <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('user.*')}" th:text="${error}" ></li>
         </ul>
-        <form action="/eShopeAdmin/users/editUser" method="post" class="signin-form" th:object="${user}" enctype="multipart/form-data">
+        <form th:action="@{/users/editUser}" method="post" class="signin-form" th:object="${user}" enctype="multipart/form-data">
           <div class="input-grids">
             <input type="email" th:field="*{email}"  placeholder=" Email" name="email"
                    class="contact-input" />

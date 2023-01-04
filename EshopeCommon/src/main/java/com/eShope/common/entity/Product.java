@@ -77,6 +77,8 @@ public class Product {
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<ProductDetails> details=new ArrayList<>();
 
+
+
     @Transient
     public String getMainImagePath(){
 
@@ -102,6 +104,14 @@ public class Product {
 
     public void addDetails(Integer id, String name, String value) {
         this.details.add(new ProductDetails(id, name, value, this));
+    }
+
+    @Transient
+    public String getShortName(){
+        if(name.length()>70){
+            return name.substring(0,70).concat("...");
+        }
+        return name;
     }
 
 

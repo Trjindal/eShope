@@ -44,8 +44,9 @@ public class Category {
 
     private Set<Category> children =new HashSet<>();
 
-
-
+    //FOR PRODUCT SEARCH PARENT_ID WILL BE LIKE -8-9-
+   @Column(name = "all_parent_ids",length = 256,nullable = true)
+    private String allParentIDs;
 
     public Category(String name) {
         this.name=name;

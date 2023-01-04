@@ -50,7 +50,7 @@
                     <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('brand.*')}"
                         th:text="${error}"/>
                 </ul>
-                <form action="/eShopeAdmin/brands/editBrand" method="post" class="signing-form"
+                <form th:action="@{/brands/editBrand}" method="post" class="signing-form"
                       th:object="${brand}" enctype="multipart/form-data">
                     <div class="input-grids">
                         <input type="text" th:field="*{name}" placeholder="Name"
