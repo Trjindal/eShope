@@ -193,6 +193,8 @@
         </div>
     </div>
 
+
+    <!-- pagination -->
     <div class="text-center m-1" th:if="${totalItems>0}">
         <span>Showing Categories # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]] </span>
     </div>
@@ -200,20 +202,19 @@
         <span>No Categories Found</span>
     </div>
 
-    <!-- pagination -->
     <div th:if="${totalPages>1}">
         <div class="pagination-style text-center mt-5 mb-5">
             <ul>
                 <li>
                     <a th:if="${currentPage > 1}"
-                       th:href="@{'/categories/page/1' +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                       th:href="@{'/categories/page/1' +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''}}">
                         <span class="fa fa-angle-double-left" aria-hidden="true"></span>
                     </a>
                     <a th:unless="${currentPage > 1}" class="not-allowed" disabled="">
                         <span class="fa fa-angle-double-left" aria-hidden="true"></span>
                     </a>
                     <a th:if="${currentPage > 1}"
-                       th:href="@{'/categories/page/' + ${currentPage - 1}+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                       th:href="@{'/categories/page/' + ${currentPage - 1}+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''}}">
                         <span class="fa fa-angle-left" aria-hidden="true"></span>
                     </a>
                     <a th:unless="${currentPage > 1}" class="not-allowed" disabled="">
@@ -223,20 +224,20 @@
                 <span th:each="i: ${#numbers.sequence(1, totalPages)}">
             <li>
                 <a th:if="${currentPage != i}"
-                   th:href="@{'/categories/page/' + ${i}}+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}">[[${i}]]</a>
+                   th:href="@{'/categories/page/' + ${i}}+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''}">[[${i}]]</a>
                 <a class="active" th:unless="${currentPage != i}">[[${i}]]</a>
             </li>
             </span>
                 <li>
                     <a th:if="${currentPage < totalPages}"
-                       th:href="@{'/categories/page/' + ${currentPage + 1}+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                       th:href="@{'/categories/page/' + ${currentPage + 1}+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''}}">
                         <span class="fa fa-angle-right" aria-hidden="true"></span>
                     </a>
                     <a th:unless="${currentPage < totalPages}" class="not-allowed" disabled="">
                         <span class="fa fa-angle-right" aria-hidden="true"></span>
                     </a>
                     <a th:if="${currentPage < totalPages}"
-                       th:href="@{'/categories/page/' + ${totalPages}+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                       th:href="@{'/categories/page/' + ${totalPages}+'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''}}">
                         <span class="fa fa-angle-double-right" aria-hidden="true"></span>
                     </a>
                     <a th:unless="${currentPage < totalPages}" class="not-allowed" disabled="">

@@ -32,7 +32,7 @@
 
 <!--PRODUCT.HTML ROW HEADINGS-->
 <th class="sorting" scope="col" th:fragment="product_column_link(fieldName,columnLabel)">
-    <a th:href="@{'/products/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">[[${columnLabel}]]</a>
+    <a th:href="@{'/products/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}+ ${categoryId != null ? '&categoryId=' + categoryId : ''}}">[[${columnLabel}]]</a>
     <span th:if="${sortField!=fieldName}" class="fas fa-sort-up" style="font-size:8px;"></span>
     <span th:if="${sortField==fieldName}" th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}" style="font-size:8px;"></span>
 </th>

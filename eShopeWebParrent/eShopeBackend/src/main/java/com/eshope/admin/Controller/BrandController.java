@@ -53,6 +53,7 @@ public class BrandController {
         Page<Brand> page = brandService.listByPage(pageNum, sortField, sortDir, keyword);
         List<Brand> listBrands = page.getContent();
 
+
         long startCount = (pageNum - 1) * brandService.BRANDS_PER_PAGE + 1;
         long endCount = startCount + brandService.BRANDS_PER_PAGE - 1;
         if (endCount > page.getTotalElements()) {
@@ -69,6 +70,7 @@ public class BrandController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("keyword", keyword);
+
         return "Brand/brand";
     }
 

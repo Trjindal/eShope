@@ -3,6 +3,7 @@ package com.eshope.admin.Controller;
 
 import com.eShope.common.entity.*;
 import com.eshope.admin.Service.BrandService;
+import com.eshope.admin.Service.CategoryService;
 import com.eshope.admin.Service.ProductService;
 import com.eshope.admin.Utility.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,16 +34,20 @@ public class ProductController {
     @Autowired
     BrandService brandService;
 
+    @Autowired
+    CategoryService categoryService;
+
 
     @GetMapping("/products")
     public String listAllProducts(Model model){
-        return listByPage(1,model,"id","asc",null);
+        return listByPage(1,model,"id","asc",null,0);
     }
 
     @GetMapping("/products/page/{pageNum}")
-    public String listByPage(@PathVariable(name="pageNum") int pageNum, Model model, @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword){
-        Page<Product> page=productService.listByPage(pageNum,sortField,sortDir,keyword);
+    public String listByPage(@PathVariable(name="pageNum") int pageNum, Model model, @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword,@Param("categoryId") Integer categoryId){
+        Page<Product> page=productService.listByPage(pageNum,sortField,sortDir,keyword,categoryId);
         List<Product> listProducts=page.getContent();
+        List<Category> listCategories=categoryService.listCategoriesUsedInForm();
 
         long startCount =(pageNum-1)*productService.PRODUCTS_PER_PAGE+1;
         long endCount=startCount+productService.PRODUCTS_PER_PAGE-1;
@@ -50,6 +55,9 @@ public class ProductController {
             endCount=page.getTotalElements();
         }
 
+        if(categoryId!=null){
+            model.addAttribute("categoryId",categoryId);
+        }
         model.addAttribute("currentPage",pageNum);
         model.addAttribute("startCount",startCount);
         model.addAttribute("totalPages",page.getTotalPages());
@@ -60,6 +68,7 @@ public class ProductController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("keyword", keyword );
+        model.addAttribute("listCategories", listCategories);
         return "Product/product";
     }
 

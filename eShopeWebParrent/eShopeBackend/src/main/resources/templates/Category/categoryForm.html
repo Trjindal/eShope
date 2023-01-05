@@ -59,7 +59,7 @@
                                class="contact-input"/>
                         <div class="row form-group">
                             <label class="col-form-label col-4">Parent Category : </label>
-                            <select class="form-control" th:field="*{parent}">
+                            <select class="my-form-control" th:field="*{parent}">
                                 <option value="0">[No Parent]</option>
                                 <th:block th:each="category : ${listCategories}">
                                     <option th:value="${category.id}">[[${category.name}]]</option>

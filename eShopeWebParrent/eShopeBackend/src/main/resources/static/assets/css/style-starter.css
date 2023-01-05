@@ -21788,6 +21788,21 @@ float:right;
 margin:10px;
 }
 
+.search-form-control{
+
+    padding: 6px;
+    font-size: 16px;
+    color: var(--heading-color);
+    background: var(--bg-grey);
+    border: 2px solid var(--border-color-light);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: var(--border-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    outline: none;
+}
+
 @media only screen and (max-width: 768px) {
 
 
