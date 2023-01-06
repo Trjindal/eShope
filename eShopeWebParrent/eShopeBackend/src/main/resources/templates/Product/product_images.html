@@ -29,8 +29,8 @@
                     <img th:id="'extraThumbnail'+${status.index}"  th:alt="'Extra Image '+${status.index+1}+' Preview'" class="img-fluid row mx-auto mb-2 thumbnail" th:src="@{${productImage.getImagePath}}">
                     <input type="file"  class="col-form-label col-sm-12 mb-2" name="extraImage" accept="image/png,image/jpeg">
                 </div></div>
-            <input type="hidden" name="imageIDs" th:id="'imageId'+${status.index}"/>
-            <input type="hidden" name="imageNames" th:id="'imageName'+${status.index}"/>
+            <input type="hidden" name="imageIDs" th:id="'imageId'+${status.index}" th:value="${productImage.id}"/>
+            <input type="hidden" name="imageNames" th:id="'imageName'+${status.index}" th:value="${productImage.name}" />
 
         </th:block>
 

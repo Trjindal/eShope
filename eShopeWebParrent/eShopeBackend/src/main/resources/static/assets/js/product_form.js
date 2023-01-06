@@ -24,6 +24,7 @@ $(document).ready(function(){
 //FOR DELETING IMAGE IN EDIT MODE
     $("a[name='linkRemoveExtraImage']").each(function(index){
         $(this).click(function(){
+            console.log(index)
             removeExtraImage(index);
         })
     })
@@ -34,8 +35,6 @@ $(document).ready(function(){
                 removeDetailsSectionByIndex(index);
             })
         })
-
-
     });
 
     function checkFileSize(fileInput){
@@ -49,10 +48,19 @@ $(document).ready(function(){
             fileInput.setCustomValidity("");
             return true;
         }
-    }ā
+    }
 
     function showExtraImageThumbnail(fileInput,index){
+
         var file=fileInput.files[0];
+        fileName=file.name;
+
+        imageNameHiddenField=$("#imageName"+index);
+        if(imageNameHiddenField.length){
+            imageNameHiddenField.val(fileName);
+            console.log(imageNameHiddenField);
+        }
+
         var reader=new FileReader();
         reader.onload=function(e){
         $('#extraThumbnail'+index).attr("src",e.target.result);
@@ -91,7 +99,14 @@ $(document).ready(function(){
     }
 
     function removeExtraImage(index){
-        console.log(index);
+        var myThumbnail=$("#extraThumbnail"+index);
+        console.log(myThumbnail[0].name);
+        imageNameHiddenField=$("#imageName"+index);
+                if(imageNameHiddenField.length){
+                    imageNameHiddenField.val('');
+                    console.log(imageNameHiddenField);
+                }
+        $("#divExtraImage"+index).remove();
         $("#divExtraImage"+index).remove();
     }
 
@@ -113,6 +128,7 @@ $(document).ready(function(){
 
 
         htmlDetailsSection=` <div class="row form-inline" id="divDetails${divDetailsCount}">
+                                  <input type="hidden" name="detailsIds" value="0"/>
                                 <label class="col-form-label col-sm-2 p-3">Name : </label>
                                 <input type="text" placeholder="Name"  class="contact-input col-sm-3" name="detailsName" maxlength="255"/>
                                 <div class="col-sm-1"></div>

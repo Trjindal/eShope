@@ -29,6 +29,12 @@ public class ProductImage {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    public ProductImage(Integer id, String name, Product product) {
+        this.id=id;
+        this.name = name;
+        this.product = product;
+    }
+
     @Transient
     public String getImagePath(){
         return "/product-photos/"+product.getId()+"/extras/"+this.name;

@@ -22,7 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @Slf4j
@@ -166,7 +171,7 @@ public class ProductController {
 
         //UPLOADING IMAGES
         setMainImageName(mainImageMultipart,product);
-        setExtraImageNames(extraImageMultiparts,product);
+        setNewExtraImageNames(extraImageMultiparts,product);
         setProductDetails(detailsName,detailsValue,product);
 
         Product savedProduct = productService.save(product);
@@ -203,19 +208,26 @@ public class ProductController {
     }
 
     @PostMapping("products/editProduct")
-    public String saveEditProduct(RedirectAttributes redirectAttributes,
-                              @Valid @ModelAttribute(value = "product") Product product
-            ,Errors errors, Model model,@RequestParam("image") MultipartFile mainImageMultipart
-            ,@RequestParam("extraImage") MultipartFile[] extraImageMultiparts,@RequestParam(name = "detailsName",required = false) String[] detailsName
-            ,@RequestParam(name="detailsValue",required = false)String[] detailsValue,HttpSession session) throws IOException {
+    public String saveEditProduct(RedirectAttributes redirectAttributes
+            , @Valid @ModelAttribute(value = "product") Product product
+            ,Errors errors
+            , Model model
+            ,@RequestParam("image") MultipartFile mainImageMultipart
+            ,@RequestParam("extraImage") MultipartFile[] extraImageMultiparts
+            ,@RequestParam("detailsIds") String[] detailIds
+            ,@RequestParam(name = "detailsName",required = false) String[] detailsName
+            ,@RequestParam(name="detailsValue",required = false)String[] detailsValue
+            ,@RequestParam(name="imageIDs",required = false)String[] imageIDs
+            ,@RequestParam(name="imageNames",required = false)String[] imageNames
+            ,HttpSession session) throws IOException {
 
         List<Brand> listBrands = brandService.listAllBrands();
         Integer numberOfExistingExtraImages = product.getImages().size();
         Integer id = (Integer) session.getAttribute("id");
-        Product existingProduct=productService.getProductById(id);
+        Product existingProduct = productService.getProductById(id);
 
         //TO CHECK UNIQUE NAME
-        if(existingProduct!=null&&!(existingProduct.getName().matches(product.getName()))) {
+        if (existingProduct != null && !(existingProduct.getName().matches(product.getName()))) {
             if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
                 log.error("Product form validation failed due to name ");
 
@@ -227,29 +239,29 @@ public class ProductController {
         }
 
         //ERROR FOR MAIN IMAGE
-        if(mainImageMultipart.getOriginalFilename().isEmpty()&&existingProduct.getMainImage()==null){
+        if (mainImageMultipart.getOriginalFilename().isEmpty() && existingProduct.getMainImage() == null) {
             log.error("Product form validation failed due to Main Image ");
-            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+            model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
             model.addAttribute("mainImageNotProvided", "Please upload main image.");
             model.addAttribute("listBrands", listBrands);
             return "Product/productUpdateForm.html";
         }
 
         //ERROR FOR MAIN IMAGE SIZE
-        if(mainImageMultipart.getSize()>=512000){
+        if (mainImageMultipart.getSize() >= 512000) {
             log.error("Product form validation failed due to Main Image Size");
-            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+            model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
             model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
             model.addAttribute("listBrands", listBrands);
             return "Product/productUpdateForm.html";
         }
 
         //ERROR FOR EXTRA IMAGE SIZE
-        if(extraImageMultiparts.length>0){
-            for(MultipartFile image:extraImageMultiparts){
-                if(image.getSize()>=512000){
+        if (extraImageMultiparts.length > 0) {
+            for (MultipartFile image : extraImageMultiparts) {
+                if (image.getSize() >= 512000) {
                     log.error("Product form validation failed due to Extra Image Size");
-                    model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+                    model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
                     model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
                     model.addAttribute("listBrands", listBrands);
                     return "Product/productUpdateForm.html";
@@ -260,61 +272,39 @@ public class ProductController {
         //DISPLAYING ERROR MESSAGES
         if (errors.hasErrors()) {
             log.error("New Product form validation failed due to : " + errors.toString());
-            model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
+            model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
             model.addAttribute("listBrands", listBrands);
             return "Product/productUpdateForm.html";
         }
 
-        log.error(String.valueOf(product.getDetails()));
-        log.error(String.valueOf(product.getImages()));
-        log.error(product.getMainImage());
-
         //UPLOADING IMAGES
-        setMainImageName(mainImageMultipart,product);
-        setExtraImageNames(extraImageMultiparts,product);
-        setProductDetails(detailsName,detailsValue,product);
-
+        setMainImageName(mainImageMultipart, product);
+        setExistingExtraImageNames(imageIDs, imageNames, product);
+        setNewExtraImageNames(extraImageMultiparts, product);
+        setProductDetails(detailIds,detailsName, detailsValue, product);
 
 
         product.setId(existingProduct.getId());
         product.setCreatedTime(existingProduct.getCreatedTime());
-        if(product.getMainImage()==null)
+        if (product.getMainImage() == null)
             product.setMainImage(existingProduct.getMainImage());
-        if(product.getImages()==null)
-            product.setImages(existingProduct.getImages());
-        if(product.getDetails()==null)
-            product.setDetails(existingProduct.getDetails());
-//        existingProduct.setName();
-//        existingProduct.setAlias();
-//        existingProduct.setShortDescription();
-//        existingProduct.setFullDescription();
-//        existingProduct.setInStock();
-//        existingProduct.setEnabled();
-//        existingProduct.setCost();
-//        existingProduct.setPrice();
-//        existingProduct.setDiscountPercentage();
-//        existingProduct.setLength();
-//        existingProduct.setWidth();
-//        existingProduct.setHeight();
-//        existingProduct.setWeight();
-//        existingProduct.setBrand();
-//        existingProduct.setDetails(existingProduct);
-
-        log.error(product.getMainImage());
+//        if(product.getImages()==null)
+//            product.setImages(existingProduct.getImages());
+//        if(product.getDetails()==null)
+//            product.setDetails(existingProduct.getDetails());
 
         Product savedProduct = productService.save(product);
 
-        saveUploadImages(mainImageMultipart,extraImageMultiparts,savedProduct);
+        saveUploadImages(mainImageMultipart, extraImageMultiparts, savedProduct);
 
+        deleteExtraImagesRemovedOnForm(product);
 
         redirectAttributes.addFlashAttribute("message", "The product has been edited successfully.");
         return "redirect:/products";
 
+    }
 
-}
-
-
-        @GetMapping("/products/{id}/enabled/{status}")
+    @GetMapping("/products/{id}/enabled/{status}")
     public String updateProductEnabledStatus(@PathVariable("id") Integer id,@PathVariable("status") boolean enabled,RedirectAttributes redirectAttributes){
         productService.updateProductEnabledStatus(id,enabled);
         String status=enabled?"enabled":"disabled";
@@ -340,6 +330,30 @@ public class ProductController {
         return "redirect:/products";
     }
 
+
+    private void deleteExtraImagesRemovedOnForm(Product product) {
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        String extraImageDir = s+"/product-photos/" + product.getId() + "/extras";
+        Path dirPath = Paths.get(extraImageDir);
+
+        try {
+            Files.list(dirPath).forEach(file -> {
+                String fileName = file.toFile().getName();
+
+                if (!product.containsImageName(fileName)) {
+                    try {
+                        Files.delete(file);
+                    } catch (IOException e) {
+                        log.error("Could not delete extra image " + fileName);
+                    }
+                }
+            });
+        } catch (IOException e) {
+            log.error("Could not list directory : "+ dirPath);
+        }
+    }
+
     private void setMainImageName(MultipartFile mainImageMultipart,Product product){
         if (!mainImageMultipart.isEmpty())
         {
@@ -348,12 +362,30 @@ public class ProductController {
         }
     }
 
-    private void setExtraImageNames(MultipartFile[] extraImageMultiparts, Product product) {
+    private void setExistingExtraImageNames(String[] imageIDs, String[] imageNames, Product product) {
+
+        if(imageIDs==null||imageIDs.length==0) return;
+
+        Set<ProductImage> images=new HashSet<ProductImage>();
+        for(int count=0;count<imageIDs.length;count++){
+            Integer id=Integer.parseInt(imageIDs[count]);
+            String name=imageNames[count];
+            if(!(name.isEmpty())){
+             images.add(new ProductImage(id,name,product));}
+        }
+
+
+        product.setImages(images);
+    }
+
+    private void setNewExtraImageNames(MultipartFile[] extraImageMultiparts, Product product) {
         if(extraImageMultiparts.length>0){
             for(MultipartFile image:extraImageMultiparts){
                 if(!image.isEmpty()){
                     String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-                    product.addExtraImage(fileName);
+                    if(!product.containsImageName(fileName)){
+                        product.addExtraImage(fileName);
+                    }
                 }
             }
         }
@@ -386,6 +418,21 @@ public class ProductController {
             String value=detailsValue[count];
 
             if(!name.isEmpty()&&!value.isEmpty()){
+                product.addDetails(name,value);
+            }
+        }
+    }
+
+    private void setProductDetails(String[] detailsIds,String[] detailsName, String[] detailsValue, Product product) {
+        if(detailsName==null||detailsName.length==0) return;
+
+        for(int count=0;count<detailsName.length;count++){
+            String name=detailsName[count];
+            String value=detailsValue[count];
+            Integer id=Integer.parseInt(detailsIds[count]);
+            if(id!=0){
+                product.addDetails(id,name,value);
+            }else if(!name.isEmpty()&&!value.isEmpty()){
                 product.addDetails(name,value);
             }
         }
