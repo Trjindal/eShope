@@ -191,7 +191,7 @@ public class ProductController {
         try{
             Product product=productService.getProductById(id);
             Integer numberOfExistingExtraImages=product.getImages().size();
-
+            log.error(String.valueOf(product.getDetails()));
             session.setAttribute("id",id);
             List<Brand> listBrands=brandService.listAllBrands();
             model.addAttribute("product",product);
@@ -221,19 +221,26 @@ public class ProductController {
             ,@RequestParam(name="imageNames",required = false)String[] imageNames
             ,HttpSession session) throws IOException {
 
+
+       List<ProductDetails> myList=product.getDetails();
+      myList.forEach(detail-> log.error(detail.getName()));
+
         List<Brand> listBrands = brandService.listAllBrands();
         Integer numberOfExistingExtraImages = product.getImages().size();
         Integer id = (Integer) session.getAttribute("id");
         Product existingProduct = productService.getProductById(id);
+        product.setId(existingProduct.getId());
 
         //TO CHECK UNIQUE NAME
         if (existingProduct != null && !(existingProduct.getName().matches(product.getName()))) {
             if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
+
                 log.error("Product form validation failed due to name ");
 
                 model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
                 model.addAttribute("nameNotUnique", "There is another product having same name");
                 model.addAttribute("listBrands", listBrands);
+//                model.addAttribute("product",product);
                 return "Product/productEditForm.html";
             }
         }
@@ -271,6 +278,7 @@ public class ProductController {
 
         //DISPLAYING ERROR MESSAGES
         if (errors.hasErrors()) {
+            log.error(String.valueOf(product.getDetails()));
             log.error("New Product form validation failed due to : " + errors.toString());
             model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
             model.addAttribute("listBrands", listBrands);
@@ -284,7 +292,7 @@ public class ProductController {
         setProductDetails(detailIds,detailsName, detailsValue, product);
 
 
-        product.setId(existingProduct.getId());
+
         product.setCreatedTime(existingProduct.getCreatedTime());
         if (product.getMainImage() == null)
             product.setMainImage(existingProduct.getMainImage());
@@ -312,6 +320,22 @@ public class ProductController {
         redirectAttributes.addFlashAttribute("message",message);
         return "redirect:/products";
     }
+
+    @GetMapping("/products/detail/{id}")
+    public String detailProduct(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model){
+        try{
+            Product product=productService.getProductById(id);
+            model.addAttribute("product",product);
+            return "Product/viewProductModal.html";
+        }catch (UsernameNotFoundException ex){
+            redirectAttributes.addFlashAttribute("message",ex.getMessage());
+
+
+            return "redirect:/products";
+        }
+
+    }
+
 
     @GetMapping("/products/delete/{id}")
     public String deleteProduct(@PathVariable(name="id")Integer id,Model model,RedirectAttributes redirectAttributes){

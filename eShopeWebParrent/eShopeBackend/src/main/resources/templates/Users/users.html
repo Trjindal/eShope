@@ -365,30 +365,24 @@ $('#deleteUserModal').on('show.bs.modal', function (event) {
 <!--THEME CHANGE-->
 
 <script>
+    function myTheme(){
+<!--    FOR DARK -->
     if(toggleSwitch.checked==true){
      document.getElementById('myMenu').style.backgroundColor="black";
       document.getElementById('myModal').style.backgroundColor="black";
       console.log("dark");
-    }else{
+    }
+<!--    FOR LIGHT-->
+    else{
     document.getElementById('myMenu').style.backgroundColor="white";
     document.getElementById('myModal').style.backgroundColor="white";
     console.log("white");
     }
-
-toggleSwitch.addEventListener('click',()=>{
-    if(toggleSwitch.checked==true){
-     document.getElementById('myMenu').style.backgroundColor="black";
-      document.getElementById('myModal').style.backgroundColor="black";
-      console.log("dark");
-    }
-    else{
-      document.getElementById('myMenu').style.backgroundColor="white";
-      document.getElementById('myModal').style.backgroundColor="white";
-      console.log("white");
     }
 
-});
+    myTheme();
 
+toggleSwitch.addEventListener('click',myTheme);
 </script>
 
 
