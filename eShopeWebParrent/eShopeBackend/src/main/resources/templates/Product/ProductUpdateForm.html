@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <!-- Required meta tags -->
@@ -81,21 +82,27 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane  p-3 active" id="overview" role="tabpanel" >
-                        <div th:replace="Product/product_overview :: content"></div>
+                        <div th:replace="Product/product_overview :: content" ></div>
                     </div>
                     <div class="tab-pane p-3  " id="description" role="tabpanel" >
-                        <div th:replace="Product/product_description :: content"></div>
+                        <div th:replace="Product/product_description :: content" sec:authorize="hasAnyAuthority('Admin','Editor')"></div>
+                        <div th:replace="Product/product_description_readonly :: content"  sec:authorize="hasAuthority('Salesperson')"></div>
                     </div>
                     <div class="tab-pane p-3 " id="images" role="tabpanel">
-                        <div th:replace="Product/product_images :: content"></div>
+                        <div th:replace="Product/product_images :: content" sec:authorize="hasAnyAuthority('Admin','Editor')"></div>
+                        <div th:replace="Product/product_images_readonly :: content"  sec:authorize="hasAuthority('Salesperson')"></div>
                     </div>
                     <div class="tab-pane p-3 " id="details" role="tabpanel" >
-                        <div th:replace="Product/product_details :: content"></div>
-                        <button type="button" class="btn btn-style btn-style-2" onclick="addNextDetailSection()">Add More Details</button>
+                        <th:block sec:authorize="hasAnyAuthority('Admin','Editor')">
+                            <div th:replace="Product/product_details :: content"></div>
+                            <button type="button" class="btn btn-style btn-style-2" onclick="addNextDetailSection()">Add More Details</button>
+                        </th:block>
+                        <div th:replace="Product/product_details_readonly :: content"  sec:authorize="hasAuthority('Salesperson')"></div>
                     </div>
 
                     <div class="tab-pane p-3 " id="shipping" role="tabpanel" >
-                        <div th:replace="Product/product_shipping :: content"></div>
+                        <div th:replace="Product/product_shipping :: content" sec:authorize="hasAnyAuthority('Admin','Editor')"></div>
+                        <div th:replace="Product/product_shipping_readonly :: content"  sec:authorize="hasAuthority('Salesperson')"></div>
                     </div>
                 </div>
 

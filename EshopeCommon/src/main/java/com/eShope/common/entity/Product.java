@@ -32,12 +32,12 @@ public class Product {
 
     @Column(length = 512,nullable = false)
     @NotBlank(message="Short Description must not be blank")
-    @Size(min=10, message="Short Description must be at least 10 characters long")
+    @Size(min=10,max = 512,message="Short Description must be at least 10 and at most 511 characters long")
     private String shortDescription;
 
     @Column(length = 4096,nullable = false)
     @NotBlank(message="Full Description must not be blank")
-    @Size(min=10, message="Full Description must be at least 10 characters long")
+    @Size(min=10,max =4096, message="Full Description must be at least 10 and at most 4095 characters long")
     private String fullDescription;
 
     @Column(name = "created_time")

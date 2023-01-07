@@ -25,7 +25,7 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public static final int PRODUCTS_PER_PAGE = 10;
+    public static final int PRODUCTS_PER_PAGE = 5;
 
     public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword,Integer categoryId) {
 
@@ -81,6 +81,8 @@ public class ProductService {
 //            return productRepository.updateProductById(product);
 //        }
     }
+
+
 
     public boolean isNameUnique(String name) {
         Product productByName = productRepository.getProductByName(name);

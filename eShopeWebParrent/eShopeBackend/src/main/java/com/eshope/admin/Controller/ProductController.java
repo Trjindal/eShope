@@ -2,6 +2,7 @@ package com.eshope.admin.Controller;
 
 
 import com.eShope.common.entity.*;
+import com.eshope.admin.Security.EshopeUserDetails;
 import com.eshope.admin.Service.BrandService;
 import com.eshope.admin.Service.CategoryService;
 import com.eshope.admin.Service.ProductService;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -210,16 +212,29 @@ public class ProductController {
     @PostMapping("products/editProduct")
     public String saveEditProduct(RedirectAttributes redirectAttributes
             , @Valid @ModelAttribute(value = "product") Product product
-            ,Errors errors
+            , Errors errors
             , Model model
-            ,@RequestParam("image") MultipartFile mainImageMultipart
-            ,@RequestParam("extraImage") MultipartFile[] extraImageMultiparts
-            ,@RequestParam("detailsIds") String[] detailIds
-            ,@RequestParam(name = "detailsName",required = false) String[] detailsName
-            ,@RequestParam(name="detailsValue",required = false)String[] detailsValue
-            ,@RequestParam(name="imageIDs",required = false)String[] imageIDs
-            ,@RequestParam(name="imageNames",required = false)String[] imageNames
-            ,HttpSession session) throws IOException {
+            , @RequestParam(value = "image",required = false) MultipartFile mainImageMultipart
+            , @RequestParam(value = "extraImage",required = false) MultipartFile[] extraImageMultiparts
+            , @RequestParam(value = "detailsIds",required = false) String[] detailIds
+            , @RequestParam(name = "detailsName",required = false) String[] detailsName
+            , @RequestParam(name="detailsValue",required = false)String[] detailsValue
+            , @RequestParam(name="imageIDs",required = false)String[] imageIDs
+            , @RequestParam(name="imageNames",required = false)String[] imageNames
+            , @AuthenticationPrincipal EshopeUserDetails loggedUser
+            , HttpSession session) throws IOException {
+
+        Integer id = (Integer) session.getAttribute("id");
+        Product existingProduct = productService.getProductById(id);
+
+        if(loggedUser.hasRole("Salesperson")){
+            existingProduct.setCost(product.getCost());
+            existingProduct.setPrice(product.getPrice());
+            existingProduct.setDiscountPercentage(product.getDiscountPercentage());
+            productService.save(existingProduct);
+            redirectAttributes.addFlashAttribute("message", "The product has been edited successfully.");
+            return "redirect:/products";
+        }
 
 
        List<ProductDetails> myList=product.getDetails();
@@ -227,8 +242,7 @@ public class ProductController {
 
         List<Brand> listBrands = brandService.listAllBrands();
         Integer numberOfExistingExtraImages = product.getImages().size();
-        Integer id = (Integer) session.getAttribute("id");
-        Product existingProduct = productService.getProductById(id);
+
         product.setId(existingProduct.getId());
 
         //TO CHECK UNIQUE NAME

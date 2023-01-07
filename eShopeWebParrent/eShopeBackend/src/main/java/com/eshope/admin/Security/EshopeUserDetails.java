@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class EshopeUserDetails implements UserDetails {
 
-
+    private static final long serialVersionUID=1L;
     private User user;
 
     public EshopeUserDetails(User user){
@@ -76,5 +76,9 @@ public class EshopeUserDetails implements UserDetails {
 
     public void setLastName(String lastName) {
         this.user.setLastName(lastName);
+    }
+
+    public boolean hasRole(String roleName){
+        return user.hasRole(roleName);
     }
 }
