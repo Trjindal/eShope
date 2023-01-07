@@ -21680,7 +21680,7 @@ width:10vw;
 border-radius:var(--border-radius);
 }
 .thumbnail{
-width:10vw;
+width:auto;
 height:25vh;
 border-radius:var(--border-radius);
 }
@@ -21789,7 +21789,7 @@ margin:10px;
 }
 
 .search-form-control{
-
+    width:90%;
     padding: 6px;
     font-size: 16px;
     color: var(--heading-color);

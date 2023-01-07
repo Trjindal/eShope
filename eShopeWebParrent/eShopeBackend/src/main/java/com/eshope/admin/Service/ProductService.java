@@ -73,13 +73,7 @@ public class ProductService {
 
         product.setUpdateTime(new Date());
         return productRepository.save(product);
-//
-//        if(product.getId()==null) {
-//            log.error(String.valueOf(product.getId()));
-//            return productRepository.save(product);
-//        }else{
-//            return productRepository.updateProductById(product);
-//        }
+
     }
 
 

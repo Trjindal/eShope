@@ -197,6 +197,7 @@ public class ProductController {
             session.setAttribute("id",id);
             List<Brand> listBrands=brandService.listAllBrands();
             model.addAttribute("product",product);
+            model.addAttribute("products",new Product());
             model.addAttribute("listBrands",listBrands);
             model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
 
@@ -254,7 +255,8 @@ public class ProductController {
                 model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
                 model.addAttribute("nameNotUnique", "There is another product having same name");
                 model.addAttribute("listBrands", listBrands);
-//                model.addAttribute("product",product);
+                model.addAttribute("product",product);
+                model.addAttribute("products",existingProduct);
                 return "Product/productEditForm.html";
             }
         }
@@ -265,6 +267,7 @@ public class ProductController {
             model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
             model.addAttribute("mainImageNotProvided", "Please upload main image.");
             model.addAttribute("listBrands", listBrands);
+            model.addAttribute("products",existingProduct);
             return "Product/productUpdateForm.html";
         }
 
@@ -274,6 +277,7 @@ public class ProductController {
             model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
             model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
             model.addAttribute("listBrands", listBrands);
+            model.addAttribute("products",existingProduct);
             return "Product/productUpdateForm.html";
         }
 
@@ -285,6 +289,7 @@ public class ProductController {
                     model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
                     model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
                     model.addAttribute("listBrands", listBrands);
+                    model.addAttribute("products",existingProduct);
                     return "Product/productUpdateForm.html";
                 }
             }
@@ -296,6 +301,7 @@ public class ProductController {
             log.error("New Product form validation failed due to : " + errors.toString());
             model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
             model.addAttribute("listBrands", listBrands);
+            model.addAttribute("products",existingProduct);
             return "Product/productUpdateForm.html";
         }
 
