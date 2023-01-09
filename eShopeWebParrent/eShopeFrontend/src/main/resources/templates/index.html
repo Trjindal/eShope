@@ -24,13 +24,37 @@
 </section>
 <!-- /inner banner -->
 
+
+<!-- courses section -->
+<div class="w3l-grids-block-5 py-5">
+    <div class="container py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+            <p class="text-uppercase">Best Categories</p>
+            <h3 class="title-style">Find The Right Category For You</h3>
+        </div>
+        <div  class="d-block flex-column w-100" >
+            <div class="row flex-column w-25 "  style="max-height:120vh;">
+               <div class="d-flex p-2  align-items-center " th:each="category:${listCategories}">
+                   <div class="p-2 myBorder d-flex align-items-center" style="width:150px;">
+                       <a th:href="@{'/c/'+${category.alias}}" class="p-2"><img th:src="@{${category.getPhotosImagePath}}" width="50" style="border-radius:100px;"></a>
+                       <div>
+                           <a  th:href="@{'/c/'+${category.alias}}">[[${category.name}]]</a>
+                       </div>
+                   </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //courses section -->
+
 <!-- header -->
 <div th:replace="~{Fragments/footer :: footer}">...</div>
 <!-- //header -->
 
 
 <!--    COMMON JAVASCRIPT  -->
-    <div th:replace="Fragments/fragment::common_JS"></div>
+<div th:replace="Fragments/fragment::common_JS"></div>
 <!--    /COMMON JAVASCRIPT  -->
 </body>
 </html>
