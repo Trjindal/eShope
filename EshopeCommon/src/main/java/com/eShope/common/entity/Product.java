@@ -114,6 +114,13 @@ public class Product {
         return name;
     }
 
+    @Transient
+    public float getDiscountPrice(){
+        if(discountPercentage>0){
+            return this.price*((100-discountPercentage)/100);
+        }
+        return this.price;
+    }
 
     public boolean containsImageName(String imageName) {
         Iterator<ProductImage> iterator=images.iterator();

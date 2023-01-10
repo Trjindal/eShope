@@ -11,6 +11,8 @@
   <link rel="stylesheet" th:href="@{/assets/css/style-starter.css}">
   <link rel="stylesheet" th:href="@{/assets/css/all.css}">
 </head>
+
+
   <div th:fragment="common_JS">
 
     <!-- Js scripts -->
@@ -96,6 +98,61 @@
     <!-- //bootstrap -->
     <!-- //Js scripts -->
   </div>
+
+
+<!-- pagination -->
+<div th:fragment="pagination(moduleURL,entityName)">
+  <div class="text-center m-1" th:if="${totalItems>0}">
+    <span>Showing [[${entityName}]] # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]] </span>
+  </div>
+  <div class="text-center m-1" th:unless="${totalItems>0}">
+    <span>No [[${entityName}]] Found</span>
+  </div>
+  <div th:if="${totalPages>1}">
+    <div class="pagination-style text-center mt-5 mb-5">
+      <ul>
+        <li>
+          <a th:if="${currentPage > 1}"  th:href="@{${moduleURL}+'1' +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+<!--            th:replace="fragments :: page_link(${moduleURL}, '1')"-->
+            <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+          </a>
+          <a th:unless="${currentPage > 1}" class="not-allowed" disabled="">
+            <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+          </a>
+          <a th:if="${currentPage > 1}" th:href="@{${moduleURL}+ ${currentPage - 1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+            <span class="fa fa-angle-left" aria-hidden="true"></span>
+          </a>
+          <a th:unless="${currentPage > 1}" class="not-allowed" disabled="">
+            <span class="fa fa-angle-left" aria-hidden="true"></span>
+          </a>
+        </li>
+        <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+              <li>
+                  <a th:if="${currentPage != i}" th:href="@{${moduleURL}+ ${i} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">[[${i}]]</a>
+                  <a class="active" th:unless="${currentPage != i}">[[${i}]]</a>
+              </li>
+        </span>
+        <li>
+          <a th:if="${currentPage < totalPages}" th:href="@{${moduleURL}+ ${currentPage + 1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+            <span class="fa fa-angle-right" aria-hidden="true"></span>
+          </a>
+          <a th:unless="${currentPage < totalPages}" class="not-allowed" disabled="">
+            <span class="fa fa-angle-right" aria-hidden="true"></span>
+          </a>
+          <a th:if="${currentPage < totalPages}" th:href="@{${moduleURL}+ ${totalPages} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+            <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+          </a>
+          <a th:unless="${currentPage < totalPages}" class="not-allowed" disabled="">
+            <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!--    /pagination     -->
+
+
 <body>
 
 </body>

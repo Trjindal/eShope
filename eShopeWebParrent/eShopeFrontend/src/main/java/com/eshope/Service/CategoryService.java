@@ -16,7 +16,9 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<Category> listNoChilderCategories(){
+
+
+    public List<Category> listNoChildrenCategories(){
         List<Category> categoryListHavingNoChildren=new ArrayList<>();
         List<Category> listEnabledCategories=categoryRepository.findAllEnabled();
         listEnabledCategories.forEach(category -> {
@@ -27,4 +29,22 @@ public class CategoryService {
         });
         return categoryListHavingNoChildren;
     }
+
+    public Category getCategory(String alias){
+        return categoryRepository.findByAliasEnabled(alias);
+    }
+
+    public List<Category> getCategoryParent(Category child){
+
+        List<Category> listParents=new ArrayList<>();
+
+        Category parent=child.getParent();
+        while(parent!=null){
+            listParents.add(0,parent);
+            parent=parent.getParent();
+        }
+
+        return listParents;
+    }
+
 }
