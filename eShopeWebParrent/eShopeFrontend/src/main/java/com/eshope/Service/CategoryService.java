@@ -4,6 +4,7 @@ package com.eshope.Service;
 import com.eShope.common.entity.Category;
 import com.eshope.Repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class CategoryService {
     }
 
     public Category getCategory(String alias){
+       Category category= categoryRepository.findByAliasEnabled(alias);
+        if(category==null){
+            throw new UsernameNotFoundException("Could not found any category with alias "+ alias);
+        }
         return categoryRepository.findByAliasEnabled(alias);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,14 @@ public class ProductService {
         Pageable pageable= PageRequest.of(pageNum-1,PRODUCTS_PER_PAGE);
 
         return productRepository.listByCategory(categoryId,categoryIdMatch,pageable);
+    }
+
+    public Product getProductByAlias(String alias){
+        Product product=productRepository.findByAlias(alias);
+        if(product==null){
+            throw new UsernameNotFoundException("Could not found any product with alias " + alias);
+        }
+        return product;
     }
 
 

@@ -5,7 +5,7 @@
 <head th:replace="Fragments/fragment::page_head(${pageTitle},'none')"/>
 <body>
 
-<body>
+
 
 <!-- header -->
 <div th:replace="~{Fragments/header :: header}">...</div>
@@ -35,7 +35,7 @@
     <div class="p-2 myBorder d-flex align-items-center" th:if="${cat.enabled==true}" style="width:150px; height:100px">
       <a th:href="@{'/c/'+${cat.alias}}" class="p-2"><img th:src="@{${cat.getPhotosImagePath}}" width="50" style="border-radius:100px;"></a>
       <div>
-        <a  th:href="@{'/c/'+${category.alias}}">[[${cat.name}]]</a>
+        <a  th:href="@{'/c/'+${cat.alias}}">[[${cat.name}]]</a>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
         <div class="content-main-top">
           <div class="content-top mb-4 mt-3">
             <ul class="list-unstyled d-flex align-items-center justify-content-between">
-              <li th:if="${product.discountPercentage<=0}">
+                <li th:if="${product.discountPercentage<=0}">
                 <i class="fas fa-regular fa-money-check-dollar"></i>  $ [[${product.price}]]
               </li>
               <li th:if="${product.discountPercentage>0}">
@@ -66,7 +66,7 @@
               <li> <i class="fas fa-star"></i> 4.9</li>
             </ul>
           </div>
-          <h4><a>[[${product.name}]]</a></h4>
+          <h4><a th:href="@{'/p/'+${product.alias}}">[[${product.getShortName}]]</a></h4>
         </div>
       </div>
     </div>
@@ -88,5 +88,4 @@
 <!--    /COMMON JAVASCRIPT  -->
 
 </body>
-
 </html>

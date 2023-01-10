@@ -32,6 +32,9 @@
             <p class="text-uppercase">Best Categories</p>
             <h3 class="title-style">Find The Right Category For You</h3>
         </div>
+        <ul class="mb-3">
+            <li class="alert alert-success text-center" role="alert" th:if="${message!=null}">[[${message}]] </li>
+        </ul>
         <div  class="d-flex  border" style=" flex-wrap:wrap;">
                <div class="p-2" th:each="category:${listCategories}">
                    <div class="p-2 myBorder d-flex align-items-center" style="width:150px; height:100px">

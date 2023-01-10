@@ -6,13 +6,17 @@ import com.eshope.Service.CategoryService;
 import com.eshope.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 public class ProductController {
 
@@ -23,13 +27,15 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("c/{category_alias}")
-    public String viewCategoryByFirstPage(@PathVariable("category_alias") String alias, Model model){
-        return viewCategoryByPage(alias,model,1);
+    public String viewCategoryByFirstPage(@PathVariable("category_alias") String alias, Model model,RedirectAttributes redirectAttributes){
+        return viewCategoryByPage(alias,model,1,redirectAttributes);
     }
 
 
-        @GetMapping("c/{category_alias}/page/{pageNum}")
-    public String viewCategoryByPage(@PathVariable("category_alias") String alias, Model model,@PathVariable(name="pageNum") int pageNum){
+    @GetMapping("c/{category_alias}/page/{pageNum}")
+    public String viewCategoryByPage(@PathVariable("category_alias") String alias, Model model, @PathVariable(name="pageNum") int pageNum, RedirectAttributes redirectAttributes){
+        try{
+
         Category category=categoryService.getCategory(alias);
 
 //        WHEN CATEGORY IS NOT THERE
@@ -61,5 +67,29 @@ public class ProductController {
         model.addAttribute("listProducts",listProducts);
         model.addAttribute("category",category);
         return "products_by_category";
+        }catch (UsernameNotFoundException ex){
+//            redirectAttributes.addFlashAttribute("message",ex.getMessage());
+//            return  "redirect:/home";
+            return "error/404";
+        }
     }
+
+    @GetMapping("p/{product_alias}")
+    public String viewProductDetail(@PathVariable("product_alias") String alias, Model model){
+        try {
+            Product product= productService.getProductByAlias(alias);
+
+            //        FOR BREADCRUMBS FINDING ALL PARENT CATEGORIES
+            List<Category> listCategoryParents=categoryService.getCategoryParent(product.getCategory());
+
+            model.addAttribute("pageTitle","eShope - "+product.getShortName());
+            model.addAttribute("listCategoryParents",listCategoryParents);
+            model.addAttribute("product",product);
+
+            return "product_detail";
+        }catch (UsernameNotFoundException ex){
+            return "error/404";
+        }
+    }
+
 }

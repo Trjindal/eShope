@@ -11,6 +11,12 @@
 
     <groupId>com.eshope.site</groupId>
     <artifactId>eShopeFrontend</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

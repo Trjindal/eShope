@@ -89,7 +89,7 @@ public class CategoryService {
     public void delete(Integer id) throws UsernameNotFoundException {
         Long countById = categoryRepository.countById(id);
         if (countById == null || countById == 0) {
-            throw new UsernameNotFoundException("Could not found any user with Id " + id);
+            throw new UsernameNotFoundException("Could not found any category with Id " + id);
         }
         categoryRepository.deleteById(id);
     }
