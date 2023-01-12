@@ -1,0 +1,73 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragments/fragment::page_head('Eshope:Search - '+${keyword},'none')"/>
+<body>
+
+
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5">
+        <div class="container pt-4 pb-sm-4">
+            <h4 class="inner-text-title pt-5">Search Results for '[[${keyword}]]'</h4>
+        </div>
+    </div>
+</section>
+<!-- //inner banner -->
+
+<!--SHOWING PRODUCTS-->
+<div class="row justify-content-center align-items-center m-5">
+    <th:block th:each="product:${listResult}">
+        <div class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center mb-3">
+            <div class=" w3l-grids-block-5 w-75  ">
+                <div class="coursecard-single ">
+                    <div class="grids5-info position-relative">
+                        <img th:src="@{${product.getMainImagePath}} "  alt="" class="img-fluid" />
+                        <!--        <div class="meta-list">-->
+                        <!--          <a>Education</a>-->
+                        <!--        </div>-->
+                    </div>
+                    <div class="content-main-top">
+                        <div class="content-top mb-4 mt-3">
+                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
+                                <li th:if="${product.discountPercentage<=0}">
+                                    <i class="fas fa-regular fa-money-check-dollar"></i>  $ [[${product.price}]]
+                                </li>
+                                <li th:if="${product.discountPercentage>0}">
+                                    <i class="fas fa-regular fa-money-check-dollar"></i>  <del><span>  $ [[${product.price}]]</span></del>
+                                    $ [[${product.getDiscountPrice}]]
+                                </li>
+                                <li> <i class="fas fa-star"></i> 4.9</li>
+                            </ul>
+                        </div>
+                        <h4><a th:href="@{'/p/'+${product.alias}}">[[${product.getShortName}]]</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</div>
+<!--SHOWING PRODUCTS-->
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/search'+'/page/','product')"/>
+<!-- /pagination -->
+
+<!-- footer -->
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+
+</body>
+</html>

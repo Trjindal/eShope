@@ -11,11 +11,12 @@
 <div th:replace="~{Fragments/header :: header}">...</div>
 <!-- //header -->
 
+
 <!-- inner banner -->
 <section class="inner-banner py-5">
   <div class="w3l-breadcrumb py-lg-5">
     <div class="container pt-4 pb-sm-4">
-      <h4 class="inner-text-title pt-5">[[${product.getShortName}]]</h4>
+      <h4 class="inner-text-title pt-5">[[${product.name}]]</h4>
       <ul class="breadcrumbs-custom-path">
         <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
         <th:block th:each="parent:${listCategoryParents}">
@@ -29,11 +30,23 @@
 </section>
 <!-- //inner banner -->
 
+
+
 <!--PRODUCT DETAILS START-->
 <div class="row m-5">
   <div class="col-sm">
     <div>
-      <img th:src="@{${product.mainImagePath}}" class="img-fluid">
+      <img id="bigImage" th:src="@{${product.mainImagePath}}" class="img-fluid" index="0">
+    </div>
+    <div class="d-flex flex-row justify-content-center ">
+      <div class="m-2 border border-secondary p-1">
+        <img class="image-thumbnail" th:src="@{${product.mainImagePath}}" height="50" index="0">
+      </div>
+      <th:block th:each="extraImg,status:${product.images}">
+        <div class="m-2 border border-secondary p-1">
+          <img class="image-thumbnail" th:src="@{${extraImg.getImagePath}}" height="50" th:index="${status.count}">
+        </div>
+      </th:block>
     </div>
   </div>
   <div class="col-sm p-4">
@@ -104,6 +117,30 @@
 <!--    COMMON JAVASCRIPT  -->
 <div th:replace="Fragments/fragment::common_JS"></div>
 <!--    /COMMON JAVASCRIPT  -->
+
+
+<div th:replace="Fragments/images_carousel::content"></div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    bigImage=$("#bigImage");
+
+    $(".image-thumbnail").mouseover(function(){
+      currentImageSource=$(this).attr("src");
+      currentImageIndex=$(this).attr("index");
+
+      bigImage.attr("src",currentImageSource);
+      bigImage.attr("index",currentImageIndex);
+    });
+
+    bigImage.on("click",function(){
+      $("#carouselModal").modal("show");
+      imageIndex=parseInt(bigImage.attr("index"));
+      $("#carouselExampleIndicators").carousel(imageIndex);
+    });
+
+  });
+</script>
 
 </body>
 </html>

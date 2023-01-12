@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ProductService {
@@ -31,6 +33,12 @@ public class ProductService {
         }
         return product;
     }
+
+    public Page<Product> search(String keyword,int pageNum){
+        Pageable pageable=PageRequest.of(pageNum-1,PRODUCTS_PER_PAGE);
+        return productRepository.search(keyword,pageable);
+    }
+
 
 
 }

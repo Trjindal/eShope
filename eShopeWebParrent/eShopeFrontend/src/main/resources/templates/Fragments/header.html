@@ -23,13 +23,16 @@
       <a th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>eShope
       </a>
       <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
-              data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
+              data-target="#navbarScroll,#searchNavbar" aria-controls="navbarScroll" aria-expanded="false"
               aria-label="Toggle navigation">
         <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
         <span class="navbar-toggler-icon fa icon-close fa-times"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarScroll">
         <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
+            <!--  SEARCH BAR  -->
+            <div th:replace="Fragments/fragment::search_nav"></div>
+            <!--  /SEARCH BAR  -->
           <li class="nav-item" >
 <!--            th:classappend="${#httpServletRequest.getRequestURI() == '/courses' ? 'active':''}"-->
             <a th:href="@{/careers}" class="nav-link">Careers</a>

@@ -13,6 +13,12 @@ public interface ProductRepository extends PagingAndSortingRepository<Product,In
     public Page<Product> listByCategory(Integer categoryId, String categoryIDMatch, Pageable pageable);
 
 
+    @Query(value = "SELECT * FROM products WHERE enabled=true AND "
+        +"MATCH(name,short_description,full_description) AGAINST (?1)",
+            nativeQuery = true
+    )
+    public Page<Product> search(String keyboard,Pageable pageable);
+
     public Product findByAlias(String alias);
 
 }

@@ -153,6 +153,21 @@
 <!--    /pagination     -->
 
 
+<!--    SEARCH BAR  -->
+<div th:fragment="search_nav" class="row">
+    <div class="col-md">
+        <nav class="navbar navbar-expand-sm bg-light">
+            <div class="collapse navbar-collapse" id="searchNavbar">
+                <form class="d-flex" th:action="@{/search}" method="get">
+                    <input type="search" name="keyword" class="form-control mr-sm-2" th:value="${keyword}" placeholder="keyword " required/>
+                    <input type="submit" class="btn btn-outline-success"/>
+                </form>
+            </div>
+        </nav>
+    </div>
+</div>
+<!--    /SEARCH BAR  -->
+
 <body>
 
 </body>
