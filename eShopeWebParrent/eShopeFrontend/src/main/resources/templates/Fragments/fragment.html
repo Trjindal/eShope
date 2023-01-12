@@ -155,9 +155,9 @@
 
 <!--    SEARCH BAR  -->
 <div th:fragment="search_nav" class="row">
-    <div class="col-md">
-        <nav class="navbar navbar-expand-sm bg-light">
-            <div class="collapse navbar-collapse" id="searchNavbar">
+    <div>
+        <nav class="navbar navbar-expand-sm bg-light p-0">
+            <div class="collapse navbar-collapse" id="searchNavbar" style="box-shadow:none;overflow-y:hidden;">
                 <form class="d-flex" th:action="@{/search}" method="get">
                     <input type="search" name="keyword" class="form-control mr-sm-2" th:value="${keyword}" placeholder="keyword " required/>
                     <input type="submit" class="btn btn-outline-success"/>
