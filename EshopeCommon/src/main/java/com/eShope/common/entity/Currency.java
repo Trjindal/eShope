@@ -20,6 +20,7 @@ public class Currency {
         this.code = code;
     }
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -32,6 +33,12 @@ public class Currency {
 
     @Column(nullable = false,length = 4)
     private String code;
+
+    @Override
+    public String toString() {
+        return name+" - "+code+" - "+symbol;
+    }
+
 
 
 }
