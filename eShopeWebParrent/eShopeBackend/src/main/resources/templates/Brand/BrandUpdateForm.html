@@ -1,17 +1,10 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>eShope - Best eCommerce Website for you</title>
-    <!-- Google fonts -->
-    <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Template CSS Style link -->
-    <link rel="stylesheet" th:href="@{/assets/css/style-starter.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/all.css}">
-</head>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Edit Brand','none')"/>
+
 
 <body>
 
@@ -89,80 +82,10 @@
 </section>
 
 
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
 
-<!-- Js scripts -->
-<!-- move top -->
-<button onclick="topFunction()" id="movetop" title="Go to top">
-    <span class="fas fa-level-up-alt" aria-hidden="true"></span>
-</button>
-<script>
-        // When the user scrolls down 20px from the top of the document, show the button
-        window.onscroll = function () {
-            scrollFunction()
-        };
-
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                document.getElementById("movetop").style.display = "block";
-            } else {
-                document.getElementById("movetop").style.display = "none";
-            }
-        }
-
-        // When the user clicks on the button, scroll to the top of the document
-        function topFunction() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
-
-
-
-
-
-
-
-</script>
-<!-- //move top -->
-
-<!-- common jquery plugin -->
-<script th:src="@{/assets/js/jquery-3.3.1.min.js}"></script>
-<!-- //common jquery plugin -->
-
-<!-- theme switch js (light and dark)-->
-<script th:src="@{/assets/js/theme-change.js}"></script>
-<!-- //theme switch js (light and dark)-->
-
-<!-- MENU-JS -->
-<script>
-        $(window).on("scroll", function () {
-            var scroll = $(window).scrollTop();
-
-            if (scroll >= 80) {
-                $("#site-header").addClass("nav-fixed");
-            } else {
-                $("#site-header").removeClass("nav-fixed");
-            }
-        });
-
-        //Main navigation Active Class Add Remove
-        $(".navbar-toggler").on("click", function () {
-            $("header").toggleClass("active");
-        });
-        $(document).on("ready", function () {
-            if ($(window).width() > 991) {
-                $("header").removeClass("active");
-            }
-            $(window).on("resize", function () {
-                if ($(window).width() > 991) {
-                    $("header").removeClass("active");
-                }
-            });
-        });
-
-
-
-</script>
-<!-- //MENU-JS -->
 
 <!--  SHOW IMAGE THUMBNAIL-->
 <script>
@@ -194,18 +117,6 @@
 
 </script>
 
-<!-- disable body scroll which navbar is in active -->
-<script>
-        $(function () {
-            $('.navbar-toggler').click(function () {
-                $('body').toggleClass('noscroll');
-            })
-        });
-
-</script>
-<!-- //disable body scroll which navbar is in active -->
-
-
 <!--DISPLAY CATEGORIES-->
 <script>
 
@@ -236,15 +147,8 @@
 
 </script>
 
-<script>
-
-</script>
 
 
-<!-- bootstrap -->
-<script th:src="@{/assets/js/bootstrap.min.js}"></script>
-<!-- //bootstrap -->
-<!-- //Js scripts -->
 </body>
 
 </html>
