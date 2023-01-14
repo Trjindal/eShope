@@ -4,9 +4,9 @@ defaultImageThumbnailSrc="http://localhost:8080/eShopeAdmin/images/image-thumbna
 //for showing Main image preview
 $(document).ready(function(){
     $("#fileImage").change(function(){
-//        if(!checkFileSize(this)){
-//            return;
-//        }
+        if(!checkFileSize(this)){
+            return;
+        }
         showImageThumbnail(this);
     });
 

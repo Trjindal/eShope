@@ -12,10 +12,10 @@
                 <div class="p-2">
 <!--                    <input type="hidden" th:field="{mainImage}"/>-->
                     <label class="my-col-form-label" th:if="${product.mainImage!=null}">Main Image : [[${product.mainImage}]]</label>
-                    <label class="my-col-form-label" th:if="${products.mainImage!=null}">Main Image : [[${products.mainImage}]]</label>
+                    <label class="my-col-form-label" th:unless="${product.mainImage!=null}">Main Image : [[${products.mainImage}]]</label>
                 </div>
                 <img id="thumbnail" alt="Main Image Preview" class="thumbnail img-fluid row mx-auto mb-2" th:if="${product.mainImage!=null}"  th:src="@{${product.getMainImagePath}}">
-                <img id="thumbnail" alt="Main Image Preview" class="thumbnail img-fluid row mx-auto mb-2" th:if="${products.mainImage!=null}"  th:src="@{${products.getMainImagePath}}">
+                <img id="thumbnail" alt="Main Image Preview" class="thumbnail img-fluid row mx-auto mb-2" th:unless="${product.mainImage!=null}"  th:src="@{${products.getMainImagePath}}">
                 <input type="file" id="fileImage" class="col-form-label col-sm-12 mb-2" name="image" accept="image/png,image/jpeg">
            </div></div>
 

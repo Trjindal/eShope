@@ -8,7 +8,7 @@
 <body>
 
 <!-- header -->
-<div th:replace="~{header :: header}">...</div>
+<div th:replace="~{Fragments/header :: header}">...</div>
 <!-- //header -->
 
 <!-- inner banner -->
@@ -87,12 +87,12 @@
         <table class="table table-striped table-hover">
             <thead class="table-dark w-100">
             <tr>
-                <th th:replace="~{fragments::product_column_link('id','Id')}"></th>
+                <th th:replace="~{Fragments/fragment::product_column_link('id','Id')}"></th>
                 <th scope="col"  class="tablePhotosHeader">Photo</th>
-                <th th:replace="~{fragments::product_column_link('name','Product Name')}"></th>
-                <th th:replace="~{fragments::product_column_link('brand','Brand')}"></th>
-                <th th:replace="~{fragments::product_column_link('category','Category')}"></th>
-                <th th:replace="~{fragments::product_column_link('enable','Enable')}" sec:authorize="hasAnyAuthority('Admin','Editor')"></th>
+                <th th:replace="~{Fragments/fragment::product_column_link('name','Product Name')}"></th>
+                <th th:replace="~{Fragments/fragment::product_column_link('brand','Brand')}"></th>
+                <th th:replace="~{Fragments/fragment::product_column_link('category','Category')}"></th>
+                <th th:replace="~{Fragments/fragment::product_column_link('enable','Enable')}" sec:authorize="hasAnyAuthority('Admin','Editor')"></th>
                 <th class="sorting" scope="col"></th>
             </tr>
             </thead>
@@ -119,7 +119,7 @@
                 <td>
                     <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/products/detail/'+${product.id}}" title="view this product details" data-toggle="modal" data-target="#viewProductModal" ></a>
                     <a class="fas fa-light fa-pen-to-square" th:href="@{'/products/edit/'+${product.id}}" title="edit this product" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson')"></a>
-                    <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteProductModal" th:attr="data-whatever=${product.Id}" sec:authorize="hasAnyAuthority('Admin','Editor')" ></a>
+                    <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${product.Id}" sec:authorize="hasAnyAuthority('Admin','Editor')" ></a>
                 </td>
             </tr>
             </tbody>
@@ -147,7 +147,7 @@
                         <a class="fas fa-light fa-pen-to-square p-2" th:href="@{'/products/edit/'+${product.id}}" title="edit this product" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson')"></a>
                     </div>
                     <div class="d-flex flex-row justify-content-center mt-2">
-                        <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteProductModal" th:attr="data-whatever=${product.Id}" sec:authorize="hasAnyAuthority('Admin','Editor')" ></a>
+                        <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${product.Id}" sec:authorize="hasAnyAuthority('Admin','Editor')" ></a>
                     </div>
                 </div>
             </div>
@@ -167,11 +167,11 @@
     <!--    /VIEW MODAL   -->
 
     <!--    DELETE MODAL    -->
-    <div class="modal fade " id="deleteProductModal" role="dialog" >
+    <div class="modal fade " id="deleteModal" role="dialog" >
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content myModal">
                 <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title" id="deleteProductLabel">Delete Confirmation</h5>
+                    <h5 class="modal-title" id="deleteLabel">Delete Confirmation</h5>
 
                     <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -216,22 +216,7 @@
 
 
 <!--    DELETE PRODUCT MODAL    -->
-<script>
-
-$('#deleteProductModal').on('show.bs.modal', function (event) {
-
-  var button = $(event.relatedTarget)
-  var recipient = button.data('whatever')
-  var modal = $(this)
-  modal.find('.modal-body span').text("Are you sure you want to delete this Product Id "+recipient+" ??")
-
-   let yesButton=document.getElementById('yesButton')
-  yesButton.addEventListener('click',()=>{
-    window.open("/eShopeAdmin/products/delete/"+recipient,"_self")
-  })
-})
-
-</script>
+<div th:replace="Fragments/fragment::deleteModal('Product','products')"/>
 <!--    /DELETE PRODUCT MODAL    -->
 
 

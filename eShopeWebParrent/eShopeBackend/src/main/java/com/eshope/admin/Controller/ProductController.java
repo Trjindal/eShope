@@ -113,6 +113,7 @@ public class ProductController {
             if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
                 log.error("Product form validation failed due to name ");
 
+                model.addAttribute("products",new Product());
                 model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
                 model.addAttribute("nameNotUnique", "There is another product having same name");
                 model.addAttribute("listBrands", listBrands);
@@ -124,7 +125,7 @@ public class ProductController {
             if(existingProduct!=null&&!(existingProduct.getName().matches(product.getName()))) {
                 if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
                     log.error("Product form validation failed due to name ");
-
+                    model.addAttribute("products",new Product());
                     model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
                     model.addAttribute("nameNotUnique", "There is another product having same name");
                     model.addAttribute("listBrands", listBrands);
@@ -136,6 +137,7 @@ public class ProductController {
         //ERROR FOR MAIN IMAGE
         if(mainImageMultipart.getOriginalFilename().isEmpty()){
             log.error("Product form validation failed due to Main Image ");
+            model.addAttribute("products",new Product());
             model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
             model.addAttribute("mainImageNotProvided", "Please upload main image.");
             model.addAttribute("listBrands", listBrands);
@@ -145,6 +147,7 @@ public class ProductController {
         //ERROR FOR MAIN IMAGE SIZE
         if(mainImageMultipart.getSize()>=512000){
             log.error("Product form validation failed due to Main Image Size");
+            model.addAttribute("products",new Product());
             model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
             model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
             model.addAttribute("listBrands", listBrands);
@@ -156,6 +159,7 @@ public class ProductController {
             for(MultipartFile image:extraImageMultiparts){
                 if(image.getSize()>=512000){
                     log.error("Product form validation failed due to Extra Image Size");
+                    model.addAttribute("products",new Product());
                     model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
                     model.addAttribute("mainImageNotProvided", "Please upload image size less than 500KB.");
                     model.addAttribute("listBrands", listBrands);
@@ -167,6 +171,7 @@ public class ProductController {
         //DISPLAYING ERROR MESSAGES
         if (errors.hasErrors()) {
             log.error("New Product form validation failed due to : " + errors.toString());
+            model.addAttribute("products",new Product());
             model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
             model.addAttribute("listBrands", listBrands);
             return "Product/productForm.html";

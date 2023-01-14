@@ -9,7 +9,7 @@
 <body>
 
 <!-- header -->
-<div th:replace="~{header :: header}">...</div>
+<div th:replace="~{Fragments/header :: header}">...</div>
 <!-- //header -->
 
 <!-- inner banner -->
@@ -86,36 +86,8 @@
 <div th:replace="Fragments/fragment::common_JS"></div>
 <!--    /COMMON JAVASCRIPT  -->
 
-
 <!--SHOW IMAGE THUMBNAIL-->
-<script>
-
-    $(document).ready(function(){
-    $("#fileImage").change(function(){
-    fileSize=this.files[0].size;
-<!--    alert("File size : " +fileSize);-->
-
-    if(fileSize>1048576){
-    this.setCustomValidity("You miust choose an image less than 1 MB!");
-    this.reportValidity("");
-    }else{
-        this.setCustomValidity("");
-        showImageThumbnail(this);
-        }
-    });
-    });
-
-    function showImageThumbnail(fileInput){
-        var file=fileInput.files[0];
-        var reader=new FileReader();
-        reader.onload=function(e){
-        $('#thumbnail').attr("src",e.target.result);
-        };
-        reader.readAsDataURL(file);
-    }
-
-
-</script>
+<script th:src="@{/assets/js/imageThumbnail_ProductDetails.js}"></script>
 
 
 </body>

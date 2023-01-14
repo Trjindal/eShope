@@ -8,7 +8,7 @@
 <body>
 
 <!-- header -->
-<div th:replace="~{header :: header}">...</div>
+<div th:replace="~{Fragments/header :: header}">...</div>
 <!-- //header -->
 
 <!-- inner banner -->
@@ -80,9 +80,9 @@
         <table class="table table-striped table-hover">
             <thead class="table-dark w-100">
             <tr>
-                <th th:replace="~{fragments::brand_column_link('id','Id')}"></th>
+                <th th:replace="~{Fragments/fragment::column_link('brands','id','Id')}"></th>
                 <th scope="col"  class="tablePhotosHeader">Photos</th>
-                <th th:replace="~{fragments::brand_column_link('name','Brand Name')}"></th>
+                <th th:replace="~{Fragments/fragment::column_link('brands','name','Brand Name')}"></th>
                 <th scope="col">Category</th>
                 <th class="sorting" scope="col"></th>
             </tr>
@@ -102,7 +102,7 @@
                 </td>
                 <td>
                     <a class="fas fa-light fa-pen-to-square" th:href="@{'/brands/edit/'+${brand.id}}" title="edit this brand"></a>
-                    <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteBrandModal" th:attr="data-whatever=${brand.Id}"  ></a>
+                    <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${brand.Id}"  ></a>
                 </td>
             </tr>
             </tbody>
@@ -128,7 +128,7 @@
             <div class="col-3">
                 <div class="d-flex flex-row mt-2">
                     <a class="fas fa-light fa-pen-to-square p-2" th:href="@{'/brands/edit/'+${brand.id}}" title="edit this brand"></a>
-                    <a class="fas fa-light fa-trash p-2" id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteBrandModal" th:attr="data-whatever=${brand.Id}"  ></a>
+                    <a class="fas fa-light fa-trash p-2" id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${brand.Id}"  ></a>
                 </div>
             </div>
         </div>
@@ -136,32 +136,7 @@
     <!--/ table less-details-->
 
     <!-- DELETE MODAL -->
-    <div class="modal fade " id="deleteBrandModal" role="dialog" >
-        <div class="modal-dialog modal-dialog-centered" >
-            <div class="modal-content" id="myModal">
-                <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title" id="deleteBrandLabel">Delete Confirmation</h5>
-
-                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <span id="confirmText"></span>
-                </div>
-
-                <div class="modal-footer">
-                    <div class="col-md-2 login-center text-start">
-                        <a  type="button"  class="btn btn-style btn-style-3 text-left" id="yesButton" >Yes</a>
-                    </div>
-                    <div class="col-md-2 login-center text-start">
-                        <button class="btn btn-style btn-style-3 text-left" id="closeButton" data-dismiss="modal">No</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    <div th:replace="Fragments/fragment::deleteModalTemplate"/>
 
     <!-- pagination -->
     <div th:replace="Fragments/fragment::pagination('/brands/page/','brands')"/>
@@ -187,32 +162,27 @@
 
 
 <!--DELETE BRAND MODAL-->
-<script>
+<!--<script>-->
 
 
 
-$('#deleteBrandModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget)
-  var recipient = button.data('whatever')
-  var modal = $(this)
+<!--$('#deleteModal').on('show.bs.modal', function (event) {-->
+<!--  var button = $(event.relatedTarget)-->
+<!--  var recipient = button.data('whatever')-->
+<!--  var modal = $(this)-->
 
-  modal.find('.modal-body span').text("Are you sure you want to delete this Brand Id "+recipient+" ??")
+<!--  modal.find('.modal-body span').text("Are you sure you want to delete this Brand Id "+recipient+" ??")-->
 
-<!--  let noButton=document.getElementById('closeButton')-->
-<!--  let deleteModal=document.getElementById('deleteBrandModal')-->
-<!--  noButton.addEventListener('click',()=>{-->
-<!--        deleteModal.hide()-->
+
+<!--   let yesButton=document.getElementById('yesButton')-->
+<!--  yesButton.addEventListener('click',()=>{-->
+<!--    window.open("/eShopeAdmin/brands/delete/"+recipient,"_self")-->
 <!--  })-->
-
-   let yesButton=document.getElementById('yesButton')
-  yesButton.addEventListener('click',()=>{
-    window.open("/eShopeAdmin/brands/delete/"+recipient,"_self")
-  })
-})
+<!--})-->
 
 
-</script>
-
+<!--</script>-->
+<div th:replace="Fragments/fragment::deleteModal('Brand','brands')"/>
 
 </body>
 
