@@ -58,12 +58,24 @@
       <span>Brand : [[${product.brand.name}]]</span>
       <div >
         List Price :
-        <span th:if="${product.discountPercentage<=0}">$ [[${product.price}]]</span>
-        <del th:if="${product.discountPercentage>0}"><span>$ [[${product.price}]]</span></del>
+        <span th:if="${product.discountPercentage<=0}">
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+           [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+        </span>
+        <del th:if="${product.discountPercentage>0}" style="color:darkred">
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+          <span> [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+        </del>
       </div>
       <div th:if="${product.discountPercentage>0}">
         Price :
-        <span style="font-size:larger; color:darkred;">$ [[${product.getDiscountPrice}]] </span>
+        <span style="font-size:larger;">
+           <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+          [[${#numbers.formatDecimal(product.DiscountPrice,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+        </span>
         ([[${product.discountPercentage}]]) % off
       </div>
       <div>&nbsp;</div>

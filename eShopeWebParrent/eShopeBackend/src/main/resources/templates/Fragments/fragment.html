@@ -193,6 +193,29 @@ $('#deleteModal').on('show.bs.modal', function (event) {
 </script>
 </div>
 
+<!--    THEME CHANGE    -->
+<div th:fragment="theme_change">
+    <script>
+ function myTheme(){
+    if(toggleSwitch.checked==true){
+     document.getElementById('myMenu').style.backgroundColor="black";
+      document.getElementsByClassName('myModal')[0].style.backgroundColor="black";
+       document.getElementsByClassName('myModal')[1].style.backgroundColor="black";
+    }else{
+    document.getElementById('myMenu').style.backgroundColor="white";
+    document.getElementsByClassName('myModal')[0].style.backgroundColor="white";
+     document.getElementsByClassName('myModal')[1].style.backgroundColor="white";
+    }}
+
+    setTimeout(myTheme, 100);
+
+    toggleSwitch.addEventListener('click',function(){
+        setTimeout(myTheme, 100);
+    });
+    </script>
+</div>
+<!--    /THEME CHANGE    -->
+
 <!-- ROW HEADINGS-->
 <th class="sorting" scope="col" th:fragment="column_link(link,fieldName,columnLabel)">
     <a th:href="@{'/'+${link}+'/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">[[${columnLabel}]]</a>

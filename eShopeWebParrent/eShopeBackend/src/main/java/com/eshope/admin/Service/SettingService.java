@@ -52,7 +52,7 @@ public class SettingService {
     public void saveSiteLogo(MultipartFile multipartFile, GeneralSettingBag settingBag) throws IOException {
         if(!multipartFile.isEmpty()){
             String fileName= StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            String value="./site-logo/"+fileName;
+            String value="/site-logo/"+fileName;
             Setting setting=settingBag.updateSiteLogo(value);
             settingRepository.save(setting);
             String uploadDir="./site-logo/";

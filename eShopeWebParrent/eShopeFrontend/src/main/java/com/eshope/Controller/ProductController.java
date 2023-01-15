@@ -62,7 +62,7 @@ public class ProductController {
         model.addAttribute("endCount",endCount);
         model.addAttribute("totalItems",pageProducts.getTotalElements());
 
-        model.addAttribute("pageTitle","eShope - "+category.getName());
+        model.addAttribute("pageTitle",category.getName());
         model.addAttribute("listCategoryParents",listCategoryParents);
         model.addAttribute("listProducts",listProducts);
         model.addAttribute("category",category);
@@ -82,7 +82,7 @@ public class ProductController {
             //        FOR BREADCRUMBS FINDING ALL PARENT CATEGORIES
             List<Category> listCategoryParents=categoryService.getCategoryParent(product.getCategory());
 
-            model.addAttribute("pageTitle","eShope - "+product.getShortName());
+            model.addAttribute("pageTitle",product.getShortName());
             model.addAttribute("listCategoryParents",listCategoryParents);
             model.addAttribute("product",product);
 

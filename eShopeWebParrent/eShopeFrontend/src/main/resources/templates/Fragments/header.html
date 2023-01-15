@@ -20,9 +20,9 @@
 <header id="site-header" class="fixed-top">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light">
-      <a th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>eShope
-      </a>
-      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+      <a th:if="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>[[${SITE_NAME}]]</a>
+        <a th:unless="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><img id="siteLogo" width="100" th:src="@{${SITE_LOGO}}"></a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
               data-target="#navbarScroll,#searchNavbar" aria-controls="navbarScroll" aria-expanded="false"
               aria-label="Toggle navigation">
         <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
@@ -107,6 +107,7 @@
       <!-- //toggle switch for light and dark theme -->
     </nav>
   </div>
+
 </header>
 <!-- //header -->
 </body>
