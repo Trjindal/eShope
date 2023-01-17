@@ -47,10 +47,10 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs " id="settingTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active"  data-toggle="tab" href="#general" role="tab" >General</a>
+                        <a class="nav-link "  data-toggle="tab" href="#general" role="tab" >General</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#countries" role="tab">Countries</a>
+                        <a class="nav-link active" data-toggle="tab" href="#countries" role="tab">Countries</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " data-toggle="tab" href="#states" role="tab">States</a>
@@ -65,11 +65,11 @@
 
                  <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane  p-3 active" id="general" role="tabpanel" >
+                    <div class="tab-pane  p-3 " id="general" role="tabpanel" >
                         <div th:replace="Settings/general :: content"></div>
                     </div>
-                    <div class="tab-pane p-3  " id="countries" role="tabpanel" >
-<!--                        <div th:replace="Product/product_description :: content"></div>-->
+                    <div class="tab-pane p-3 active " id="countries" role="tabpanel" >
+                       <div th:replace="Settings/Countries :: content"></div>
                     </div>
                     <div class="tab-pane p-3 " id="states" role="tabpanel">
 <!--                        <div th:replace="Product/product_images :: content"></div>-->
@@ -90,8 +90,15 @@
 
 <!--    COMMON JAVASCRIPT  -->
 <div th:replace="Fragments/fragment::common_JS"></div>
-<!--    /COMMON JAVASCRIPT  -->
 
+<!--    /COMMON JAVASCRIPT  -->
+<script>
+    var contextPath="[[@{/}]]";
+    var csrfHeaderName="[[${_csrf.headerName}]]";
+    var csrfValue="[[${_csrf.token}]]";
+</script>
+
+<script th:src="@{/assets/js/Countries_setting.js}"></script>
 
 <!--  SHOW IMAGE THUMBNAIL-->
 <script th:src="@{/assets/js/imageThumbnail_ProductDetails.js}"></script>
