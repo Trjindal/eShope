@@ -103,7 +103,7 @@ public class CountryRestControllerTests {
     @Test
     @WithMockUser(username = "tushar@eshope.com",password = "tushar2022",roles = "ADMIN")
     public void testDeleteCountry() throws Exception{
-        Integer countryId=3;
+        Integer countryId=24;
         String url="/countries/delete/"+countryId;
         mockMvc.perform(get(url)).andExpect(status().isOk());
 

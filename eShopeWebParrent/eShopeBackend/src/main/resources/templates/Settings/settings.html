@@ -50,10 +50,10 @@
                         <a class="nav-link "  data-toggle="tab" href="#general" role="tab" >General</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#countries" role="tab">Countries</a>
+                        <a class="nav-link " data-toggle="tab" href="#countries" role="tab">Countries</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " data-toggle="tab" href="#states" role="tab">States</a>
+                        <a class="nav-link active" data-toggle="tab" href="#states" role="tab">States</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link "  data-toggle="tab" href="#mailServer" role="tab">Mail Server</a>
@@ -68,11 +68,11 @@
                     <div class="tab-pane  p-3 " id="general" role="tabpanel" >
                         <div th:replace="Settings/general :: content"></div>
                     </div>
-                    <div class="tab-pane p-3 active " id="countries" role="tabpanel" >
+                    <div class="tab-pane p-3  " id="countries" role="tabpanel" >
                        <div th:replace="Settings/Countries :: content"></div>
                     </div>
-                    <div class="tab-pane p-3 " id="states" role="tabpanel">
-<!--                        <div th:replace="Product/product_images :: content"></div>-->
+                    <div class="tab-pane p-3 active" id="states" role="tabpanel">
+                        <div th:replace="Settings/states :: content"></div>
                     </div>
                     <div class="tab-pane p-3 " id="mailServer" role="tabpanel" >
 <!--                        <div th:replace="Product/product_details :: content"></div>-->
@@ -90,7 +90,6 @@
 
 <!--    COMMON JAVASCRIPT  -->
 <div th:replace="Fragments/fragment::common_JS"></div>
-
 <!--    /COMMON JAVASCRIPT  -->
 <script>
     var contextPath="[[@{/}]]";
@@ -99,6 +98,7 @@
 </script>
 
 <script th:src="@{/assets/js/Countries_setting.js}"></script>
+<script th:src="@{/assets/js/states_setting.js}"></script>
 
 <!--  SHOW IMAGE THUMBNAIL-->
 <script th:src="@{/assets/js/imageThumbnail_ProductDetails.js}"></script>

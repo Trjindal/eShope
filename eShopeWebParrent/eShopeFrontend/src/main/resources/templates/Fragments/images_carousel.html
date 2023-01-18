@@ -13,11 +13,11 @@
          </ol>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img th:src="@{${product.mainImagePath}}" class="img-fluid">
+            <img th:src="@{${product.mainImagePath}}" style="height:500px;" class="img-fluid">
           </div>
            <th:block th:each="extraImg:${product.images}">
             <div class="carousel-item">
-              <img th:src="@{${extraImg.getImagePath}}" class="img-fluid">
+              <img th:src="@{${extraImg.getImagePath}}" class="img-fluid"  style="height:500px;">
             </div>
            </th:block>
 
