@@ -53,7 +53,7 @@ public class WebSecurityConfig  {
 
         http.csrf().and()
                 .authorizeHttpRequests()
-                .antMatchers("/users/**").hasAuthority("Admin")
+                .antMatchers("/users/**","/setting/**","/countries/**","/states/**").hasAuthority("Admin")
                 .antMatchers("/categories/**","/brands/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/products","/products/","/products/detail/**","/products/page/**").hasAnyAuthority("Admin","Editor","Salesperson","Shipper")
                 .antMatchers("/products/new","/products/delete/**").hasAnyAuthority("Admin","Editor")
@@ -64,7 +64,6 @@ public class WebSecurityConfig  {
                 .antMatchers("orders/**").hasAnyAuthority("Admin","Salesperson","Shipper")
                 .antMatchers("articles/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("menu/**").hasAnyAuthority("Admin","Editor")
-                .antMatchers("setting/**").hasAnyAuthority("Admin")
                 .antMatchers("/assets/**", "/assets/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")

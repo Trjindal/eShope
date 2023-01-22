@@ -25,11 +25,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(length = 128,nullable = false,unique = true)
-    @NotBlank(message="Email must not be blank")
     @Email(message = "Please provide a valid email address" )
+    @Size(min=5,max=128,message="Email must be at least 5 and at most 128 characters long")
     private String email;
     @Column(length = 64,nullable = false)
-    @Size(min=5, message="Password must be at least 5 characters long")
+    @Size(min=5,max = 64, message="Password must be at least 5 and at most 64 characters long")
     private String password;
 
 //    @Size(min=5, message="Password must be at least 5 characters long")
@@ -39,11 +39,11 @@ public class User {
     private String changePassword;
     @Column(name = "first_name",length = 45,nullable = false)
     @NotBlank(message="First name must not be blank")
-    @Size(min=3, message="First name must be at least 3 characters long")
+    @Size(min=3, message="First name must be at least 3 and at most 45 characters long")
     private String firstName;
     @Column(name = "last_name",length = 45,nullable = false)
     @NotBlank(message="Last name must not be blank")
-    @Size(min=3, message="Last name must be at least 3 characters long")
+    @Size(min=3, message="Last name must be at least 3 at most 45 characters long")
     private String lastName;
     @Column(length = 64)
     private String photos;

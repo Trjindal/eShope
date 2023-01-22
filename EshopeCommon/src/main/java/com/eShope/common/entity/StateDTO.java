@@ -1,4 +1,4 @@
-package com.eshope.admin.DTO;
+package com.eShope.common.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

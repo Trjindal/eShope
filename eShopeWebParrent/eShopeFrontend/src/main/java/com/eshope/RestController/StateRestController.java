@@ -1,9 +1,10 @@
-package com.eshope.admin.RestController;
+package com.eshope.RestController;
 
 import com.eShope.common.entity.Country;
 import com.eShope.common.entity.State;
 import com.eShope.common.entity.StateDTO;
-import com.eshope.admin.Repository.StateRepository;
+
+import com.eshope.Repository.StateRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class StateRestController {
     @Autowired
     StateRepository stateRepository;
 
-    @GetMapping("/states/listByCountry/{id}")
+    @GetMapping("/settings/listStatesByCountry/{id}")
     public List<StateDTO> listByCountry(@PathVariable("id") Integer countryId){
         List<State> listStates=stateRepository.findByCountryOrderByNameAsc(new Country(countryId));
         List<StateDTO> result=new ArrayList<>();

@@ -7,6 +7,12 @@ var labelCountryName;
 var fieldCountryName;
 var fieldCountryCode;
 
+
+$("#formCountry").submit(function(e){
+    e.preventDefault();
+});
+
+
 $(document).ready(function(){
   loadButton=$("#buttonLoadCountries");
   countriesDropDown=$("#countriesDropDown");
@@ -75,16 +81,19 @@ function updateCountry(){
     }).done(function(countryId){
      $("#countriesDropDown option:selected").val(countryId+"-"+countryCode);
         $("#countriesDropDown option:selected").text(countryName);
-        showToastMessage("The Country has been Updated");
+        showToastMessageCountry("The Country has been Updated");
         changeFormStateToNew();
 
     }).fail(function(){
-          showToastMessage("oops...: Could not connect ot server");
+          showToastMessageCountry("oops...: Could not connect ot server");
     });}
 
 function addCountry(){
 
+//    if (!validateFormCountry()) return;
+
     url=contextPath+"countries/save";
+//    console.log(url);
     countryName=fieldCountryName.val();
     countryCode=fieldCountryCode.val();
     jsonData={name:countryName,code:countryCode};
@@ -98,10 +107,11 @@ function addCountry(){
         data:JSON.stringify(jsonData),
         contentType:'application/json'
     }).done(function(countryId){
-        selectNewlyAddedCountry(countryId,countryCode,countryName);
-        showToastMessage("The New Country has been Added");
+//        console.log(countryId+" "+countryCode+" "+countryName);
+        selectNewlyAddedCountry(countryId,countryCode,countryName)
+        showToastMessageCountry("The New Country has been Added");
     }).fail(function(){
-          showToastMessage("oops...: Could not connect ot server");
+          showToastMessageCountry("oops...: Could not connect ot server");
     });
 }
 
@@ -112,20 +122,18 @@ function deleteCountry() {
 	 url=contextPath+"countries/delete/"+countryId;
 
 	$.ajax({
-		type: 'GET',
+		type: 'DELETE',
 		url: url,
 		beforeSend: function(xhr) {
 			xhr.setRequestHeader(csrfHeaderName, csrfValue);
 		}
-	}).fail(function() {
-	        console.log("Fail "+url);
-      	  showToastMessage("Oops...: Could not connect to server");
-      	}).done(function() {
-      	    console.log(url);
-		 $("#countriesDropDown option[value='"+optionValue+"']").remove();
-		 changeFormStateToNew();
-		  showToastMessage("The country has been deleted successfully.");
-	});
+	}).done(function() {
+      		 $("#countriesDropDown option[value='"+optionValue+"']").remove();
+      		 changeFormStateToNew();
+      		  showToastMessageCountry("The country has been deleted successfully.");
+      	}).fail(function() {
+      	  showToastMessageCountry("Oops...: Could not connect to server");
+      	});
 
 }
 
@@ -157,7 +165,7 @@ function changeFormStateToSelectedCountry(){
 
 function loadCountries(){
   url=contextPath+"countries/list";
-
+  buttonAddCountry.prop("disabled",false);
   $.get(url,function(responseJSON){
     countriesDropDown.empty();
 
@@ -167,13 +175,13 @@ function loadCountries(){
     });
   }).done(function(){
     loadButton.val("Refresh Country List");
-    showToastMessage("All countries have been loaded.");
+    showToastMessageCountry("All countries have been loaded.");
   }).fail(function(){
-    showToastMessage("oops...: Could not connect to server");
+    showToastMessageCountry("oops...: Could not connect to server");
   })
 }
 
-function showToastMessage(message){
-    $("#toastMessage").text(message);
+function showToastMessageCountry(message){
+    $("#toastMessageCountry").text(message);
     $(".toast").toast('show');
 }

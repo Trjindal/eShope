@@ -40,7 +40,7 @@ $(document).ready(function(){
     addStatesButton.click(function(){
 
         if(addStatesButton.val()=="Add"){
-            if(checkUnique()){
+            if(checkUniqueState()){
                 addState();
             }
         }else{
@@ -161,10 +161,15 @@ function deleteState(){
     stateId=statesDropDown.val();
     url=contextPath+"states/delete/"+stateId;
 
-    $.get(url,function(){
+    $.ajax({
+    		type: 'DELETE',
+    		url: url,
+    		beforeSend: function(xhr) {
+    			xhr.setRequestHeader(csrfHeaderName, csrfValue);
+    		}
+    	}).done(function(){
         $("#statesDropDown option[value='"+stateId+"']").remove();
         changeFormStateToNewState();
-    }).done(function(){
         showToastMessage("The state has been deleted successfully");
     }).fail(function(){
         showToastMessage("Oops...: Could not connect to server");
