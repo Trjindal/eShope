@@ -49,7 +49,7 @@ public class Setting {
     @Column(name = "`key`",nullable = false,length = 128)
     private String key;
 
-    @Column(nullable = false,length = 1024,updatable = true)
+    @Column(nullable = false,length = 2048,updatable = true)
     private String value;
 
     @Enumerated(EnumType.STRING)

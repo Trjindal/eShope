@@ -4,6 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:replace="Fragments/fragment::page_head('Setting','none')"/>
+<link rel="stylesheet" th:href="@{/assets/richtext/richtext.min.css}" />
 
 
 
@@ -53,13 +54,13 @@
                         <a class="nav-link " data-toggle="tab" href="#countries" role="tab">Countries</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#states" role="tab">States</a>
+                        <a class="nav-link " data-toggle="tab" href="#states" role="tab">States</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link "  data-toggle="tab" href="#mailServer" role="tab">Mail Server</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"  data-toggle="tab" href="#mailTemplates" role="tab">Mail Templates</a>
+                        <a class="nav-link active"  data-toggle="tab" href="#mailTemplates" role="tab">Mail Templates</a>
                     </li>
                 </ul>
 
@@ -69,18 +70,17 @@
                         <div th:replace="Settings/general :: content"></div>
                     </div>
                     <div class="tab-pane p-3  " id="countries" role="tabpanel" >
-                       <div th:replace="Settings/Countries :: content"></div>
+                       <div th:replace="Settings/countries :: content"></div>
                     </div>
-                    <div class="tab-pane p-3 active" id="states" role="tabpanel">
+                    <div class="tab-pane p-3 " id="states" role="tabpanel">
                         <div th:replace="Settings/states :: content"></div>
                     </div>
                     <div class="tab-pane p-3 " id="mailServer" role="tabpanel" >
-<!--                        <div th:replace="Product/product_details :: content"></div>-->
-<!--                        <button type="button" class="btn btn-style btn-style-2" onclick="addNextDetailSection()">Add More Details</button>-->
+                        <div th:replace="Settings/mailServer :: content"></div>
                     </div>
 
-                    <div class="tab-pane p-3 " id="mailTemplates" role="tabpanel" >
-<!--                        <div th:replace="Product/product_shipping :: content"></div>-->
+                    <div class="tab-pane p-3 active" id="mailTemplates" role="tabpanel" >
+                        <div th:replace="Settings/Mail_templates/mailTemplate :: content"></div>
                     </div>
                 </div>
         </div>
@@ -91,10 +91,17 @@
 <!--    COMMON JAVASCRIPT  -->
 <div th:replace="Fragments/fragment::common_JS"></div>
 <!--    /COMMON JAVASCRIPT  -->
+<script th:src="@{/assets/richtext/jquery.richtext.min.js}"></script>
+
 <script>
     var contextPath="[[@{/}]]";
     var csrfHeaderName="[[${_csrf.headerName}]]";
     var csrfValue="[[${_csrf.token}]]";
+
+    $(document).ready(function(){
+        $("#customerVerificationContent").richText();
+    })
+
 </script>
 
 <script th:src="@{/assets/js/Countries_setting.js}"></script>

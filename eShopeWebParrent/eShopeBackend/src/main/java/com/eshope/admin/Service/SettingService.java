@@ -44,6 +44,14 @@ public class SettingService {
         return new GeneralSettingBag(settings);
     }
 
+    public List<Setting> getMailServerSettings(){
+        return settingRepository.findByCategory(SettingCategory.MAIL_SERVER);
+    }
+
+    public List<Setting> getMailTemplateSettings(){
+        return settingRepository.findByCategory(SettingCategory.MAIL_TEMPLATES);
+    }
+
     public void saveAll(Iterable<Setting> settings){
         settingRepository.saveAll(settings);
     }
@@ -70,7 +78,8 @@ public class SettingService {
             Setting settingForCurrencySymbol=settingBag.updateCurrencySymbol(currency.getSymbol());
             Setting settingForCurrencyId=settingBag.updateCurrencyId(String.valueOf(currencyId));
             settingRepository.save(settingForCurrencySymbol);
-
         }
     }
+
+
 }
