@@ -17,6 +17,7 @@ import java.util.Date;
 public class Customer {
 
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -56,7 +57,7 @@ public class Customer {
     String postalCode;
     Date createdTime;
     boolean enabled;
-    @Column(nullable = true,length = 45)
+    @Column(nullable = true,length = 64)
     String verificationCode;
 
     @Override
@@ -67,6 +68,10 @@ public class Customer {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
+    }
+
+    public String getFullName() {
+        return this.firstName+" "+this.lastName;
     }
 }
 

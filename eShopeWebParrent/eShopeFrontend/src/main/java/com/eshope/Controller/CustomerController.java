@@ -3,8 +3,14 @@ package com.eshope.Controller;
 import com.eShope.common.entity.*;
 import com.eshope.Service.CategoryService;
 import com.eshope.Service.CustomerService;
+import com.eshope.Service.SettingService;
+import com.eshope.SettingBag.EmailSettingBag;
+import com.eshope.Utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,9 +20,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Slf4j
@@ -27,7 +37,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @Autowired
-    private CategoryService categoryService;
+    private SettingService settingService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model){
@@ -39,8 +49,8 @@ public class CustomerController {
     }
 
     @PostMapping("/register/save")
-    public String saveCustomer(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "customer") Customer customer, Errors errors, Model model
-    ) throws IOException {
+    public String saveCustomer(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "customer") Customer customer, Errors errors, Model model, HttpServletRequest request
+                               ) throws IOException, MessagingException {
 
 
         //TO CHECK UNIQUE EMAIL ID
@@ -61,10 +71,49 @@ public class CustomerController {
             model.addAttribute("countryList",countryList);
             return "Register/registerForm";
         }
-        List<Category> listCategories=categoryService.listNoChildrenCategories();
-        model.addAttribute("listCategories",listCategories);
-        return "";
 
+        customerService.registerCustomer(customer);
+        sendVerificationEmail(request,customer);
+
+        return "/Register/registerSuccess";
+
+    }
+
+
+    @GetMapping("/verify")
+    public String verifyAccount(@Param("code") String code,Model model){
+        boolean verified=customerService.verifyCustomer(code);
+        return "Register/"+(verified?"verifySuccess":"verifyFail");
+    }
+
+    private void sendVerificationEmail(HttpServletRequest request, Customer customer) throws MessagingException, UnsupportedEncodingException {
+
+        EmailSettingBag emailSettings=settingService.getEmailSettings();
+        JavaMailSenderImpl mailSender= Utility.prepareMailSender(emailSettings);
+
+        String toAddress=customer.getEmail();
+        String subject=emailSettings.getCustomerVerifySubject();
+        String emailContent=emailSettings.getCustomerVerifyContent();
+
+        MimeMessage message=mailSender.createMimeMessage();
+        MimeMessageHelper helper=new MimeMessageHelper(message);
+
+        helper.setFrom(emailSettings.getFromAddress(),emailSettings.getSenderName());
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        emailContent=emailContent.replace("[[name]]",customer.getFullName());
+
+        String verifyURL=Utility.getSiteURL(request)+"/verify?code="+customer.getVerificationCode();
+
+        emailContent=emailContent.replace("[[URL]]",verifyURL);
+
+        helper.setText(emailContent,true);
+
+        mailSender.send(message);
+
+        log.error("to Address : "+toAddress);
+        log.error("verify url : "+verifyURL);
     }
 
 }

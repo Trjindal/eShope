@@ -5,6 +5,7 @@ import com.eShope.common.entity.Setting;
 import com.eShope.common.entity.SettingCategory;
 import com.eshope.Repository.SettingRepository;
 
+import com.eshope.SettingBag.EmailSettingBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,30 +29,10 @@ public class SettingService {
         return  settingRepository.findByTwoCategory(SettingCategory.GENERAL,SettingCategory.CURRENCY);
     }
 
+    public EmailSettingBag getEmailSettings(){
+        List<Setting> settings=settingRepository.findByCategory(SettingCategory.MAIL_SERVER);
+        settings.addAll(settingRepository.findByCategory(SettingCategory.MAIL_TEMPLATES));
 
-
-//    public void saveSiteLogo(MultipartFile multipartFile, GeneralSettingBag settingBag) throws IOException {
-//        if(!multipartFile.isEmpty()){
-//            String fileName= StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//            String value="./site-logo/"+fileName;
-//            Setting setting=settingBag.updateSiteLogo(value);
-//            settingRepository.save(setting);
-//            String uploadDir="./site-logo/";
-//            FileUploadUtil.cleanDir(uploadDir);
-//            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
-//
-//        }
-//    }
-//    public void saveCurrencySymbol(HttpServletRequest request, GeneralSettingBag settingBag){
-//        Integer currencyId=Integer.parseInt(request.getParameter("CURRENCY_ID"));
-//        Optional<Currency> findByIdResult=currencyRepository.findById(currencyId);
-//
-//        if(findByIdResult.isPresent()){
-//            Currency currency=findByIdResult.get();
-//            Setting settingForCurrencySymbol=settingBag.updateCurrencySymbol(currency.getSymbol());
-//            Setting settingForCurrencyId=settingBag.updateCurrencyId(String.valueOf(currencyId));
-//            settingRepository.save(settingForCurrencySymbol);
-//
-//        }
-//    }
+        return new EmailSettingBag(settings);
+    }
 }
