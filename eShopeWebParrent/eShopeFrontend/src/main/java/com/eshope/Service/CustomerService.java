@@ -48,8 +48,8 @@ public class CustomerService {
         String verifyCode= RandomString.make(64);
         customer.setVerificationCode(verifyCode);
 
-        Customer customer1=customerRepository.save(customer);
-        System.out.println(customer1.toString());
+        customerRepository.save(customer);
+
     }
 
     public boolean verifyCustomer(String verificationCode){
