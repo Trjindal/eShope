@@ -1,7 +1,12 @@
 package com.eshope.Config;
 
 
+import com.eshope.Oauth.CustomerOAuth2User;
+import com.eshope.Oauth.CustomerOAuth2UserService;
+import com.eshope.Oauth.OAuth2LoginSuccessHandler;
 import com.eshope.Security.CustomerUserDetailService;
+import com.eshope.Security.DatabaseLoginSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,7 +23,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    @Autowired
+    private CustomerOAuth2UserService customerOAuth2User;
 
+    @Autowired
+    private OAuth2LoginSuccessHandler auth2LoginSuccessHandler;
+
+    @Autowired
+    private DatabaseLoginSuccessHandler databaseLoginSuccessHandler;
 
 //    protected void defaultSecurityFilterChain(AuthenticationManagerBuilder managerBuilder) throws Exception {
 //        managerBuilder.authenticationProvider(authenticationProvider());
@@ -53,9 +65,19 @@ public class WebSecurityConfig {
         http.csrf().and()
                 .authorizeHttpRequests().antMatchers("/customer").authenticated().anyRequest().permitAll()
                 .and().formLogin().loginPage("/login")
-                .usernameParameter("email").permitAll()
+                .usernameParameter("email")
+                .successHandler(databaseLoginSuccessHandler)
+                .permitAll()
                 .defaultSuccessUrl("/", true).failureUrl("/login?error=true").permitAll()
-                .and().logout().logoutSuccessUrl("/login?logout=true")
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(customerOAuth2User)
+                .and()
+                .successHandler(auth2LoginSuccessHandler)
+                .and()
+                 .logout().logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true).permitAll()
                 .and().rememberMe().key("Abcdefghijjklmnopqrs_1234567890")
                 .tokenValiditySeconds(7*24*60*60)

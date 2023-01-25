@@ -11,4 +11,7 @@ public interface CountryRepository extends CrudRepository<Country,Integer> {
 
     @Query("SELECT c FROM Country c WHERE c.name = :name")
     public Country findByName(String name);
+
+    @Query("Select c FROM Country c where c.code=?1")
+    public Country findByCode(String code);
 }

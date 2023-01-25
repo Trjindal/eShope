@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -86,6 +87,8 @@ public class CustomerController {
         return "Register/"+(verified?"verifySuccess":"verifyFail");
     }
 
+
+
     private void sendVerificationEmail(HttpServletRequest request, Customer customer) throws MessagingException, UnsupportedEncodingException {
 
         EmailSettingBag emailSettings=settingService.getEmailSettings();
@@ -116,4 +119,7 @@ public class CustomerController {
         log.error("verify url : "+verifyURL);
     }
 
+
 }
+
+

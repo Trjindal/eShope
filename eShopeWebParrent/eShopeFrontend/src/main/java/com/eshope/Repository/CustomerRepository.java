@@ -1,5 +1,6 @@
 package com.eshope.Repository;
 
+import com.eShope.common.entity.AuthenticationType;
 import com.eShope.common.entity.Customer;
 import com.eShope.common.entity.User;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,5 +23,8 @@ public interface CustomerRepository extends CrudRepository<Customer,Integer> {
     @Query("SELECT c FROM Customer c WHERE c.email=:email")
     Customer getCustomerByEmail(String email);
 
+    @Query("Update Customer c SET c.authenticationType = ?2 where c.id=?1"  )
+    @Modifying
+    public void updateAuthenticationType(Integer customerId,AuthenticationType type);
 
 }

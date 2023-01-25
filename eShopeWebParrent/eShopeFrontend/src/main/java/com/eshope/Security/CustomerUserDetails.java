@@ -49,6 +49,9 @@ public class CustomerUserDetails implements UserDetails {
         return customer.isEnabled();
     }
 
+    public Customer getCustomer(){
+        return this.customer;
+    }
     public String getFullName(){
         return customer.getFullName();
     }
