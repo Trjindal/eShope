@@ -44,6 +44,7 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
+            log.error(String.valueOf(auth==null));
         }
         return "redirect:/login?logout=true";
     }

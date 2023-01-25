@@ -212,8 +212,13 @@
             <div class="collapse navbar-collapse" id="searchNavbar" style="box-shadow:none;overflow-y:hidden;">
                 <form class="d-flex" th:action="@{/search}" method="get">
                     <input type="search" name="keyword" class="form-control mr-sm-2" th:value="${keyword}" placeholder="keyword " required/>
-                    <input type="submit" class="btn btn-outline-success"/>
+                    <input type="submit" class="btn search-btn i"/>
                 </form>
+<!--                <form action="#" class="subscribe d-flex" method="post">-->
+<!--                    <input type="text" name="text" placeholder="Search" required="">-->
+<!--                    <button class="button-style"><span class="fa fa-paper-plane"-->
+<!--                                                       aria-hidden="true"></span></button>-->
+<!--                </form>-->
             </div>
         </nav>
     </div>
