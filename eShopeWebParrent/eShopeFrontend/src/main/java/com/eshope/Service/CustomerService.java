@@ -6,6 +6,7 @@ import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Customer;
 import com.eshope.Repository.CountryRepository;
 import com.eshope.Repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 @Transactional
 public class CustomerService {
 
@@ -76,14 +78,14 @@ public class CustomerService {
         return customerRepository.findByEmail(email);
     }
 
-    public void addNewCustomerUponOAuthLogin(String name, String email,String countryCode) {
+    public void addNewCustomerUponOAuthLogin(String name, String email,String countryCode,AuthenticationType authenticationType) {
 
         Customer customer=new Customer();
         customer.setEmail(email);
         setName(name,customer);
         customer.setEnabled(true);
         customer.setCreatedTime(new Date());
-        customer.setAuthenticationType(AuthenticationType.GOOGLE);
+        customer.setAuthenticationType(authenticationType);
         customer.setPassword("");
         customer.setAddressLine1("");
         customer.setAddressLine2("");
@@ -93,6 +95,32 @@ public class CustomerService {
         customer.setPhoneNumber("");
         customer.setCountry(countryRepository.findByCode(countryCode));
         customerRepository.save(customer);
+    }
+
+    public void update(Customer customerInForm){
+        Customer existingCustomer=customerRepository.findById(customerInForm.getId()).get();
+       if(existingCustomer.getAuthenticationType().equals(AuthenticationType.DATABASE)){
+           if(!customerInForm.getPassword().isEmpty()){
+               String encodePassword=passwordEncoder.encode(customerInForm.getPassword());
+               customerInForm.setPassword(encodePassword);
+           }else{
+               customerInForm.setPassword(existingCustomer.getPassword());
+           }
+       }else{
+           if(!existingCustomer.getPassword().isEmpty()){
+           customerInForm.setPassword(existingCustomer.getPassword());
+           }else{
+
+               String password= RandomString.make(8);
+               String encodedPassword=passwordEncoder.encode(password);
+               customerInForm.setPassword(encodedPassword);
+           }
+       }
+       customerInForm.setEnabled(existingCustomer.isEnabled());
+       customerInForm.setCreatedTime(existingCustomer.getCreatedTime());
+       customerInForm.setVerificationCode(existingCustomer.getVerificationCode());
+       customerInForm.setAuthenticationType(existingCustomer.getAuthenticationType());
+        customerRepository.save(customerInForm);
     }
 
     private void setName(String name,Customer customer){
@@ -108,6 +136,8 @@ public class CustomerService {
             customer.setLastName(lastName);
         }
     }
+
+
 
 
 }

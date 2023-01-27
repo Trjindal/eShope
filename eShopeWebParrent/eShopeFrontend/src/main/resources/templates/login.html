@@ -51,7 +51,7 @@
 <section class="w3l-contact py-5  d-flex justify-content-center" id="contact">
     <div class=" row border" >
         <div class="col-6 sm ">
-            <img th:src="@{/assets/images/Authentication.gif}" class="h-100">
+            <img th:src="@{/assets/images/Authentication.gif}" class="h-100 img-fluid   ">
         </div>
         <div class="col col-lg  -6 ">
             <div class="container py-md-5 py-4 ">
@@ -66,10 +66,13 @@
                                     <li class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(logoutMessage)}"
                                     th:text="${logoutMessage}" />
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                                <div class="d-flex justify-content-center mb-3">
+                                <div class="d-flex justify-content-center align-items-center mb-3">
                                     <a class="navbar-brand" th:href="@{/oauth2/authorization/google}">
                                         <img th:src="@{/assets/images/google.svg}"/>
                                     </a>
+<!--                                    <a class="navbar-brand" th:href="@{/oauth2/authorization/facebook}">-->
+<!--                                        <img th:src="@{/assets/images/facebook.png}"/>-->
+<!--                                    </a>-->
                                 </div>
                                 <input type="email" name="email" id="username" placeholder="Username"
                                        class="login-input" />

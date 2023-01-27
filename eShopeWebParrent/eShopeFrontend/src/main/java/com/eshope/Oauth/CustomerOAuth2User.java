@@ -10,9 +10,15 @@ import java.util.Map;
 public class CustomerOAuth2User implements OAuth2User {
 
     private OAuth2User oAuth2User;
+    private String clientName;
 
-    public CustomerOAuth2User(OAuth2User user) {
+    public String getClientName() {
+        return clientName;
+    }
+
+    public CustomerOAuth2User(OAuth2User user, String clientName) {
         this.oAuth2User = user;
+        this.clientName=clientName;
     }
 
     @Override

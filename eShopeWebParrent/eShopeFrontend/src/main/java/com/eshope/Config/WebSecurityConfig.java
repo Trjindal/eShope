@@ -63,7 +63,10 @@ public class WebSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().and()
-                .authorizeHttpRequests().antMatchers("/customer").authenticated().anyRequest().permitAll()
+                .authorizeHttpRequests().antMatchers("/customer").authenticated()
+                .antMatchers("/register/update").authenticated()
+                .antMatchers("account").authenticated()
+                .anyRequest().permitAll()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email")
                 .successHandler(databaseLoginSuccessHandler)
