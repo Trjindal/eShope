@@ -83,6 +83,17 @@
     </script>
     <!-- //MENU-JS -->
 
+      <!--    LOGOUT FUNCTIONALITY-->
+      <script>
+            $(document).ready(function(){
+                $("#logoutLink").on("click",function(e){
+                    e.preventDefault();
+                    document.logoutForm.submit();
+               });
+            });
+      </script>
+      <!--   ! LOGOUT FUNCTIONALITY-->
+
     <!-- disable body scroll which navbar is in active -->
     <script>
         $(function () {

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:replace="Fragments/fragment::page_head('Registration Form','none')"/>
+<head th:replace="Fragments/fragment::page_head('My Account','none')"/>
 <body>
 
 <!-- header -->
@@ -31,11 +31,10 @@
         </div>
         <div class="row contact-block">
             <div class=" contact-right">
-                <ul>
-                    <li class="alert alert-success text-center" role="alert" th:if="${messages!=null}">[[${messages}]] </li>
+                <ul class="text-center">
+                    <li class="alert alert-success" role="alert" th:if="${message!=null}" th:text="${message}"></li>
                     <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('customer.*')}"  >[[${error}]]</li>
                 </ul>
-                <div th:if="${message!=null}" class="alert alert-success tex-center">[[${message}]]</div>
                 <form th:action="@{/register/update}" method="post" class="signing-form register-form contact-block"
                       th:object="${customer}">
                     <div class="row form-group">
@@ -70,15 +69,15 @@
                     <div class="row form-group" th:if="*{authenticationType.name()}=='DATABASE'">
                         <div class="col-sm-5">
                             <label class="col-form-label">Password : </label>
-                            <input type="password" th:field="*{password}" value="12345" id="password" placeholder="Password"
+                            <input type="password" th:field="*{password}" id="password" placeholder="Password"
                                    class="contact-input"
-                                   oninput="checkPasswordMatch(document.getElementById('confirmPassword'))"/>
+                                   oninput="checkPasswordMatch(document.getElementById('confirmPassword'))" />
                         </div>
                         <div class="col-sm-1"></div>
                         <div class="col-sm-5">
                             <label class="col-form-label">Confirm Password : </label>
                             <input type="password" id="confirmPassword" placeholder="Confirm Password"
-                                   class="contact-input" oninput="checkPasswordMatch(this)"/>
+                                   class="contact-input" oninput="checkPasswordMatch(this)" value="1234567"/>
                         </div>
                     </div>
                     <div class="row form-group">

@@ -6,6 +6,9 @@
 <!-- header -->
 <header id="site-header" class="fixed-top">
   <div class="container">
+    <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+      <input type="submit" />
+    </form>
     <nav class="navbar navbar-expand-lg navbar-light">
       <a th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>eShope
       </a>
@@ -51,16 +54,6 @@
             </li>
             <li class="nav-item" >
             </li>
-<!--            <li class="nav-item dropdown" >-->
-<!--&lt;!&ndash;                <span class="fas fa-user"></span>&ndash;&gt;-->
-<!--                <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span sec:authentication="principal.fullName"></span></a>-->
-<!--                 <div class="dropdown-menu">-->
-<!--                     <a class="dropdown-item " th:href="@{/account}"><span class="fas fa-solid fa-right-from-bracket"></span>My Account</a>-->
-<!--                     <a th:href="@{/setting}" class="dropdown-item" sec:authorize="hasAuthority('Admin')"> <span class="fas fa-solid fa-gear"></span> Setting</a>-->
-<!--                    <a class="dropdown-item " th:href="@{/logout}"><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>-->
-
-<!--                </div>-->
-<!--            </li>-->
         </ul>
       </div>
         <ul class="navbar-nav ">
@@ -69,7 +62,7 @@
             <div class="dropdown-menu">
                 <a class="dropdown-item " th:href="@{/account}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/account' ? 'active':''}"><span class="fas fa-solid fa-right-from-bracket"></span>My Account</a>
                 <a th:href="@{/settings}" class="dropdown-item"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/settings' ? 'active':''}" sec:authorize="hasAuthority('Admin')"> <span class="fas fa-solid fa-gear"></span> Setting</a>
-                <a class="dropdown-item " th:href="@{/logout}" ><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>
+                <a class="dropdown-item " href="" id="logoutLink" ><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>
 
             </div>
         </li>

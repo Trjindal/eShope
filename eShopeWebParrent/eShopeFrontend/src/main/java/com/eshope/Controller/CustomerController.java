@@ -54,18 +54,14 @@ public class CustomerController {
                                ) throws IOException, MessagingException {
 
 
-        //TO CHECK UNIQUE EMAIL ID
-        if (customer.getEmail() != "" && !customerService.isEmailUnique(customer.getEmail())) {
-            log.error("New Customer form validation failed due to email ");
-            model.addAttribute("emailNotUnique", "There is another customer having same email id");
-            List<Country> countryList=customerService.listAllCountries();
-            model.addAttribute("countryList",countryList);
-            return "Register/registerForm";
-        }
+
 
         //DISPLAYING ERROR MESSAGES
-        if(errors.hasErrors()){
-
+        if(errors.hasErrors()||!passwordVerification(customer.getPassword())||!uniqueEmailValidation(customer.getEmail())){
+            if(passwordVerification(customer.getPassword())==false)
+               model.addAttribute("passwordFailed","Password length must be between 6 and 15 and do not contains any white spaces.");
+            if(uniqueEmailValidation(customer.getEmail())==false)
+                model.addAttribute("emailNotUnique", "There is another customer having same email id");
             log.error("New Customer form validation failed due to : " + errors.toString());
             List<Country> countryList=customerService.listAllCountries();
 //            model.addAttribute("customer",customer);
@@ -119,6 +115,21 @@ public class CustomerController {
         log.error("verify url : "+verifyURL);
     }
 
+
+    private boolean passwordVerification(String password){
+        if(!password.isEmpty())
+            password=password.trim();
+        if((password.length()>=6&&password.length()<16)&& !password.contains(" "))
+            return true;
+        return false;
+    }
+
+    private boolean uniqueEmailValidation(String email){
+        if (email != "" && !customerService.isEmailUnique(email))
+            return false;
+        return true;
+
+    }
 
 }
 

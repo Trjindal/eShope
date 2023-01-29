@@ -128,6 +128,17 @@
 </script>
     <!-- //MENU-JS -->
 
+<!--    LOGOUT FUNCTIONALITY-->
+    <script>
+            $(document).ready(function(){
+                $("#logoutLink").on("click",function(e){
+                    e.preventDefault();
+                    document.logoutForm.submit();
+               });
+            });
+      </script>
+    <!--  !  LOGOUT FUNCTIONALITY-->
+
     <!-- disable body scroll which navbar is in active -->
     <script>
         $(function () {
@@ -200,13 +211,23 @@ $('#deleteModal').on('show.bs.modal', function (event) {
     <script>
  function myTheme(){
     if(toggleSwitch.checked==true){
+    if( document.getElementById('myMenu')!=null){
      document.getElementById('myMenu').style.backgroundColor="black";
+    }
       document.getElementsByClassName('myModal')[0].style.backgroundColor="black";
-       document.getElementsByClassName('myModal')[1].style.backgroundColor="black";
+      if(document.getElementsByClassName('myModal')[1]!=null){
+        document.getElementsByClassName('myModal')[1].style.backgroundColor="black";
+      }
+
+
     }else{
-    document.getElementById('myMenu').style.backgroundColor="white";
+     if( document.getElementById('myMenu')!=null){
+     document.getElementById('myMenu').style.backgroundColor="white";
+    }
     document.getElementsByClassName('myModal')[0].style.backgroundColor="white";
-     document.getElementsByClassName('myModal')[1].style.backgroundColor="white";
+    if(document.getElementsByClassName('myModal')[1]!=null){
+        document.getElementsByClassName('myModal')[1].style.backgroundColor="white";
+      }
     }}
 
     setTimeout(myTheme, 100);

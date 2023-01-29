@@ -27,7 +27,6 @@ public class Customer {
     String email;
 
     @Column(nullable = false,length = 64)
-    @Size(min=6,max=15, message="password must be at least 6 and at most 15 characters long")
     String password;
 
     @Column(nullable = false,length = 45)
@@ -74,7 +73,10 @@ public class Customer {
     boolean enabled;
 
     @Column(nullable = true,length = 64)
-    String verificationCode;
+    private String verificationCode;
+
+    @Column(nullable = true,length = 30)
+    private String resetPasswordToken;
 
     @Override
     public String toString() {

@@ -49,15 +49,13 @@ public class MyAccountController {
 
         //DISPLAYING ERROR MESSAGES
         if(errors.hasErrors()){
-
             log.error("Update Customer form validation failed due to : " + errors.toString());
             List<Country> countryList=customerService.listAllCountries();
             model.addAttribute("countryList",countryList);
             return "Customer/accountForm";
         }
         customerService.update(customer);
-        redirectAttributes.addFlashAttribute("messages","Your Account details have been updated");
-        redirectAttributes.addFlashAttribute("message","Your Account details have been updated");
+        model.addAttribute("message","Your Account details have been updated");
         log.error("Here");
         List<Country> countryList=customerService.listAllCountries();
         model.addAttribute("countryList",countryList);

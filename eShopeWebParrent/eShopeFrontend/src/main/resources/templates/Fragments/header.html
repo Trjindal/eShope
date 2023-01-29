@@ -19,15 +19,18 @@
 <!-- header -->
 <header id="site-header" class="fixed-top">
   <div class="container">
+      <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+          <input type="submit" />
+      </form>
     <nav class="navbar navbar-expand-lg navbar-light">
-      <a th:if="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>[[${SITE_NAME}]]</a>
+        <a th:if="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>[[${SITE_NAME}]]</a>
         <a th:unless="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><img id="siteLogo" width="100" th:src="@{${SITE_LOGO}}"></a>
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
               data-target="#navbarScroll,#searchNavbar" aria-controls="navbarScroll" aria-expanded="false"
               aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
-        <span class="navbar-toggler-icon fa icon-close fa-times"></span>
-      </button>
+            <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+            <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+        </button>
       <div class="collapse navbar-collapse" id="navbarScroll">
         <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
             <!--  SEARCH BAR  -->
@@ -57,24 +60,6 @@
                 <!--             th:classappend="${#httpServletRequest.getRequestURI() == '/dashboard' ? 'active':''}"-->
                 <a th:href="@{/login}" class="nav-link" >Login</a>
             </li>
-<!--            <li class="nav-item" >-->
-<!--                &lt;!&ndash;            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"&ndash;&gt;-->
-<!--                <a th:href="@{/menu}" class="nav-link">Menu</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item" >-->
-<!--                &lt;!&ndash;            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"&ndash;&gt;-->
-
-<!--            </li>-->
-<!--            <li class="nav-item dropdown" >-->
-<!--&lt;!&ndash;                <span class="fas fa-user"></span>&ndash;&gt;-->
-<!--                <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span sec:authentication="principal.fullName"></span></a>-->
-<!--                 <div class="dropdown-menu">-->
-<!--                     <a class="dropdown-item " th:href="@{/account}"><span class="fas fa-solid fa-right-from-bracket"></span>My Account</a>-->
-<!--                     <a th:href="@{/setting}" class="dropdown-item" sec:authorize="hasAuthority('Admin')"> <span class="fas fa-solid fa-gear"></span> Setting</a>-->
-<!--                    <a class="dropdown-item " th:href="@{/logout}"><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>-->
-
-<!--                </div>-->
-<!--            </li>-->
         </ul>
           <ul class="navbar-nav ">
               <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
@@ -82,26 +67,11 @@
                   <div class="dropdown-menu">
                       <a class="dropdown-item " th:href="@{/account}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/account' ? 'active':''}"><span class="fas fa-solid fa-right-from-bracket"></span>My Account</a>
                       <a th:href="@{/settings}" class="dropdown-item"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/settings' ? 'active':''}" sec:authorize="hasAuthority('Admin')"> <span class="fas fa-solid fa-gear"></span> Setting</a>
-                      <a class="dropdown-item " th:href="@{/logout}" ><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>
-                      <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
-                          <input type="submit" value="logout">
-                      </form>
+                      <a class="dropdown-item " href="" id="logoutLink" ><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>
                   </div>
               </li>
           </ul>
       </div>
-<!--        <ul class="navbar-nav ">-->
-<!--        <li class="nav-item dropdown" >-->
-<!--            &lt;!&ndash;                <span class="fas fa-user"></span>&ndash;&gt;-->
-<!--            <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span sec:authentication="principal.fullName" class="userName"></span></a>-->
-<!--            <div class="dropdown-menu">-->
-<!--                <a class="dropdown-item " th:href="@{/account}"><span class="fas fa-solid fa-right-from-bracket"></span>My Account</a>-->
-<!--                <a th:href="@{/setting}" class="dropdown-item" sec:authorize="hasAuthority('Admin')"> <span class="fas fa-solid fa-gear"></span> Setting</a>-->
-<!--                <a class="dropdown-item " th:href="@{/logout}"><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>-->
-
-<!--            </div>-->
-<!--        </li>-->
-<!--        </ul>-->
 
       <!-- toggle switch for light and dark theme -->
       <div class="cont-ser-position">
@@ -123,6 +93,7 @@
 
 </header>
 <!-- //header -->
+
 </body>
 
 </html>

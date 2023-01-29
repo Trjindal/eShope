@@ -30,6 +30,7 @@
                                 <li class="alert alert-danger" role="alert" th:text="${error}" />
                             </div>
                             <li class="alert alert-danger" role="alert" th:if="${emailNotUnique!=null}" th:text="${emailNotUnique}"></li>
+                            <li class="alert alert-danger" role="alert" th:if="${passwordFailed!=null}" th:text="${passwordFailed}"></li>
                         </ul>
                         <div class="row form-group">
                             <div class="col-sm-5">
