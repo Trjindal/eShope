@@ -107,6 +107,10 @@
               <label class="col-form-label">Postal Code : </label>
               <input type="text" th:field="*{postalCode}" placeholder="Postal Code"  class="contact-input"/>
             </div>
+            <div class="row form-group">
+              <label class="col-form-label col-4">Customer Enable : </label>
+              <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled"  class="col-8"/>
+            </div>
             <div class="text-start">
               <button type="submit" class="btn btn-style btn-style-3">Edit Customer</button>
               <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/customers}">Cancel</a>

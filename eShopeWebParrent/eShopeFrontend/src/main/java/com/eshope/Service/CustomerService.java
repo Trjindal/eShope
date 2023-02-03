@@ -6,16 +6,21 @@ import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Customer;
 import com.eshope.Repository.CountryRepository;
 import com.eshope.Repository.CustomerRepository;
+import com.eshope.SettingBag.EmailSettingBag;
+import com.eshope.Utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
@@ -24,6 +29,7 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
 
     @Autowired
     private CountryRepository countryRepository;
@@ -120,7 +126,8 @@ public class CustomerService {
        customerInForm.setCreatedTime(existingCustomer.getCreatedTime());
        customerInForm.setVerificationCode(existingCustomer.getVerificationCode());
        customerInForm.setAuthenticationType(existingCustomer.getAuthenticationType());
-        customerRepository.save(customerInForm);
+       customerInForm.setResetPasswordToken(existingCustomer.getResetPasswordToken());
+       customerRepository.save(customerInForm);
     }
 
     private void setName(String name,Customer customer){
@@ -137,6 +144,36 @@ public class CustomerService {
         }
     }
 
+
+    public String updateResetPassword(String email) {
+        try{
+            Customer customer= customerRepository.findByEmail(email);
+            if(customer==null){
+                throw new UsernameNotFoundException("Could not find any customer with email "+ email);
+            }
+            String token=RandomString.make(30);
+            customer.setResetPasswordToken(token);
+            customerRepository.save(customer);
+            return token;
+        }catch (NoSuchElementException ex){
+            throw new UsernameNotFoundException("Could not find any customer with email "+ email);
+        }
+    }
+
+    public Customer getCustomerByResetPasswordToken(String token){
+        return customerRepository.findByResetPasswordToken(token);
+    }
+
+    public void updatePassword(String token,String newPassword){
+        Customer customer=customerRepository.findByResetPasswordToken(token);
+        if(customer==null){
+            throw new UsernameNotFoundException("No Customer found: Invalid Token");
+        }
+        String encodedPassword=passwordEncoder.encode(newPassword);
+        customer.setPassword(encodedPassword);
+        customer.setResetPasswordToken(null);
+        customerRepository.save(customer);
+    }
 
 
 

@@ -63,8 +63,16 @@ public class CustomerService {
         return emailOfCustomer==null;
     }
 
-    public Customer saveCustomer(Customer customer){
+    public Customer saveCustomer(Customer customer,Integer existingCustomerId){
 
+        Customer existingCustomer=getCustomerById(existingCustomerId);
+
+        customer.setPassword(existingCustomer.getPassword());
+        customer.setId(existingCustomer.getId());
+        customer.setCreatedTime(existingCustomer.getCreatedTime());
+        customer.setVerificationCode(existingCustomer.getVerificationCode());
+        customer.setAuthenticationType(existingCustomer.getAuthenticationType());
+        customer.setResetPasswordToken(existingCustomer.getResetPasswordToken());
         return customerRepository.save(customer);
     }
 

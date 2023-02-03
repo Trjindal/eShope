@@ -83,8 +83,8 @@ public class CustomerController {
     @PostMapping("/customers/editCustomer")
     public String saveEditCustomer(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "customer") Customer customer, Errors errors, Model model, HttpSession session ){
 
-        Integer id= (Integer) session.getAttribute("id");
-        Customer existingCustomer=customerService.getCustomerById(id);
+        Integer existingCustomerId= (Integer) session.getAttribute("id");
+        Customer existingCustomer=customerService.getCustomerById(existingCustomerId);
 
         //TO CHECK UNIQUE EMAIL ID
         if(existingCustomer!=null&&!(existingCustomer.getEmail().matches(customer.getEmail()))) {
@@ -107,11 +107,9 @@ public class CustomerController {
             return "Customer/customerUpdateForm.html";
         }
 
-        customer.setPassword(existingCustomer.getPassword());
-        customer.setId(existingCustomer.getId());
 
         //SAVE DETAILS
-        customerService.saveCustomer(customer);
+        customerService.saveCustomer(customer,existingCustomerId);
 
         redirectAttributes.addFlashAttribute("message","The Customer has been edited successfully");
         return "redirect:/customers";
