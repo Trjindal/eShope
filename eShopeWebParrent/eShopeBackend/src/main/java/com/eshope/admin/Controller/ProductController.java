@@ -252,6 +252,7 @@ public class ProductController {
 
         product.setId(existingProduct.getId());
 
+
         //TO CHECK UNIQUE NAME
         if (existingProduct != null && !(existingProduct.getName().matches(product.getName()))) {
             if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
@@ -263,7 +264,7 @@ public class ProductController {
                 model.addAttribute("listBrands", listBrands);
                 model.addAttribute("product",product);
                 model.addAttribute("products",existingProduct);
-                return "Product/productEditForm.html";
+                return "Product/productUpdateForm.html";
             }
         }
 

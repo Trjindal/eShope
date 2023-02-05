@@ -21738,7 +21738,38 @@ color:red;
     border-radius: 4px 0 0 4px;
 }
 
+.quantity-selector {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 2px solid #dadada;
+    border-radius: 5px;
+    vertical-align: middle;
+}
 
 
+.quantity-selector__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+    color: inherit;
+    background-color: transparent;
+    border: none;
+}
+.quantity-selector__input {
+    color: var(--primary-color);
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0;
+    height: var(--quantity-selector-height);
+    line-height: var(--quantity-selector-height);
+    text-align: center;
+    background: 0 0;
+    border: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
 
 
