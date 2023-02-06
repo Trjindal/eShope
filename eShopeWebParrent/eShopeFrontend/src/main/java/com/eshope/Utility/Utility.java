@@ -1,8 +1,12 @@
 package com.eshope.Utility;
 
+import com.eshope.Oauth.CustomerOAuth2User;
 import com.eshope.SettingBag.EmailSettingBag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Properties;
@@ -31,5 +35,20 @@ public class Utility {
         mailSender.setJavaMailProperties(mailProperties);
 
         return mailSender;
+    }
+
+    public static String getEmailOfAuthenticatedCustomer(HttpServletRequest request){
+        Object principal=request.getUserPrincipal();
+        String customerEmail=null;
+        if(principal==null) return null;
+
+        if(principal instanceof UsernamePasswordAuthenticationToken ||principal instanceof RememberMeAuthenticationToken){
+            customerEmail=request.getUserPrincipal().getName();
+        }else if(principal instanceof OAuth2AuthenticationToken){
+            OAuth2AuthenticationToken auth2AuthenticationToken=(OAuth2AuthenticationToken) principal;
+            CustomerOAuth2User oAuth2User=(CustomerOAuth2User) auth2AuthenticationToken.getPrincipal();
+            customerEmail=oAuth2User.getEmail();
+        }
+        return customerEmail;
     }
 }

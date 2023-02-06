@@ -34,8 +34,12 @@
 
 <!--PRODUCT DETAILS START-->
 <div class="row m-5">
+  <ul>
+    <li class="alert alert-danger d-none text-center" id="error"></li>
+    <li class="alert alert-success d-none text-center" id="success"></li>
+  </ul>
   <div class="col-sm">
-    <div class="d-flex justify-content-center mb-2">
+    <div class="d-flex justify-content-center mb-2 ">
       <img id="bigImage" th:src="@{${product.mainImagePath}}" class="img-fluid" index="0" style="height:350px; border-radius:5px;">
     </div>
     <div class="d-flex flex-row justify-content-center ">
@@ -90,7 +94,7 @@
   <th:block  th:if="${product.inStock}">
     <div th:replace="Cart/quantity_control::quantity-controller(1,${product.id})"></div>
     <div class="mt-3">
-      <input type="button" value="Add to Cart" class="btn btn-style">
+      <input type="button" value="Add to Cart" id="buttonAddToCart" class="btn btn-style">
     </div>
   </th:block>
   </div>
@@ -122,6 +126,30 @@
 </div>
 <!--PRODUCT DETAILS END-->
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="errorModalBody">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
 <!-- footer -->
 <div th:replace="~{Fragments/footer :: footer}">...</div>
 <!-- //footer -->
@@ -134,6 +162,13 @@
 <div th:replace="Fragments/images_carousel::content"></div>
 
 <script type="text/javascript">
+
+  contextPath="[[@{/}]]"
+  var shoppingCart=false
+  productId="[[${product.id}]]"
+  var csrfHeaderName="[[${_csrf.headerName}]]";
+  var csrfValue="[[${_csrf.token}]]";
+
   $(document).ready(function(){
     bigImage=$("#bigImage");
 
@@ -154,6 +189,7 @@
   });
 </script>
 <script type="text/javascript" th:src="@{/assets/js/quantity_control.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/add_to_cart.js}"></script>
 
 </body>
 </html>

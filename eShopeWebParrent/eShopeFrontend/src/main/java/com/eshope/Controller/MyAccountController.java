@@ -4,6 +4,7 @@ import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Customer;
 import com.eshope.Oauth.CustomerOAuth2User;
 import com.eshope.Service.CustomerService;
+import com.eshope.Utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
@@ -32,8 +33,10 @@ public class MyAccountController {
     @GetMapping("/account")
     public String showMyAccount(Model model,HttpServletRequest request){
 
-       String email= getEmailOfAuthenticatedCustomer(request);
-        Customer customer=customerService.getCustomerByEmail(email);
+       String email= Utility.getEmailOfAuthenticatedCustomer(request);
+
+
+       Customer customer=customerService.getCustomerByEmail(email);
         List<Country> countryList=customerService.listAllCountries();
 
 
@@ -62,17 +65,6 @@ public class MyAccountController {
         return "Customer/accountForm";
     }
 
-    private String getEmailOfAuthenticatedCustomer(HttpServletRequest request){
-        Object principal=request.getUserPrincipal();
-        String customerEmail=null;
-        if(principal instanceof UsernamePasswordAuthenticationToken||principal instanceof RememberMeAuthenticationToken){
-            customerEmail=request.getUserPrincipal().getName();
-        }else if(principal instanceof OAuth2AuthenticationToken){
-            OAuth2AuthenticationToken auth2AuthenticationToken=(OAuth2AuthenticationToken) principal;
-            CustomerOAuth2User oAuth2User=(CustomerOAuth2User) auth2AuthenticationToken.getPrincipal();
-            customerEmail=oAuth2User.getEmail();
-        }
-        return customerEmail;
-    }
+
 
 }

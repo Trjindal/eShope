@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface CartItemRepository extends CrudRepository<CartItem,Integer> {
+public interface ShoppingCartRepository extends CrudRepository<CartItem,Integer> {
 
     public List<CartItem> findByCustomer(Customer customer);
 

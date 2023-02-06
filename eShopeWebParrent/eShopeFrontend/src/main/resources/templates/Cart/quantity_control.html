@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymleaf.org">
 <body>
 <div th:fragment="quantity-controller(quantityValue,productId)">
-    <div class="quantity-selector">
-        <a type="button" th:pid="${productId}" href="" class="quantity-selector__button linkMinus">
+    <div class="quantity-selector mb-2 mt-2">
+        <a type="button" th:pid="${productId}" th:id="decrease+${productId}" href="" class="quantity-selector__button linkMinus">
             <svg focusable="false" width="10" height="2" class="icon icon--minus-big" viewBox="0 0 10 2">
                 <path fill="currentColor" d="M0 0h10v2H0z"></path>
             </svg>
         </a>
         <input type="text" th:value="${quantityValue}" th:id="'quantity'+${productId}" onkeydown="return false;"  min="1" max="5" readonly="readonly" aria-label="Quantity" style="width:55px;" class="quantity-selector__input" inputmode="numeric" name="quantity" autocomplete="off"/>
-        <a type="button" th:pid="${productId}" href="" class="quantity-selector__button linkPlus">
+        <a type="button" th:pid="${productId}" th:id="increase+${productId}" href="" class="quantity-selector__button linkPlus">
             <svg focusable="false" width="10" height="10" class="icon icon--plus-big" viewBox="0 0 10 10">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M4 6v4h2V6h4V4H6V0H4v4H0v2h4z" fill="currentColor"></path>
             </svg>
