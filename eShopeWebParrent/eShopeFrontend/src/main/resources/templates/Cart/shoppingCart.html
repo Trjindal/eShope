@@ -47,49 +47,87 @@
                         <div class="col-1 d-none d-md-block">
                             <div>[[${status.count}]]</div>
                         </div>
-                        <div class="col-2 d-flex justify-content-center align-items-center">
+                        <div class="col-12 col-sm-6  col-md-2 d-flex justify-content-center align-items-center">
                             <a th:href="@{'/p/'+${product.alias}}">
                                 <img th:src="@{${product.mainImagePath}}" class="img-fluid" />
                             </a>
                         </div>
-                        <div class="col-6">
-                            <div>
-                                <a th:href="@{'/p/'+${product.alias}}" th:title="${product.name}"><b>[[${product.shortName}]]</b> </a>
-                                <div th:replace="Cart/quantity_control::quantity-controller(${item.quantity},${product.id})" ></div>
-
-                            </div>
-                        </div>
-                        <div class="col-4 col-md-3" style="font-size:15px">
-                            <div >
-                                <span th:id="'newQuantity'+${product.id}" class="newQuantity">[[${item.quantity}]]</span> X
-                                <div th:if="${product.discountPercentage<=0}" class="d-inline-block">
-                                    <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
-                                    [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
-                                    <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
-                                </div>
-                                <div th:if="${product.discountPercentage>0}" class="d-inline-block">
-                                    <div class="d-inline-block" >
-                                        <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}"> [[${CURRENCY_SYMBOL}]] </span>
-                                        [[${#numbers.formatDecimal(product.getDiscountPrice,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
-                                        <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                        <div class="col-12 col-sm-6 col-md-9">
+                            <div class="d-flex flex-column justify-content-around h-100">
+                                <div class="row">
+                                    <div class="col-md-8 col-12">
+                                        <div class="d-flex  flex-column justify-content-between h-100">
+                                            <div class="m-2">
+                                                <a th:href="@{'/p/'+${product.alias}}" th:title="${product.name}"><b>[[${product.shortName}]]</b> </a>
+                                            </div>
+                                            <div th:replace="Cart/quantity_control::quantity-controller(${item.quantity},${product.id})" ></div>
+                                        </div>
                                     </div>
-                                    &nbsp;
-                                    <del style="color:#616161;">
+                                    <div class="col-md-4 col-12 d-flex align-items-center h-25">
+                                        <span th:id="'newQuantity'+${product.id}" class="newQuantity">[[${item.quantity}]]</span> X
+                                        <div th:if="${product.discountPercentage<=0}" class="d-inline-block">
+                                            <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                            [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+                                            <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                        </div>
+                                        <div th:if="${product.discountPercentage>0}" class="d-inline-block">
+                                            <div class="d-inline-block" >
+                                                <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+                                                [[${#numbers.formatDecimal(product.getDiscountPrice,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+                                                <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                            </div>
+                                            &nbsp;
+                                            <del style="color:#616161;">
+                                                <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                                [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+                                                <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                            </del>
+                                        </div>
+                                        =
+
                                         <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
-                                        [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+                                        <span th:id="'subTotal'+${product.id}" class="subTotal">[[${#numbers.formatDecimal(item.subTotal,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
                                         <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
-                                    </del>
+                                        <div class="d-inline-block">
+                                        </div>
+                                    </div>
                                 </div>
-                                 =
-
-                                <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
-                                <span th:id="'subTotal'+${product.id}" class="subTotal">[[${#numbers.formatDecimal(item.subTotal,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
-                                <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
-                                <div class="d-inline-block">
-
+                                <div class="mt-2">
+                                    <a th:href="@{'/cart/delete/'+${product.id}}" class="linkRemove" style="color:#007185;">Remove this Item</a>
                                 </div>
                             </div>
                         </div>
+<!--                        <div class="col-4 col-md-3" style="font-size:15px">-->
+<!--                            <div>-->
+<!--                                <span th:id="'newQuantity'+${product.id}" class="newQuantity">[[${item.quantity}]]</span> X-->
+<!--                                <div th:if="${product.discountPercentage<=0}" class="d-inline-block">-->
+<!--                                    <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>-->
+<!--                                    [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]-->
+<!--                                    <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>-->
+<!--                                </div>-->
+<!--                                <div th:if="${product.discountPercentage>0}" class="d-inline-block">-->
+<!--                                    <div class="d-inline-block" >-->
+<!--                                        <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}"> [[${CURRENCY_SYMBOL}]] </span>-->
+<!--                                        [[${#numbers.formatDecimal(product.getDiscountPrice,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]-->
+<!--                                        <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>-->
+<!--                                    </div>-->
+<!--                                    &nbsp;-->
+<!--                                    <del style="color:#616161;">-->
+<!--                                        <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>-->
+<!--                                        [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]-->
+<!--                                        <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>-->
+<!--                                    </del>-->
+<!--                                </div>-->
+<!--                                 =-->
+
+<!--                                <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>-->
+<!--                                <span th:id="'subTotal'+${product.id}" class="subTotal">[[${#numbers.formatDecimal(item.subTotal,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>-->
+<!--                                <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>-->
+<!--                                <div class="d-inline-block">-->
+
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                     <hr>
                 </th:block>
@@ -133,11 +171,15 @@
     contextPath="[[@{/}]]"
     var csrfHeaderName="[[${_csrf.headerName}]]";
     var csrfValue="[[${_csrf.token}]]";
+    var decimalDigits=[[${DECIMAL_DIGITS}]];
+    var decimalPointType="[[${DECIMAL_POINT_TYPE}]]"
+    var thousandPointType="[[${THOUSANDS_POINT_TYPE}]]"
 
 </script>
 
 <script type="text/javascript" th:src="@{/assets/js/quantity_control.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/add_to_cart.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.number.min.js}"></script>
 
 </body>
 </html>

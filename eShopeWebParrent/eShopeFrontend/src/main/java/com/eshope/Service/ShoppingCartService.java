@@ -59,4 +59,8 @@ public class ShoppingCartService {
         return subtotal;
     }
 
+    public void removeProduct(Integer productId,Customer customer){
+        shoppingCartRepository.deleteByCustomerAndProduct(customer.getId(),productId);
+    }
+
 }

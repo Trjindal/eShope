@@ -1,3 +1,7 @@
+
+var decimalSeparator=decimalPointType=='COMMA'?",":'.';
+var thousandSeparator=thousandPointType=='COMMA'?",":'.';
+
 $(document).ready(function(){
     $("#buttonAddToCart").on('click',function(e){
         addToCart()
@@ -59,8 +63,26 @@ function addToCart(){
     })
  }
 
+
+ function removeProduct(link){
+          url=link.attr("href");
+            $.ajax({
+                type:"DELETE",
+                url:url,
+                beforeSend:function(xhr){
+                    xhr.setRequestHeader(csrfHeaderName,csrfValue);
+                }
+            }).done(function(response){
+                location.reload();
+                 console.log("subTotal")
+            }).fail(function(){
+                console.log("error");
+            })
+ }
+
+
  function updateOtherFeatures(updatedSubTotal,newQuantity,productId){
-    $('#subTotal'+productId).text(updatedSubTotal);
+    $('#subTotal'+productId).text(formatCurrency(updatedSubTotal));
     $('#newQuantity'+productId).text(newQuantity);
 
  }
@@ -69,13 +91,23 @@ function addToCart(){
     total=0.0;
     totalItems=0
     $(".subTotal").each(function(index,element){
-        console.log((element.innerHTML).replaceAll(",",""))
-        total+=parseFloat(element.innerHTML.replaceAll(",",""))
+
+        total+=parseFloat(clearCurrencyFormat(element.innerHTML))
     });
+    $("#total").text(formatCurrency(total));
+
     $(".newQuantity").each(function(index,element){
-     totalItems+=parseFloat(element.innerHTML)
-     });
-    $("#total").text(total);
+         totalItems+=parseFloat(element.innerHTML)
+         });
     $("#totalItem").text(totalItems);
 
+ }
+
+ function formatCurrency(amount){
+    return $.number(amount,decimalDigits,decimalSeparator,thousandSeparator);
+ }
+
+ function clearCurrencyFormat(numberString){
+    result=numberString.replaceAll(thousandSeparator,"");
+    return result.replaceAll(decimalSeparator,".");
  }
