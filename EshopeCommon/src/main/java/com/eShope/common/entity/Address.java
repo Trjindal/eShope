@@ -1,93 +1,79 @@
 package com.eShope.common.entity;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@Table(name = "customers")
-public class Customer {
+@Table(name="addresses")
+public class Address {
 
-
-    public Customer(Integer id) {
-        this.id = id;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    @Column(nullable = false,unique = true,length = 45)
-    @Email(message = "Please provide a valid email address" )
-    @Size(min=8,max=45,message="Email must be at least 8 and at most 45 characters long")
-    String email;
-
-    @Column(nullable = false,length = 64)
-    String password;
+    private Integer id;
 
     @Column(nullable = false,length = 45)
     @Size(min=3,max=45, message="First name must be at least 3 and at most 45 characters long")
-    String firstName;
+    private String firstName;
 
     @Column(nullable = false,length = 45)
     @Size(min=3,max=45, message="Last name must be at least 3 and at most 45 characters long")
-    String lastName;
+    private String lastName;
 
     @Column(nullable = false,length = 15)
     @Size(min=10,max=15, message="Phone number must be at least 10 and at most 15 numbers long")
-    String phoneNumber;
+    private String phoneNumber;
 
     @Column(nullable = false,length = 64)
     @Size(min=3,max=45, message="Address Line 1  must be at least 3 and at most 45 characters long")
-    String addressLine1;
+    private String addressLine1;
 
     @Column(nullable = true,length = 64)
     @Size(min=0,max=45, message="Address Line 2 must be at most 45 characters long")
-    String addressLine2;
+    private String addressLine2;
 
     @Column(nullable = false,length = 45)
     @Size(min=2,max=45, message="City must be at least 2 and at most 45 characters long")
-    String city;
+    private String city;
 
     @Column(nullable = false,length = 45)
     @Size(min=2,max=10, message="State must be at least 2 and at most 10 characters long")
-    String state;
+    private String state;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 10)
-    private AuthenticationType authenticationType;
-
     @Column(nullable = false,length = 10)
-    String postalCode;
+    private String postalCode;
 
-    Date createdTime;
+    @Column(name = "default_address")
+    private boolean defaultForShipping;
 
-    boolean enabled;
-
-    @Column(nullable = true,length = 64)
-    private String verificationCode;
-
-    @Column(nullable = true,length = 30)
-    private String resetPasswordToken;
+   @ManyToOne
+   @JoinColumn(name = "customer_id")
+   private Customer customer;
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "Addresses{" +
                 "id=" + id +
-                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", addressLine1='" + addressLine1 + '\'' +
+                ", addressLine2='" + addressLine2 + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country=" + country +
+                ", postalCode='" + postalCode + '\'' +
+                ", defaultForAddress=" + defaultForShipping +
+                ", customer=" + customer +
                 '}';
     }
 
@@ -96,20 +82,18 @@ public class Customer {
     }
 
     @Transient
-    public String getAddress(){
-        String address="";
-        if(!addressLine1.isEmpty())
-            address+=addressLine1;
-        if(!addressLine2.isEmpty())
-            address+=", "+addressLine2;
+    public String getDetails(){
+        String details="";
+        if(addressLine1!=null&&!addressLine1.isEmpty())
+            details+=addressLine1;
+        if(addressLine2!=null&&!addressLine2.isEmpty())
+            details+=", "+addressLine2;
         if(!city.isEmpty())
-            address+=", "+city;
+            details+=", "+city;
         if(state!=null &&!state.isEmpty())
-            address+=", "+state;
-        address+=", "+country.getName();
+            details+=", "+state;
+        details+=", "+country.getName();
 
-        return address;
+        return details;
     }
-
 }
-

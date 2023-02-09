@@ -65,7 +65,7 @@ public class WebSecurityConfig {
         http.csrf().and()
                 .authorizeHttpRequests().antMatchers("/customer").authenticated()
                 .antMatchers("/register/update").authenticated()
-                .antMatchers("account").authenticated()
+                .antMatchers("/account","/register/update","/cart","/address_book/**").authenticated()
                 .anyRequest().permitAll()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email")

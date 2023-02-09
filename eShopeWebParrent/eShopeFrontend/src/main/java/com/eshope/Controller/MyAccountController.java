@@ -48,7 +48,7 @@ public class MyAccountController {
     }
 
     @PostMapping("/register/update")
-    public String updateAccountDetails(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "customer") Customer customer, Errors errors, Model model, HttpServletRequest request){
+    public String updateAccountDetails(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "customer") Customer customer, Errors errors, Model model){
 
         //DISPLAYING ERROR MESSAGES
         if(errors.hasErrors()){

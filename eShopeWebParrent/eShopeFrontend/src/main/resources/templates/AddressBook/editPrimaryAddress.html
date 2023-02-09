@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Edit Primary Address','none')"/>
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Edit Primary Address</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
+        <li><a th:href="@{'/address_book'}">Address Book</a><i class="fas fa-angle-right"></i></li>
+        <li class="active">Edit Address</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="container py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+      <p class="text-uppercase">Address Book</p>
+      <h3 class="title-style">Edit Primary Address</h3>
+    </div>
+    <div class="row contact-block">
+      <div class=" contact-right">
+        <ul class="text-center">
+          <li class="alert alert-success" role="alert" th:if="${message!=null}" th:text="${message}"></li>
+          <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('customer.*')}"  >[[${error}]]</li>
+        </ul>
+        <form th:action="@{/address_book/save/primaryAddress}" method="post" class="signing-form register-form contact-block"
+              th:object="${customer}">
+
+          <div class="row form-group">
+            <div class="col-sm-5">
+              <label class="col-form-label">Address Line 1 : </label>
+              <input type="text" th:field="*{addressLine1}" placeholder="addressLine1 "
+                     class="contact-input"/>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5">
+              <label class="col-form-label">Address Line 2 : </label>
+              <input type="text" th:field="*{addressLine2}" placeholder="addressLine2"
+                     class="contact-input"/>
+            </div>
+          </div>
+          <div class="row form-group">
+
+            <div class="col-sm-5">
+              <label class="col-form-label">Country : </label>
+              <select class="my-form-control" th:field="*{country}">
+                <th:block th:each="country:${countryList}">
+                  <option th:value="${country.id}">[[${country.name}]]</option>
+                </th:block>
+              </select>
+              <!--                                <input type="text" th:field="*{country}" placeholder="Country "  class="contact-input"/>-->
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5">
+              <label class="col-form-label">State : </label>
+              <input type="text" th:field="*{state}" placeholder="state" class="contact-input"
+                     list="listStates"/>
+              <datalist id="listStates"></datalist>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-sm-5">
+              <label class="col-form-label">City : </label>
+              <input type="text" th:field="*{city}" placeholder="City " class="contact-input"/>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5">
+              <label class="col-form-label">Postal Code : </label>
+              <input type="text" th:field="*{postalCode}" placeholder="Postal Code"
+                     class="contact-input"/>
+            </div>
+          </div>
+
+          <div class="text-start">
+            <button type="submit" class="btn btn-style btn-style-3">Save</button>
+            <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/address_book}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<script>
+
+      function checkPasswordMatch(confirmPassword){
+        if(confirmPassword.value!=$("#password").val()){
+            confirmPassword.setCustomValidity("Password Do not match");
+        }
+        else{
+            confirmPassword.setCustomValidity("");
+        }
+      }
+
+</script>
+
+<script>
+    var dropDownCountry;
+    var dataListState;
+    var fieldState;
+    var contextPath="[[@{/}]]";
+    $(document).ready(function() {
+        dropDownCountry=$("#country");
+        dataListState=$("#listStates");
+        fieldState=$("#state");
+
+        dropDownCountry.on("change",function(){
+            loadStatesForCountry();
+           fieldState.val("").focus();
+        });
+    });
+
+    function loadStatesForCountry(){
+        selectedCountry=$("#country option:selected");
+        countryId=selectedCountry.val();
+        url=contextPath+"settings/listStatesByCountry/"+countryId;
+
+        $.get(url,function(responseJSON){
+            dataListState.empty();
+
+            $.each(responseJSON,function(index,state){
+                $("<option>").val(state.name).text(state.name).appendTo (dataListState);
+            })
+        });
+    }
+
+
+</script>
+
+</body>
+</html>
