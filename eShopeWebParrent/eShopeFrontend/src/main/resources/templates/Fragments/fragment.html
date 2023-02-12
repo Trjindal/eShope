@@ -215,6 +215,11 @@
 </div>
 <!--    /pagination     -->
 
+<div th:fragment="format_currency(amount)" class="d-inline">
+    <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+    [[${#numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+    <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+</div>
 
 <!--    SEARCH BAR  -->
 <div th:fragment="search_nav" class="row">

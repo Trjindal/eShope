@@ -218,6 +218,9 @@ $('#deleteModal').on('show.bs.modal', function (event) {
       if(document.getElementsByClassName('myModal')[1]!=null){
         document.getElementsByClassName('myModal')[1].style.backgroundColor="black";
       }
+      if(document.getElementsByClassName('myModal')[2]!=null){
+        document.getElementsByClassName('myModal')[2].style.backgroundColor="black";
+      }
 
 
     }else{
@@ -228,6 +231,10 @@ $('#deleteModal').on('show.bs.modal', function (event) {
     if(document.getElementsByClassName('myModal')[1]!=null){
         document.getElementsByClassName('myModal')[1].style.backgroundColor="white";
       }
+      if(document.getElementsByClassName('myModal')[2]!=null){
+        document.getElementsByClassName('myModal')[2].style.backgroundColor="white";
+      }
+
     }}
 
     setTimeout(myTheme, 100);
@@ -308,6 +315,18 @@ $('#deleteModal').on('show.bs.modal', function (event) {
       </div>
   </div>
   <!--    /pagination     -->
+
+    <div th:fragment="format_currency(amount)" th:remove="tag">
+        <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+        <span> [[${#numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+        <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+    </div>
+
+    <div th:fragment="currency_input(amount)" th:remove="tag">
+        <input type="text" th:value="${(CURRENCY_SYMBOL_POSITION=='Before Price'?CURRENCY_SYMBOL:'') + #numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION=='After Price'?CURRENCY_SYMBOL:'')}" readonly class="contact-input col-sm-10"/>
+    </div>
+
+
 
 </body>
 </html>

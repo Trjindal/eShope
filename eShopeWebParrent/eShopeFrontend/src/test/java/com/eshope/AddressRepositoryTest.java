@@ -102,4 +102,12 @@ public class AddressRepositoryTest {
         addressRepository.setNonDefaultForOthers(addressId,customerId);
     }
 
+    @Test
+    public void testGetDefault(){
+        Integer customerId=44;
+        Address address=addressRepository.findDefaultAddressByCustomer(customerId);
+        assertThat(address).isNotNull();
+        System.out.println(address);
+    }
+
 }

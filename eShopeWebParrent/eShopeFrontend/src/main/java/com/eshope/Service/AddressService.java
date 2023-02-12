@@ -75,5 +75,9 @@ public class AddressService {
         }
     }
 
+    public Address getDefaultAddress(Customer customer){
+        return addressRepository.findDefaultAddressByCustomer(customer.getId());
+    }
+
 
 }

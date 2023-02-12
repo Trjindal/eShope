@@ -5,17 +5,20 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "orders")
 @Getter
 @Setter
-@Table(name="addresses")
-public class Address {
-
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     @Column(nullable = false,length = 45)
     @Size(min=3,max=45, message="First name must be at least 3 and at most 45 characters long")
@@ -45,43 +48,58 @@ public class Address {
     @Size(min=2,max=10, message="State must be at least 2 and at most 10 characters long")
     private String state;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @Column(nullable = false,length = 45)
+    private String country;
 
     @Column(nullable = false,length = 10)
     private String postalCode;
 
-    @Column(name = "default_address")
-    private boolean defaultForShipping;
+    private Date orderTime;
 
-   @ManyToOne
-   @JoinColumn(name = "customer_id")
-   private Customer customer;
+    private float shippingCost;
+    private float productCost;
+    private float subTotal;
+    private float tax;
+    private float total;
 
-    @Override
-    public String toString() {
-        return  firstName + ' ' + lastName +", "+addressLine1+", " +addressLine2
-                +", "+city+", "+state+", "+country.getName()+". Postal Code : "+postalCode+". Phone Number : "+phoneNumber;
+    private int deliverDays;
+    private Date deliverDate;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    private Set<OrderDetail> orderDetails=new HashSet<>();
+
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public String getFullName() {
-        return this.firstName+" "+this.lastName;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    @Transient
-    public String getDetails(){
-        String details="";
-        if(addressLine1!=null&&!addressLine1.isEmpty())
-            details+=addressLine1;
-        if(addressLine2!=null&&!addressLine2.isEmpty())
-            details+=", "+addressLine2;
-        if(!city.isEmpty())
-            details+=", "+city;
-        if(state!=null &&!state.isEmpty())
-            details+=", "+state;
-        details+=", "+country.getName();
-
-        return details;
+    public void copyAddressFromCustomer(){
+        setFirstName(customer.getFirstName());
+        setLastName(customer.getLastName());
+        setPhoneNumber(customer.getPhoneNumber());
+        setAddressLine1(customer.getAddressLine1());
+        setAddressLine2(customer.getAddressLine2());
+        setCity(customer.getCity());
+        setCountry(customer.getCountry().getName());
+        setPostalCode(customer.getPostalCode());
+        setState(customer.getState());
     }
+
+    public String destination(){
+        return this.country+", "+this.state+", "+this.city;
+    }
+
 }

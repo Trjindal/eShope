@@ -1,8 +1,12 @@
 package com.eshope.Controller;
 
+import com.eShope.common.entity.Address;
 import com.eShope.common.entity.CartItem;
 import com.eShope.common.entity.Customer;
+import com.eShope.common.entity.ShippingRate;
+import com.eshope.Service.AddressService;
 import com.eshope.Service.CustomerService;
+import com.eshope.Service.ShippingRateService;
 import com.eshope.Service.ShoppingCartService;
 import com.eshope.Utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,12 @@ public class ShoppingCartController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private AddressService addressService;
+
+    @Autowired
+    private ShippingRateService shippingRateService;
+
 
     @GetMapping("/cart")
     public String viewCart(Model model, HttpServletRequest request){
@@ -38,6 +48,19 @@ public class ShoppingCartController {
             estimatedTotal += item.getSubTotal();
         }
 
+        Address defaultAddress= addressService.getDefaultAddress(customer);
+        ShippingRate shippingRate=null;
+        boolean usePrimaryAddressAsDefault=false;
+
+        if(defaultAddress!=null){
+            shippingRate=shippingRateService.getShippingRateForAddress(defaultAddress);
+        }else {
+            usePrimaryAddressAsDefault=true;
+            shippingRate=shippingRateService.getShippingRateForCustomer(customer);
+        }
+
+        model.addAttribute("usePrimaryAddressAsDefault",usePrimaryAddressAsDefault);
+        model.addAttribute("shippingSupported",shippingRate!=null);
         model.addAttribute("cartItems",cartItems);
         model.addAttribute("estimatedTotal",estimatedTotal);
         model.addAttribute("totalItems",totalItems);

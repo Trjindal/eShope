@@ -145,7 +145,18 @@
                            </div>
                         </h3>
                         <div class="mt-3">
-                            <button class="btn btn-style btn-style-1 text-left">Proceed to Buy</button>
+                            <th:block th:if="${shippingSupported}">
+                                <form th:action="@{/checkout}">
+                                    <button class="btn btn-style btn-style-1 text-left">Proceed to Buy</button>
+                                </form>
+                            </th:block>
+                            <th:block th:unless="${shippingSupported}">
+                                <div><span class="h5 text-warning">No shipping available for your location</span> </div>
+                            </th:block>
+                            <div class="pt-2 ">
+                                <a  th:href="@{/address_book(redirect=cart)}" style="color:#007185;">Change/Use Another Shipping Address</a>
+                            </div>
+
                         </div>
                     </div>
                 </div>

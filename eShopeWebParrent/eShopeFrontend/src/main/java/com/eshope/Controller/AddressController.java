@@ -182,6 +182,12 @@ public class AddressController {
         try {
             Customer customer = getAuthenticatedCustomer(request);
             addressService.setDefaultAddress(addressId, customer.getId());
+
+            String redirectOption=request.getParameter("redirect");
+            if(redirectOption!=null&&redirectOption.equals("cart")){
+                return "redirect:/cart";
+            }
+
             return "redirect:/address_book";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("error",ex.getMessage());

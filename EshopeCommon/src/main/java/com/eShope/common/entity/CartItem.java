@@ -25,6 +25,9 @@ public class CartItem {
 
     private int quantity;
 
+    @Transient
+    private float shippingCost;
+
     @Override
     public String toString() {
         return "CartItem{" +

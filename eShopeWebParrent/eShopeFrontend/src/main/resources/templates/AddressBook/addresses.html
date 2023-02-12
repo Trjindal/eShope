@@ -62,7 +62,10 @@
                 <div class="d-flex justify-content-between">
                   <div class="d-flex">
                     <h6 th:classappend="${usePrimaryAddressAsDefault?'text-warning':''}">Address 1</h6>
-                    <a th:unless="${usePrimaryAddressAsDefault}" th:href="@{'/address_book/default/0'}" style="margin-left: 0.5rem !important;color:#007185">[Set as Default]</a>
+                    <th:block th:unless="${usePrimaryAddressAsDefault}">
+                      <a th:unless="${param.redirect}" th:href="@{'/address_book/default/0'}" style="margin-left: 0.5rem !important;color:#007185">[Set as Default]</a>
+                      <a th:if="${param.redirect}" th:href="@{'/address_book/default/0?redirect=cart'}" style="margin-left: 0.5rem !important;color:#007185">[Set as Default]</a>
+                    </th:block>
                     <span th:if="${usePrimaryAddressAsDefault}"  style="margin-left: 0.5rem !important"  class="text-warning">[Default]</span>
                   </div>
                   <a class="fas fa-light fa-pen-to-square" th:href="@{'/address_book/edit/primaryAddress'}"
@@ -90,7 +93,10 @@
                   <div class="d-flex justify-content-between">
                     <div class="d-flex">
                       <h6 th:classappend="${address.defaultForShipping?'text-warning':''}">Address  [[${status.count+1}]]</h6>
-                      <a th:unless="${address.defaultForShipping}" th:href="@{'/address_book/default/'+${address.id}}" style="margin-left: 0.5rem !important;color:#007185">[Set as Default]</a>
+                      <th:block th:unless="${address.defaultForShipping}">
+                        <a th:unless="${param.redirect}" th:href="@{'/address_book/default/'+${address.id}}" style="margin-left: 0.5rem !important;color:#007185">[Set as Default]</a>
+                        <a th:if="${param.redirect}" th:href="@{'/address_book/default/'+${address.id}+'?redirect=cart'}" style="margin-left: 0.5rem !important;color:#007185">[Set as Default]</a>
+                      </th:block>
                       <span class="text-warning" style="margin-left: 0.5rem !important" th:if="${address.defaultForShipping}">[Default]</span>
                     </div>
                   <div>

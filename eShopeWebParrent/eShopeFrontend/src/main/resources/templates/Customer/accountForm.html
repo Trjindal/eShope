@@ -39,6 +39,7 @@
                       th:object="${customer}">
                     <div class="row form-group">
                         <input type="hidden" th:field="*{id}"/>
+                        <input type="hidden" name="redirect" th:value="${param.redirect}"/>
                         <div class="col-sm-5">
                             <label class="col-form-label">Email : </label>
                             <input type="email" readonly="readonly" th:field="*{email}" placeholder="Email" class="contact-input"/>
