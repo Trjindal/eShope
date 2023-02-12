@@ -1,0 +1,161 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('CheckOut','none')"/>
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Checkout</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
+        <li><a th:href="@{'/cart'}">Cart</a><i class="fas fa-angle-right"></i></li>
+        <li class="active">Checkout</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="px-md-3 py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4 " style="max-width:500px;">
+<!--      <p class="text-uppercase">Manage Address</p>-->
+      <h3 class="title-style">Checkout</h3>
+    </div>
+    <div class="row contact-block">
+      <div class="col-md-7 contact-left">
+        <ul>
+          <li class="alert alert-danger" role="alert" th:if="${emailNotUnique!=null}" th:text="${emailNotUnique}"></li>
+        </ul>
+<!--        <div class="card">-->
+<!--          <div class="card-header"><h5>Shipping Information</h5></div>-->
+<!--          <div class="card-body"></div>-->
+<!--        </div>-->
+        <div class="coursecard-single ">
+          <div class="grids5-info position-relative">
+            <h5 class="text-center">Shipping Information</h5>
+            <hr>
+          </div>
+          <div class="content-main-top">
+            <div class="content-top mb-4 mt-3 ">
+              <div class="row p-1">
+                <div class="col-3 col-md-3 text-center" ><p> <b>Ship to:</b></p> </div>
+                <div class="col-9 col-md-9">
+                  <p>[[${shippingAddress}]]</p>
+
+                  <p><a th:href="@{/address_book}" style="color:#007185;">[Ship to another address]</a></p>
+                </div>
+              </div>
+              <div class="row p-1">
+                <div class="col-3 col-md-3 text-center" ><p> <b>Days to Deliver:</b></p> </div>
+                <div class="col-9 col-md-9">
+                  <p>[[${checkoutInfo.deliverDays}]] day(s)</p>
+                </div>
+              </div>
+              <div class="row p-1">
+                <div class="col-3 col-md-3 text-center" ><p> <b>Expected deliver date:</b></p> </div>
+                <div class="col-9 col-md-9">
+                  <p>[[${#dates.format(checkoutInfo.deliverDate,'E, dd MMM yyyy')}]]</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="coursecard-single ">
+            <div class="grids5-info position-relative">
+              <h5 class="text-center">Payment Method</h5>
+              <hr>
+            </div>
+          <div class="content-main-top">
+            <div class="content-top mb-4 mt-3 text-center">
+              <div th:if="${checkoutInfo.codSupported}">
+                <p class="d-inline">
+                  <input type="radio" class=""> Cash on Delivery (COD)
+                  <button class="btn btn-style">Place Order with COD</button>
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+      <div class="col-md-5 ps-lg-5 mt-md-0 mt-5">
+        <div class="contact-left">
+          <div class="cont-details">
+            <div class=" contact-grid text-center">
+                <h3>Order Summary</h3>
+              <hr>
+              <th:block th:each="item:${cartItems}" th:with="product=${item.product}">
+                <div class="row mt-2 p-2">
+                    <div class="col-6 col-md-3 d-inline" >
+                      <img th:src="@{${product.mainImagePath}}" class="img-fluid" />
+                    </div>
+                    <div class="col-6 col-md-9 d-inline">
+                      <p><a th:href="@{'/p/'+${product.alias}}" target="_blank">[[${product.shortName}]]</a></p>
+                      <p class="d-inline">
+                        [[${item.quantity}]]  X
+                      <div  th:replace="Fragments/fragment::format_currency(${product.price})"></div>
+                      </p>
+                      <p class="d-inline">
+                          Ship :
+                          <div  th:replace="Fragments/fragment::format_currency(${item.shippingCost})"></div>
+                      </p>
+                      <p class="d-inline">
+                        Subtotal :
+                      <div  th:replace="Fragments/fragment::format_currency(${item.subTotal})"></div>
+                      </p>
+                    </div>
+
+                </div>
+              </th:block>
+              <hr>
+              <p class="d-inline">
+                <b>Product Total :</b>
+                <div th:replace="Fragments/fragment::format_currency(${checkoutInfo.productTotal})"></div>
+              </p>
+              <p class="d-inline">
+                <b>Shipping Total :</b>
+                <div th:replace="Fragments/fragment::format_currency(${checkoutInfo.shippingCostTotal})"></div>
+              </p>
+              <p class="d-inline">
+                <b>Payment Total :</b>
+                <div  th:replace="Fragments/fragment::format_currency(${checkoutInfo.paymentTotal})"></div>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+
+
+</body>
+</html>
