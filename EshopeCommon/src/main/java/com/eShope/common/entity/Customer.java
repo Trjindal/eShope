@@ -69,6 +69,7 @@ public class Customer {
     private AuthenticationType authenticationType;
 
     @Column(nullable = false,length = 10)
+    @Size(min=5,max=6, message="Postal Code must be at least 5 and at most 6 number long")
     String postalCode;
 
     Date createdTime;

@@ -13,15 +13,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -35,9 +35,11 @@ public class AddressController {
     private CustomerService customerService;
 
     @GetMapping("/address_book")
-    public String showAddressBook(Model model, HttpServletRequest request){
+    public String showAddressBook(Model model, HttpServletRequest request,HttpSession session){
         Customer customer=getAuthenticatedCustomer(request);
         List<Address> listAddresses=addressService.listAddressBook(customer);
+
+        String redirectOption=request.getParameter("redirect");
 
         boolean usePrimaryAddressAsDefault=true;
         for (Address address:listAddresses) {
@@ -47,6 +49,9 @@ public class AddressController {
             }
         }
 
+        if(redirectOption!=null){
+            model.addAttribute("redirect",redirectOption);
+        }
 
         model.addAttribute("customer",customer);
         model.addAttribute("listAddresses",listAddresses);
@@ -57,10 +62,42 @@ public class AddressController {
         return "AddressBook/addresses";
     }
 
+    @GetMapping("/address_book/default/{id}")
+    public String setDefaultAddress(@PathVariable("id") Integer addressId, @RequestParam(required = false,name = "redirect") String redirect, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes){
+        try {
+            Customer customer = getAuthenticatedCustomer(request);
+            addressService.setDefaultAddress(addressId, customer.getId());
+
+            log.error(redirect);
+
+            if(redirect!=null){
+                return "redirect:/"+redirect;
+            }
+            return "redirect:/address_book";
+        }catch (UsernameNotFoundException ex){
+            redirectAttributes.addFlashAttribute("error",ex.getMessage());
+
+            return "redirect:/address_book";
+        }
+    }
+
+
+
+
     @GetMapping("/address_book/new")
     public String newAddress(Model model,HttpServletRequest request,RedirectAttributes redirectAttributes){
 
         Customer customer=getAuthenticatedCustomer(request);
+
+        String redirectOption=request.getParameter("redirect");
+        String redirectURL="redirect:/address_book";
+
+
+        if(redirectOption!=null){
+            redirectURL+="?redirect="+redirectOption;
+            model.addAttribute("redirect",redirectOption);
+        }
+
         if(addressService.countAddress(customer.getId())<10){
             Address address=new Address();
 
@@ -72,14 +109,14 @@ public class AddressController {
             return "AddressBook/addressForm";
         }else{
             redirectAttributes.addFlashAttribute("error","Limit of Adding different address is 10 only.");
-            return "redirect:/address_book";
+            return redirectURL;
         }
 
 
     }
 
     @GetMapping("/address_book/edit/{id}")
-    public String editShippingAddress(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
+    public String editShippingAddress(@PathVariable(name = "id") Integer id, HttpServletRequest request,RedirectAttributes redirectAttributes, Model model, HttpSession session){
         try{
             Address address=addressService.getAddressById(id);
             List<Country> countryList=customerService.listAllCountries();
@@ -87,6 +124,16 @@ public class AddressController {
             model.addAttribute("address",address);
             model.addAttribute("addresses",address);
             session.setAttribute("id",id);
+
+            String redirectOption=request.getParameter("redirect");
+            String redirectURL="redirect:/address_book";
+
+            if(redirectOption!=null){
+                redirectURL+="?redirect="+redirectOption;
+                session.setAttribute("redirect",redirectOption);
+                model.addAttribute("redirect",redirectOption);
+            }
+
             return "AddressBook/addressUpdateForm.html";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("error",ex.getMessage());
@@ -110,16 +157,25 @@ public class AddressController {
     }
 
     @PostMapping("/address_book/save")
-    public String saveAddress(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "address") Address address, Errors errors, Model model,HttpServletRequest request,HttpSession session){
+    public String saveAddress(RedirectAttributes redirectAttributes,@RequestParam String redirect, @Valid @ModelAttribute(value = "address") Address address, Errors errors, Model model,HttpServletRequest request,@RequestParam(required = false) Integer id){
 
         Customer customer=getAuthenticatedCustomer(request);
-        Integer id= (Integer) session.getAttribute("id");
+        log.error(String.valueOf(id));
+        log.error(redirect);
+
+        String redirectURL="redirect:/address_book";
+
+        if(!redirect.isEmpty())
+            redirectURL+="?redirect="+redirect;
+
+
         if(id==null){
             if(addressService.countAddress(customer.getId())>=10){
                 redirectAttributes.addFlashAttribute("error","Limit of Adding different address is 10 only.");
-                return "redirect:/address_book";
+                return redirectURL;
             }
         }
+
 
         //DISPLAYING ERROR MESSAGES
         if(errors.hasErrors()){
@@ -127,7 +183,7 @@ public class AddressController {
             List<Country> countryList=customerService.listAllCountries();
             model.addAttribute("countryList",countryList);
 
-            return "AddressBook/addressForm";
+            return "AddressBook/addressUpdateForm.html";
         }
 
         if(id!=null){
@@ -140,18 +196,34 @@ public class AddressController {
             redirectAttributes.addFlashAttribute("message","New Address has been added.");
         else
             redirectAttributes.addFlashAttribute("message","Address has been edited successfully.");
-        return "redirect:/address_book";
+        return redirectURL;
     }
 
 
     @PostMapping("/address_book/save/primaryAddress")
     public String savePrimaryAddress(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "customer") Customer customer, Errors errors, Model model,HttpServletRequest request,HttpSession session){
+
+        String redirectOption=request.getParameter("redirect");
+        String redirectURL="redirect:/address_book";
+
+        if(!redirectOption.isEmpty())
+            redirectURL+="?redirect="+redirectOption;
+
+
         //DISPLAYING ERROR MESSAGES
         if(errors.hasErrors()){
             log.error("New Address form validation failed due to : " + errors.toString());
             List<Country> countryList=customerService.listAllCountries();
             model.addAttribute("countryList",countryList);
-
+            List<ObjectError> objectErrorList= errors.getAllErrors();
+            List<String> errorsList=new ArrayList<>();
+            for (ObjectError error:objectErrorList) {
+//                System.out.println(error);
+                errorsList.add(error.getDefaultMessage());
+            }
+            redirectAttributes.addFlashAttribute("errorsList",errorsList);
+            if(redirectURL!=null)
+                return "redirect:/address_book/edit/primaryAddress?redirect="+redirectOption;
             return "AddressBook/editPrimaryAddress";
         }
 
@@ -160,41 +232,26 @@ public class AddressController {
 
         redirectAttributes.addFlashAttribute("message","Address has been edited successfully.");
 
-        return "redirect:/address_book";
+        return redirectURL;
     }
 
 
         //DELETE CONTROLLER
-    @GetMapping("/address_book/delete/{id}")
-    public String deleteShippingAddress(@PathVariable(name="id")Integer id, Model model, RedirectAttributes redirectAttributes){
+    @RequestMapping("/address_book/delete/{id}")
+    public String deleteShippingAddress(@PathVariable(name="id")Integer id, Model model, RedirectAttributes redirectAttributes,@RequestParam(required = false) String redirect){
+        String redirectURL="redirect:/address_book";
         try{
             addressService.delete(id);
+            if(!redirect.equals("undefined")){
+                redirectURL+="?redirect="+redirect;
+            }
             redirectAttributes.addFlashAttribute("message","The Shipping Address has been deleted successfully");
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("error",ex.getMessage());
         }
-        return "redirect:/address_book";
+        return redirectURL;
     }
 
-
-    @GetMapping("/address_book/default/{id}")
-    public String setDefaultAddress(@PathVariable("id") Integer addressId,HttpServletRequest request,RedirectAttributes redirectAttributes){
-        try {
-            Customer customer = getAuthenticatedCustomer(request);
-            addressService.setDefaultAddress(addressId, customer.getId());
-
-            String redirectOption=request.getParameter("redirect");
-            if(redirectOption!=null&&redirectOption.equals("cart")){
-                return "redirect:/cart";
-            }
-
-            return "redirect:/address_book";
-        }catch (UsernameNotFoundException ex){
-            redirectAttributes.addFlashAttribute("error",ex.getMessage());
-
-            return "redirect:/address_book";
-        }
-    }
 
 
 

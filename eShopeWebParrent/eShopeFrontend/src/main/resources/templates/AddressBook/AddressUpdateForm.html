@@ -38,6 +38,8 @@
         </ul>
         <form th:action="@{/address_book/save}" method="post" class="signing-form  contact-block"
               th:object="${address}">
+          <input type="hidden" th:value="${param.redirect}" name="redirect">
+          <input type="hidden" th:value="*{id}" name="id">
           <div class="row form-group">
             <div class="col-sm-5">
               <label class="col-form-label"><span style="color:#dc3545;">*</span>  &nbsp; First Name &nbsp; : </label>
@@ -94,7 +96,7 @@
             <div class="col-sm-1"></div>
             <div class="col-sm-5">
               <label class="col-form-label"><span style="color:#dc3545;">*</span>  &nbsp; Postal Code : </label>
-              <input type="text" th:field="*{postalCode}" placeholder="Postal Code"
+              <input type="number" th:field="*{postalCode}" placeholder="Postal Code"
                      class="contact-input"/>
             </div>
           </div>

@@ -32,7 +32,7 @@
 <!--      <p class="text-uppercase">Manage Address</p>-->
       <h3 class="title-style">Checkout</h3>
     </div>
-    <div class="row contact-block">
+    <div class="row ">
       <div class="col-md-7 contact-left">
         <ul>
           <li class="alert alert-danger" role="alert" th:if="${emailNotUnique!=null}" th:text="${emailNotUnique}"></li>
@@ -53,7 +53,7 @@
                 <div class="col-9 col-md-9">
                   <p>[[${shippingAddress}]]</p>
 
-                  <p><a th:href="@{/address_book}" style="color:#007185;">[Ship to another address]</a></p>
+                  <p><a th:href="@{/address_book(redirect=checkout)}" style="color:#007185;">[Ship to another address]</a></p>
                 </div>
               </div>
               <div class="row p-1">
@@ -82,7 +82,7 @@
             <div class="content-top mb-4 mt-3 text-center">
               <div th:if="${checkoutInfo.codSupported}">
                 <p class="d-inline">
-                  <input type="radio" class=""> Cash on Delivery (COD)
+                  <input type="checkbox" class="myCheckBox"> Cash on Delivery (COD)
                   <button class="btn btn-style">Place Order with COD</button>
                 </p>
               </div>

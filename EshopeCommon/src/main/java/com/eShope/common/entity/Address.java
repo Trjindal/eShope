@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -50,6 +51,7 @@ public class Address {
     private Country country;
 
     @Column(nullable = false,length = 10)
+    @Size(min=5,max=6, message="Postal Code must be at least 5 and at most 6 number long")
     private String postalCode;
 
     @Column(name = "default_address")

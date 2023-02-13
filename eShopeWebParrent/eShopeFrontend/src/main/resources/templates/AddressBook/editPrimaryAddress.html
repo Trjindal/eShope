@@ -32,16 +32,16 @@
     </div>
     <div class="row contact-block">
       <div class=" contact-right">
-        <ul class="text-center">
-          <li class="alert alert-success" role="alert" th:if="${message!=null}" th:text="${message}"></li>
-          <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('customer.*')}"  >[[${error}]]</li>
+        <ul class="d-flex text-center  flex-column align-items-center" th:if="${errorsList}" th:each="error:${errorsList}">
+          <li class="alert alert-danger w-100" role="alert" >[[${error}]]</li>
         </ul>
         <form th:action="@{/address_book/save/primaryAddress}" method="post" class="signing-form register-form contact-block"
               th:object="${customer}">
 
+          <input type="hidden" th:value="${param.redirect}" name="redirect">
           <div class="row form-group">
             <div class="col-sm-5">
-              <label class="col-form-label">Address Line 1 : </label>
+              <label class="col-form-label" ><span style="color:#dc3545;">*</span>Address Line 1 : </label>
               <input type="text" th:field="*{addressLine1}" placeholder="addressLine1 "
                      class="contact-input"/>
             </div>
@@ -55,7 +55,7 @@
           <div class="row form-group">
 
             <div class="col-sm-5">
-              <label class="col-form-label">Country : </label>
+              <label class="col-form-label"><span style="color:#dc3545;">*</span>Country : </label>
               <select class="my-form-control" th:field="*{country}">
                 <th:block th:each="country:${countryList}">
                   <option th:value="${country.id}">[[${country.name}]]</option>
@@ -65,7 +65,7 @@
             </div>
             <div class="col-sm-1"></div>
             <div class="col-sm-5">
-              <label class="col-form-label">State : </label>
+              <label class="col-form-label"><span style="color:#dc3545;">*</span>State : </label>
               <input type="text" th:field="*{state}" placeholder="state" class="contact-input"
                      list="listStates"/>
               <datalist id="listStates"></datalist>
@@ -73,13 +73,13 @@
           </div>
           <div class="row form-group">
             <div class="col-sm-5">
-              <label class="col-form-label">City : </label>
+              <label class="col-form-label"><span style="color:#dc3545;">*</span>City : </label>
               <input type="text" th:field="*{city}" placeholder="City " class="contact-input"/>
             </div>
             <div class="col-sm-1"></div>
             <div class="col-sm-5">
-              <label class="col-form-label">Postal Code : </label>
-              <input type="text" th:field="*{postalCode}" placeholder="Postal Code"
+              <label class="col-form-label"><span style="color:#dc3545;">*</span>Postal Code : </label>
+              <input type="number" th:field="*{postalCode}" placeholder="Postal Code"
                      class="contact-input"/>
             </div>
           </div>
