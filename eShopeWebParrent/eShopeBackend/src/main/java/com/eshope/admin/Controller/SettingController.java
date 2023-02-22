@@ -68,6 +68,15 @@ public class SettingController {
         return "redirect:/settings";
     }
 
+    @PostMapping("/settings/save_payment")
+    public String savePaymentSettings( HttpServletRequest request, RedirectAttributes redirectAttributes){
+        log.error("HERE");
+        List<Setting> paymentSettings=settingService.getPaymentSettings();
+        updateSettingValuesFromForm(request,paymentSettings);
+        redirectAttributes.addFlashAttribute("message","Payment Settings settings have been saved");
+        return "redirect:/settings#general";
+    }
+
     @PostMapping("/settings/save_mail_templates")
     public String saveMailTemplateSettings( HttpServletRequest request, RedirectAttributes redirectAttributes){
         List<Setting> mailTemplateSettings=settingService.getMailTemplateSettings();

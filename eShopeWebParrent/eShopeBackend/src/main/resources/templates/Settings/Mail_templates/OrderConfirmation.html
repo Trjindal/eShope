@@ -5,7 +5,19 @@
 </head>
 <body>
 <div th:fragment="content" th:remove="tag">
-    <h1>Order Confirmation</h1>
+    <div class="input-grids">
+        <div class="row form-group">
+            <label class="col-form-label col-sm-2">E-mail Subject : </label>
+            <input type="text" th:value="${ORDER_CONFIRMATION_SUBJECT}" placeholder="ORDER_CONFIRMATION_SUBJECT" name="ORDER_CONFIRMATION_SUBJECT" class="contact-input col-sm-10"/>
+        </div>
+        <div class="row form-group">
+            <label class="col-form-label col-sm-2">E-mail Subject : </label>
+            <div class="col-sm-10">
+                <textarea rows="5" clas="contact-input " name="ORDER_CONFIRMATION_CONTENT" id="orderConfirmationContent">[[${ORDER_CONFIRMATION_CONTENT}]]</textarea>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 </body>

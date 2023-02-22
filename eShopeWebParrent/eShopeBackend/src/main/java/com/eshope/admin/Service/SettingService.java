@@ -44,22 +44,6 @@ public class SettingService {
         return new GeneralSettingBag(settings);
     }
 
-    public List<Setting> getMailServerSettings(){
-        return settingRepository.findByCategory(SettingCategory.MAIL_SERVER);
-    }
-
-    public List<Setting> getMailTemplateSettings(){
-        return settingRepository.findByCategory(SettingCategory.MAIL_TEMPLATES);
-    }
-    public List<Setting> getCurrencySettings() {
-        return settingRepository.findByCategory(SettingCategory.CURRENCY);
-
-    }
-    public void saveAll(Iterable<Setting> settings){
-        settingRepository.saveAll(settings);
-    }
-
-
     public void saveSiteLogo(MultipartFile multipartFile, GeneralSettingBag settingBag) throws IOException {
         if(!multipartFile.isEmpty()){
             String fileName= StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -82,6 +66,27 @@ public class SettingService {
             Setting settingForCurrencyId=settingBag.updateCurrencyId(String.valueOf(currencyId));
             settingRepository.save(settingForCurrencySymbol);
         }
+    }
+
+    public void saveAll(Iterable<Setting> settings){
+        settingRepository.saveAll(settings);
+    }
+
+
+    public List<Setting> getMailServerSettings(){
+        return settingRepository.findByCategory(SettingCategory.MAIL_SERVER);
+    }
+
+    public List<Setting> getMailTemplateSettings(){
+        return settingRepository.findByCategory(SettingCategory.MAIL_TEMPLATES);
+    }
+    public List<Setting> getCurrencySettings() {
+        return settingRepository.findByCategory(SettingCategory.CURRENCY);
+
+    }
+
+    public List<Setting> getPaymentSettings(){
+        return settingRepository.findByCategory(SettingCategory.PAYMENT);
     }
 
 
