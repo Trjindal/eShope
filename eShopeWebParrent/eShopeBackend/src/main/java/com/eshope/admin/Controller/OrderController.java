@@ -1,8 +1,7 @@
 package com.eshope.admin.Controller;
 
-import com.eShope.common.entity.Order;
-import com.eShope.common.entity.Product;
-import com.eShope.common.entity.Setting;
+import com.eShope.common.entity.Order.Order;
+import com.eShope.common.entity.Setting.Setting;
 import com.eshope.admin.Service.OrderService;
 import com.eshope.admin.Service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;

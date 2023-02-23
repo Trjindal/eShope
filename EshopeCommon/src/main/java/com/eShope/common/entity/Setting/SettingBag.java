@@ -1,7 +1,6 @@
-package com.eShope.common.entity;
+package com.eShope.common.entity.Setting;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

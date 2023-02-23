@@ -2,7 +2,7 @@ package com.eshope.Repository;
 
 import com.eShope.common.entity.CartItem;
 import com.eShope.common.entity.Customer;
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -23,4 +23,10 @@ public interface ShoppingCartRepository extends CrudRepository<CartItem,Integer>
     @Modifying
     @Query("UPDATE CartItem c SET c.quantity=?1 where c.customer.id=?2 AND c.product.id=?3")
     public void updateQuantity(int quantity,Integer customerId, Integer productId);
+
+
+    @Modifying
+    @Query("DELETE CartItem c WHERE c.customer.id=?1")
+    public void deleteByCustomer(Integer customerId);
+
 }

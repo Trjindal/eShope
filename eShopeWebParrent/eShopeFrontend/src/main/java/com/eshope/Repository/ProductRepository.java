@@ -1,7 +1,7 @@
 package com.eshope.Repository;
 
 
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

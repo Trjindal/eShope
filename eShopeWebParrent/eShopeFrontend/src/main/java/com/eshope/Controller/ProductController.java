@@ -1,7 +1,7 @@
 package com.eshope.Controller;
 
 import com.eShope.common.entity.Category;
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 import com.eshope.Service.CategoryService;
 import com.eshope.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

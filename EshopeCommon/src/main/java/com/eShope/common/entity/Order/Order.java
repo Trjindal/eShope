@@ -1,5 +1,8 @@
-package com.eShope.common.entity;
+package com.eShope.common.entity.Order;
 
+import com.eShope.common.entity.AbstractAddress;
+import com.eShope.common.entity.Address;
+import com.eShope.common.entity.Customer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +16,7 @@ import java.util.Set;
 @Table(name = "orders")
 @Getter
 @Setter
-public class Order {
+public class Order extends AbstractAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,38 +24,8 @@ public class Order {
 
 
     @Column(nullable = false,length = 45)
-    @Size(min=3,max=45, message="First name must be at least 3 and at most 45 characters long")
-    private String firstName;
-
-    @Column(nullable = false,length = 45)
-    @Size(min=3,max=45, message="Last name must be at least 3 and at most 45 characters long")
-    private String lastName;
-
-    @Column(nullable = false,length = 15)
-    @Size(min=10,max=15, message="Phone number must be at least 10 and at most 15 numbers long")
-    private String phoneNumber;
-
-    @Column(nullable = false,length = 64)
-    @Size(min=3,max=45, message="Address Line 1  must be at least 3 and at most 45 characters long")
-    private String addressLine1;
-
-    @Column(nullable = true,length = 64)
-    @Size(min=0,max=45, message="Address Line 2 must be at most 45 characters long")
-    private String addressLine2;
-
-    @Column(nullable = false,length = 45)
-    @Size(min=2,max=45, message="City must be at least 2 and at most 45 characters long")
-    private String city;
-
-    @Column(nullable = false,length = 45)
-    @Size(min=2,max=10, message="State must be at least 2 and at most 10 characters long")
-    private String state;
-
-    @Column(nullable = false,length = 45)
     private String country;
 
-    @Column(nullable = false,length = 10)
-    private String postalCode;
 
     private Date orderTime;
 
@@ -102,4 +75,15 @@ public class Order {
         return this.country+", "+this.state+", "+this.city;
     }
 
+    public void copyShippingAddress(Address address) {
+        setFirstName(address.getFirstName());
+        setLastName(address.getLastName());
+        setPhoneNumber(address.getPhoneNumber());
+        setAddressLine1(address.getAddressLine1());
+        setAddressLine2(address.getAddressLine2());
+        setCity(address.getCity());
+        setCountry(address.getCountry().getName());
+        setPostalCode(address.getPostalCode());
+        setState(address.getState());
+    }
 }

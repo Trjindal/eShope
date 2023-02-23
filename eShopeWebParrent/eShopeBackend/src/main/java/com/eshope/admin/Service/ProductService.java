@@ -1,10 +1,8 @@
 package com.eshope.admin.Service;
 
 
-import com.eShope.common.entity.Category;
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 
-import com.eShope.common.entity.User;
 import com.eshope.admin.Repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

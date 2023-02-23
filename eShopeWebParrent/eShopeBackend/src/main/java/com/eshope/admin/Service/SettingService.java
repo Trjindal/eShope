@@ -1,8 +1,8 @@
 package com.eshope.admin.Service;
 
 import com.eShope.common.entity.Currency;
-import com.eShope.common.entity.Setting;
-import com.eShope.common.entity.SettingCategory;
+import com.eShope.common.entity.Setting.Setting;
+import com.eShope.common.entity.Setting.SettingCategory;
 import com.eshope.admin.Entity.GeneralSettingBag;
 import com.eshope.admin.Repository.CurrencyRepository;
 import com.eshope.admin.Repository.SettingRepository;

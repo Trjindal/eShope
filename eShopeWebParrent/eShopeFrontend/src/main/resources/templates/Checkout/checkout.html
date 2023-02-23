@@ -81,10 +81,12 @@
           <div class="content-main-top">
             <div class="content-top mb-4 mt-3 text-center">
               <div th:if="${checkoutInfo.codSupported}">
-                <p class="d-inline">
-                  <input type="checkbox" class="myCheckBox"> Cash on Delivery (COD)
-                  <button class="btn btn-style">Place Order with COD</button>
-                </p>
+                <form th:action="@{/place_order}" method="post">
+                  <p class="d-inline">
+                    <input type="checkbox" id="radioCOD" name="paymentMethod" value="COD" class="myCheckBox"> Cash on Delivery (COD)
+                    <button class="btn btn-style d-none" type="submit" id="buttonSubmit">Place Order with COD</button>
+                  </p>
+                </form>
               </div>
             </div>
 
@@ -156,6 +158,19 @@
 <!--    /COMMON JAVASCRIPT  -->
 
 
+<script>
+    var shoppingCart=false;
+    contextPath="[[@{/}]]"
+    var csrfHeaderName="[[${_csrf.headerName}]]";
+    var csrfValue="[[${_csrf.token}]]";
+
+    $(document).ready(function(){
+      $("#radioCOD").on("click",function(){
+        $("#buttonSubmit").removeClass("d-none");
+      })
+    });
+
+</script>
 
 </body>
 </html>

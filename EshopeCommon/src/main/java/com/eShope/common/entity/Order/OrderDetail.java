@@ -1,5 +1,6 @@
-package com.eShope.common.entity;
+package com.eShope.common.entity.Order;
 
+import com.eShope.common.entity.Product.Product;
 import lombok.Getter;
 import lombok.Setter;
 

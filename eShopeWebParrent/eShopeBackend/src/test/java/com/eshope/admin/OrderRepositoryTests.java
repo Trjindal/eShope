@@ -1,6 +1,11 @@
 package com.eshope.admin;
 
 import com.eShope.common.entity.*;
+import com.eShope.common.entity.Order.Order;
+import com.eShope.common.entity.Order.OrderDetail;
+import com.eShope.common.entity.Order.OrderStatus;
+import com.eShope.common.entity.Order.PaymentMethod;
+import com.eShope.common.entity.Product.Product;
 import com.eshope.admin.Repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

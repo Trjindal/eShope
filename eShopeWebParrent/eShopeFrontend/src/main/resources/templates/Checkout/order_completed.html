@@ -1,0 +1,45 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Order Placed','none')"/>
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Order Placed Successfully</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="px-md-3 py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4 " style="max-width:500px;">
+      <h3 class="title-style">Order Placed Successfully</h3>
+    </div>
+  </div>
+</section>
+
+
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+</body>
+</html>

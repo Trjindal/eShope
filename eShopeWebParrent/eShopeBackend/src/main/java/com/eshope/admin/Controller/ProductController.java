@@ -2,6 +2,9 @@ package com.eshope.admin.Controller;
 
 
 import com.eShope.common.entity.*;
+import com.eShope.common.entity.Product.Product;
+import com.eShope.common.entity.Product.ProductDetails;
+import com.eShope.common.entity.Product.ProductImage;
 import com.eshope.admin.Security.EshopeUserDetails;
 import com.eshope.admin.Service.BrandService;
 import com.eshope.admin.Service.CategoryService;

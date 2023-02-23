@@ -1,7 +1,7 @@
 package com.eshope.SettingBag;
 
-import com.eShope.common.entity.Setting;
-import com.eShope.common.entity.SettingBag;
+import com.eShope.common.entity.Setting.Setting;
+import com.eShope.common.entity.Setting.SettingBag;
 
 import java.util.List;
 

@@ -1,8 +1,6 @@
 package com.eshope.admin.Service;
 
-import com.eShope.common.entity.Order;
-import com.eShope.common.entity.Setting;
-import com.eShope.common.entity.User;
+import com.eShope.common.entity.Order.Order;
 import com.eshope.admin.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.NoSuchElementException;
 

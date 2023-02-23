@@ -1,7 +1,7 @@
 package com.eshope.admin.Entity;
 
-import com.eShope.common.entity.Setting;
-import com.eShope.common.entity.SettingBag;
+import com.eShope.common.entity.Setting.Setting;
+import com.eShope.common.entity.Setting.SettingBag;
 
 import com.eshope.admin.Service.SettingService;
 

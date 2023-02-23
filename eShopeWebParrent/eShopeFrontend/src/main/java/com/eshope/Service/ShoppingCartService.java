@@ -3,7 +3,7 @@ package com.eshope.Service;
 
 import com.eShope.common.entity.CartItem;
 import com.eShope.common.entity.Customer;
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 import com.eshope.Repository.ProductRepository;
 import com.eshope.Repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +61,10 @@ public class ShoppingCartService {
 
     public void removeProduct(Integer productId,Customer customer){
         shoppingCartRepository.deleteByCustomerAndProduct(customer.getId(),productId);
+    }
+
+    public void deleteByCustomer(Customer customer){
+        shoppingCartRepository.deleteByCustomer(customer.getId());
     }
 
 }

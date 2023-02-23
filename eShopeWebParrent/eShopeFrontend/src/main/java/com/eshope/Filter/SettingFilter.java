@@ -1,6 +1,6 @@
 package com.eshope.Filter;
 
-import com.eShope.common.entity.Setting;
+import com.eShope.common.entity.Setting.Setting;
 import com.eshope.Service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

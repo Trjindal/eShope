@@ -1,6 +1,6 @@
 package com.eshope.Service;
 
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 import com.eshope.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

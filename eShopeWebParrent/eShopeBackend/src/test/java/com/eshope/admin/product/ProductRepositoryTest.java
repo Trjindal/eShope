@@ -2,7 +2,7 @@ package com.eshope.admin.product;
 
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Category;
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 import com.eshope.admin.Repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

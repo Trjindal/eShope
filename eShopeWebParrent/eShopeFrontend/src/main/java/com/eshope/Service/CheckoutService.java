@@ -1,7 +1,7 @@
 package com.eshope.Service;
 
 import com.eShope.common.entity.CartItem;
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 import com.eShope.common.entity.ShippingRate;
 import com.eshope.PoJo.CheckoutInfo;
 import org.springframework.stereotype.Service;

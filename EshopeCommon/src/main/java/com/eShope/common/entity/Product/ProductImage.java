@@ -1,4 +1,4 @@
-package com.eShope.common.entity;
+package com.eShope.common.entity.Product;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

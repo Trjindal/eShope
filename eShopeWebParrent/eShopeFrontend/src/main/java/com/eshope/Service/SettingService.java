@@ -1,21 +1,14 @@
 package com.eshope.Service;
 
-import com.eShope.common.entity.Currency;
-import com.eShope.common.entity.Setting;
-import com.eShope.common.entity.SettingCategory;
+import com.eShope.common.entity.Setting.Setting;
+import com.eShope.common.entity.Setting.SettingCategory;
 import com.eshope.Repository.SettingRepository;
 
 import com.eshope.SettingBag.EmailSettingBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SettingService {

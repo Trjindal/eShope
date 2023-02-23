@@ -3,7 +3,7 @@ package com.eshope;
 
 import com.eShope.common.entity.CartItem;
 import com.eShope.common.entity.Customer;
-import com.eShope.common.entity.Product;
+import com.eShope.common.entity.Product.Product;
 import com.eshope.Repository.ShoppingCartRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

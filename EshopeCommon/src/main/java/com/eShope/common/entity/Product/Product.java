@@ -1,9 +1,10 @@
-package com.eShope.common.entity;
+package com.eShope.common.entity.Product;
 
+import com.eShope.common.entity.Brand;
+import com.eShope.common.entity.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;

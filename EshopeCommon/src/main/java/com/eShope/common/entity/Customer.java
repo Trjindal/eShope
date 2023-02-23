@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Table(name = "customers")
-public class Customer {
+public class Customer extends AbstractAddress{
 
 
     public Customer(Integer id) {
@@ -32,33 +32,6 @@ public class Customer {
     @Column(nullable = false,length = 64)
     String password;
 
-    @Column(nullable = false,length = 45)
-    @Size(min=3,max=45, message="First name must be at least 3 and at most 45 characters long")
-    String firstName;
-
-    @Column(nullable = false,length = 45)
-    @Size(min=3,max=45, message="Last name must be at least 3 and at most 45 characters long")
-    String lastName;
-
-    @Column(nullable = false,length = 15)
-    @Size(min=10,max=15, message="Phone number must be at least 10 and at most 15 numbers long")
-    String phoneNumber;
-
-    @Column(nullable = false,length = 64)
-    @Size(min=3,max=45, message="Address Line 1  must be at least 3 and at most 45 characters long")
-    String addressLine1;
-
-    @Column(nullable = true,length = 64)
-    @Size(min=0,max=45, message="Address Line 2 must be at most 45 characters long")
-    String addressLine2;
-
-    @Column(nullable = false,length = 45)
-    @Size(min=2,max=45, message="City must be at least 2 and at most 45 characters long")
-    String city;
-
-    @Column(nullable = false,length = 45)
-    @Size(min=2,max=10, message="State must be at least 2 and at most 10 characters long")
-    String state;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
@@ -68,9 +41,7 @@ public class Customer {
     @Column(length = 10)
     private AuthenticationType authenticationType;
 
-    @Column(nullable = false,length = 10)
-    @Size(min=5,max=6, message="Postal Code must be at least 5 and at most 6 number long")
-    String postalCode;
+
 
     Date createdTime;
 
