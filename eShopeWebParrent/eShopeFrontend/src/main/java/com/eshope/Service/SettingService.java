@@ -4,6 +4,7 @@ import com.eShope.common.entity.Setting.Setting;
 import com.eShope.common.entity.Setting.SettingCategory;
 import com.eshope.Repository.SettingRepository;
 
+import com.eshope.SettingBag.CurrencySettingBag;
 import com.eshope.SettingBag.EmailSettingBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,14 @@ public class SettingService {
         List<Setting> settings=settingRepository.findByCategory(SettingCategory.MAIL_SERVER);
         settings.addAll(settingRepository.findByCategory(SettingCategory.MAIL_TEMPLATES));
 
+
         return new EmailSettingBag(settings);
     }
+
+    public CurrencySettingBag getCurrencySettings(){
+        List<Setting> settings=settingRepository.findByCategory(SettingCategory.CURRENCY);
+        return new CurrencySettingBag(settings);
+    }
 }
+
+

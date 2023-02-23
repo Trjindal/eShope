@@ -1,6 +1,7 @@
 package com.eshope.Utility;
 
 import com.eshope.Oauth.CustomerOAuth2User;
+import com.eshope.SettingBag.CurrencySettingBag;
 import com.eshope.SettingBag.EmailSettingBag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -9,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Properties;
 
 @Slf4j
@@ -51,4 +54,37 @@ public class Utility {
         }
         return customerEmail;
     }
+
+    public static String formatCurrency(float amount, CurrencySettingBag currencySettings){
+
+        String symbol=currencySettings.getSymbol();
+        String symbolPosition=currencySettings.getSymbolPosition();
+        String decimalPointType=currencySettings.getDecimalPointType();
+        String thousandPointType=currencySettings.getThousandsPointType();
+        int decimalDigits= currencySettings.getDecimalDigits();
+
+
+        String pattern=symbolPosition.equals("Before Price")?symbol:"";
+        pattern+="###,###";
+
+        if(decimalDigits>0){
+            pattern+=".";
+            for (int count=1;count<=decimalDigits;count++)
+                pattern+="#";
+        }
+
+        pattern+=symbolPosition.equals("After Price")?symbol:"";
+
+        char thousandSeparator=thousandPointType.equals("POINT")?'.':',';
+        char decimalSeparator=decimalPointType.equals("POINT")?'.':',';
+
+        DecimalFormatSymbols decimalFormatSymbols=DecimalFormatSymbols.getInstance();
+        decimalFormatSymbols.setDecimalSeparator(decimalSeparator);
+        decimalFormatSymbols.setGroupingSeparator(thousandSeparator);
+
+        DecimalFormat formatter=new DecimalFormat(pattern,decimalFormatSymbols);
+
+        return formatter.format(amount);
+    }
+
 }

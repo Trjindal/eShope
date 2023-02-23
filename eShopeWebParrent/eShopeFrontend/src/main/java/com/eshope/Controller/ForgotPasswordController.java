@@ -1,6 +1,7 @@
 package com.eshope.Controller;
 
 import com.eShope.common.entity.Customer;
+import com.eShope.common.entity.Setting.SettingBag;
 import com.eshope.Service.CustomerService;
 import com.eshope.Service.SettingService;
 import com.eshope.SettingBag.EmailSettingBag;
@@ -86,6 +87,7 @@ public class ForgotPasswordController {
 
     private void sendEmail(String link,String email) throws MessagingException, UnsupportedEncodingException {
         EmailSettingBag emailSettings=settingService.getEmailSettings();
+
         JavaMailSenderImpl mailSender= Utility.prepareMailSender(emailSettings);
 
 

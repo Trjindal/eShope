@@ -55,6 +55,10 @@ public class Order extends AbstractAddress {
         return customer;
     }
 
+    public String getFullName(){
+        return firstName+" "+lastName;
+    }
+
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -85,5 +89,11 @@ public class Order extends AbstractAddress {
         setCountry(address.getCountry().getName());
         setPostalCode(address.getPostalCode());
         setState(address.getState());
+    }
+
+    @Transient
+    public String getShippingAddress() {
+        return  firstName + ' ' + lastName +", "+addressLine1+", " +addressLine2
+                +", "+city+", "+state+", "+country+". Postal Code : "+postalCode+". Phone Number : "+phoneNumber;
     }
 }
