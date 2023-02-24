@@ -6,10 +6,12 @@ import com.eShope.common.entity.Customer;
 import com.eShope.common.entity.Order.Order;
 import com.eShope.common.entity.Order.PaymentMethod;
 import com.eShope.common.entity.ShippingRate;
+import com.eshope.Exception.PayPalAPiException;
 import com.eshope.PoJo.CheckoutInfo;
 import com.eshope.Service.*;
 import com.eshope.SettingBag.CurrencySettingBag;
 import com.eshope.SettingBag.EmailSettingBag;
+import com.eshope.SettingBag.PaymentSettingBag;
 import com.eshope.Utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -51,6 +53,9 @@ public class CheckoutController {
     @Autowired
     private SettingService settingService;
 
+    @Autowired
+    private PayPalService payPalService;
+
     @GetMapping("/checkout")
     private String showCheckoutPage(Model model, HttpServletRequest request){
 
@@ -73,6 +78,13 @@ public class CheckoutController {
         List<CartItem> cartItems =shoppingCartService.listCartItems(customer);
         CheckoutInfo checkoutInfo=checkoutService.prepareCheckout(cartItems,shippingRate);
 
+        String currencyCode= settingService.getCurrencyCode();
+        PaymentSettingBag paymentSettings=settingService.getPaymentSettings();
+        String paypalClientId=paymentSettings.getClientId();
+
+        model.addAttribute("paypalClientId",paypalClientId);
+        model.addAttribute("currencyCode",currencyCode);
+        model.addAttribute("customer",customer);
         model.addAttribute("checkoutInfo",checkoutInfo);
         model.addAttribute("cartItems",cartItems);
 
@@ -112,6 +124,29 @@ public class CheckoutController {
         }
 
         return "Checkout/order_completed";
+    }
+
+
+    @PostMapping("process_paypal_order")
+    public String processPayPalOrder(HttpServletRequest request,Model model){
+        String orderId=request.getParameter("orderId");
+
+        String pageTitle="Checkout Failure";
+        String message=null;
+        try {
+            if(payPalService.validateOrder(orderId)){
+                return placeOrder(request);
+            }else{
+                pageTitle="Checkout Failure";
+                message="ERROR:Transaction could not be completed because order information is invalid";
+            }
+        } catch (PayPalAPiException e) {
+            message="ERROR: Transaction failed due to error: "+e.getMessage();
+        }
+
+        model.addAttribute("pageTitle",pageTitle);
+        model.addAttribute("message",message);
+        return "message";
     }
 
     private void sendOrderConfirmationEmail(HttpServletRequest request, Order order) throws MessagingException, UnsupportedEncodingException {

@@ -2,12 +2,15 @@ package com.eshope.PoJo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 @Getter
 @Setter
+@Slf4j
 public class CheckoutInfo {
 
     private float productCost;
@@ -22,5 +25,11 @@ public class CheckoutInfo {
         calendar.add(Calendar.DATE,deliverDays);
 
         return calendar.getTime();
+    }
+
+    public String getPaymentTotalForPayPal(){
+        DecimalFormat formatter=new DecimalFormat("###.##");
+        return formatter.format(paymentTotal);
+
     }
 }
