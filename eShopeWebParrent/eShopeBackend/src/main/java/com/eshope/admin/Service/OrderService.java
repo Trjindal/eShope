@@ -1,6 +1,8 @@
 package com.eshope.admin.Service;
 
+import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Order.Order;
+import com.eshope.admin.Repository.CountryRepository;
 import com.eshope.admin.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,9 @@ public class OrderService {
 
     @Autowired
     private SettingService settingService;
+
+    @Autowired
+    private CountryRepository countryRepository;
 
 
     public List<Order> listAllOrders(){
@@ -60,5 +65,9 @@ public class OrderService {
             throw new UsernameNotFoundException("Could not found any order with such Id ");
         }
         orderRepository.deleteById(id);
+    }
+
+    public List<Country> listAllCountries() {
+        return countryRepository.findAllByOrderByNameAsc();
     }
 }

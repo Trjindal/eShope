@@ -1,5 +1,6 @@
 package com.eshope.admin.Controller;
 
+import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Order.Order;
 import com.eShope.common.entity.Setting.Setting;
 import com.eshope.admin.Service.OrderService;
@@ -66,13 +67,28 @@ public class OrderController {
             return "Orders/viewOrderModal.html";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
-
-
             return "redirect:/orders";
         }
 
     }
 
+    @GetMapping("/orders/edit/{id}")
+    public String editOrder(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model,HttpServletRequest request){
+        try{
+            Order order=orderService.getOrderById(id);
+            List<Country> listCountries=orderService.listAllCountries();
+            loadCurrencySetting(request);
+
+            model.addAttribute("listCountries",listCountries);
+            model.addAttribute("order",order);
+
+            return "Orders/editOrders.html";
+        }catch (UsernameNotFoundException ex){
+            redirectAttributes.addFlashAttribute("message",ex.getMessage());
+            return "redirect:/orders";
+        }
+
+    }
 
     //DELETE CONTROLLER
     @GetMapping("/orders/delete/{id}")

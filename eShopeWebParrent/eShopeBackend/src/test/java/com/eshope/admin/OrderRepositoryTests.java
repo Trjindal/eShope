@@ -1,10 +1,7 @@
 package com.eshope.admin;
 
 import com.eShope.common.entity.*;
-import com.eShope.common.entity.Order.Order;
-import com.eShope.common.entity.Order.OrderDetail;
-import com.eShope.common.entity.Order.OrderStatus;
-import com.eShope.common.entity.Order.PaymentMethod;
+import com.eShope.common.entity.Order.*;
 import com.eShope.common.entity.Product.Product;
 import com.eshope.admin.Repository.OrderRepository;
 import org.junit.jupiter.api.Test;
@@ -15,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -166,5 +164,24 @@ public class OrderRepositoryTests {
 
         Optional<Order> result=orderRepository.findById(orderId);
         assertThat(result).isNotPresent();
+    }
+
+    @Test
+    public void testUpdateOrderTracks(){
+        Integer orderId=6;
+        Order order=orderRepository.findById(orderId).get();
+
+        OrderTrack newTrack=new OrderTrack();
+        newTrack.setOrder(order);
+        newTrack.setUpdatedTime(new Date());
+        newTrack.setStatus(OrderStatus.PROCESSING);
+        newTrack.setNotes(OrderStatus.PROCESSING.defaultDescription());
+
+        List<OrderTrack> orderTracks=order.getOrderTracks();
+        orderTracks.add(newTrack);
+
+        Order updatedOrder=orderRepository.save(order);
+
+        assertThat(updatedOrder.getOrderTracks()).hasSizeGreaterThan(1);
     }
 }

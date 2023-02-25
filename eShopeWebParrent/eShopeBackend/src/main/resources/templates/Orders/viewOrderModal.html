@@ -19,6 +19,9 @@
         <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#shipping" role="tab">Shipping</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#tracking" role="tab">Track</a>
+        </li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -34,27 +37,27 @@
                 </div>
                 <div class="row form-group">
                     <label class="col-form-label col-sm-2">Product Cost : </label>
-                    <div th:replace="Fragments/fragment::currency_input(${order.productCost})" ></div>
+                    <div th:replace="Fragments/fragment::currency_input_r(${order.productCost})" ></div>
 <!--                    <input type="text" th:value="${order.productCost}" readonly class="contact-input col-sm-10"/>-->
                 </div>
                 <div class="row form-group">
                     <label class="col-form-label col-sm-2">Subtotal : </label>
-                    <div th:replace="Fragments/fragment::currency_input(${order.subTotal})" ></div>
+                    <div th:replace="Fragments/fragment::currency_input_r(${order.subTotal})" ></div>
 <!--                    <input type="text" th:value="${order.subTotal}" readonly class="contact-input col-sm-10"/>-->
                 </div>
                 <div class="row form-group">
                     <label class="col-form-label col-sm-2">Shipping Cost : </label>
-                    <div th:replace="Fragments/fragment::currency_input(${order.shippingCost})" ></div>
+                    <div th:replace="Fragments/fragment::currency_input_r(${order.shippingCost})" ></div>
 <!--                    <input type="text" th:value="${order.shippingCost}" readonly class="contact-input col-sm-10"/>-->
                 </div>
                 <div class="row form-group">
                     <label class="col-form-label col-sm-2">Tax : </label>
-                    <div th:replace="Fragments/fragment::currency_input(${order.tax})" ></div>
+                    <div th:replace="Fragments/fragment::currency_input_r(${order.tax})" ></div>
 <!--                    <input type="text" th:value="${order.tax}" readonly class="contact-input col-sm-10"/>-->
                 </div>
                 <div class="row form-group">
                     <label class="col-form-label col-sm-2">Total : </label>
-                    <div th:replace="Fragments/fragment::currency_input(${order.total})" ></div>
+                    <div th:replace="Fragments/fragment::currency_input_r(${order.total})" ></div>
 <!--                    <input type="text" th:value="${order.total}" readonly class=" col-sm-10"/>-->
                 </div>
                 <div class="row form-group">
@@ -73,35 +76,37 @@
             </div>
         </div>
         <div class="tab-pane p-3  " id="products" role="tabpanel">
-            <th:block th:each="detail,status:${order.orderDetails}">
-                <div class="row border rounded p-1" th:with="product=${detail.product}">
-                    <div class="col-1">
-                        <div class="div-count">[[${status.count}]]</div>
-                    </div>
-                    <div class="col-3">
-                        <img th:src="@{${product.getMainImagePath}}" class="img-fluid">
-                    </div>
-                    <div class="col-8">
-                        <div class="text-wrap">
-                            <b>[[${product.name}]]</b>
-                            <div>
-                                Product Cost:
-                                <div th:replace="Fragments/fragment::format_currency(${detail.productCost})" ></div>
-                            </div>
-                            <div>
-                                Subtotal: [[${detail.quantity}]] X
-                                <div th:replace="Fragments/fragment::format_currency(${detail.unitPrice})"></div>
-                                =
-                                <div th:replace="Fragments/fragment::format_currency(${detail.subTotal})"></div>
-                            </div>
-                            <div>
-                                Shipping Cost: <div th:replace="Fragments/fragment::format_currency(${detail.shippingCost})"></div>
+            <div  class="row border rounded p-1">
+                <th:block th:each="detail,status:${order.orderDetails}">
+                    <div class="row  p-3" th:with="product=${detail.product}"   >
+                        <div class="col-1">
+                            <div class="div-count">[[${status.count}]]</div>
+                        </div>
+                        <div class="col-3">
+                            <img th:src="@{${product.getMainImagePath}}" class="img-fluid">
+                        </div>
+                        <div class="col-8">
+                            <div class="text-wrap">
+                                <b>[[${product.name}]]</b>
+                                <div>
+                                    Product Cost:
+                                    <div th:replace="Fragments/fragment::format_currency(${detail.productCost})" ></div>
+                                </div>
+                                <div>
+                                    Subtotal: [[${detail.quantity}]] X
+                                    <div th:replace="Fragments/fragment::format_currency(${detail.unitPrice})"></div>
+                                    =
+                                    <div th:replace="Fragments/fragment::format_currency(${detail.subTotal})"></div>
+                                </div>
+                                <div>
+                                    Shipping Cost: <div th:replace="Fragments/fragment::format_currency(${detail.shippingCost})"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-            </th:block>
+                    <hr class="w-75 " style="margin:auto">
+                </th:block>
+            </div>
         </div>
         <div class="tab-pane p-3 " id="shipping" role="tabpanel">
             <div class="input-grids product-block">
@@ -151,6 +156,24 @@
                 </div>
 
             </div>
+        </div>
+        <div class="tab-pane p-3 " id="tracking" role="tabpanel">
+            <table class="table table-striped ">
+                <thead class="table-dark w-100">
+                <tr>
+                    <th class="sorting" scope="col">Time</th>
+                    <th class="sorting" scope="col">Status</th>
+                    <th class="sorting" scope="col">Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="track:${order.orderTracks}">
+                        <td>[[${track.updatedTime}]]</td>
+                        <td>[[${track.status}]]</td>
+                        <td>[[${track.notes}]]</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

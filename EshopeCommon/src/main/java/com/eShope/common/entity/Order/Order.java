@@ -8,9 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Entity
 @Table(name = "orders")
@@ -50,6 +50,10 @@ public class Order extends AbstractAddress {
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private Set<OrderDetail> orderDetails=new HashSet<>();
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OrderBy("updatedTime ASC")
+    private List<OrderTrack> orderTracks=new ArrayList<>();
 
     public Customer getCustomer() {
         return customer;
@@ -95,5 +99,11 @@ public class Order extends AbstractAddress {
     public String getShippingAddress() {
         return  firstName + ' ' + lastName +", "+addressLine1+", " +addressLine2
                 +", "+city+", "+state+", "+country+". Postal Code : "+postalCode+". Phone Number : "+phoneNumber;
+    }
+
+    @Transient
+    public String getDeliverDateOnForm(){
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(this.deliverDate);
     }
 }

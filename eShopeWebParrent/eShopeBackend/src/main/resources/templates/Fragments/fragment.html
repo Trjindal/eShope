@@ -322,9 +322,13 @@ $('#deleteModal').on('show.bs.modal', function (event) {
         <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
     </div>
 
-    <div th:fragment="currency_input(amount)" th:remove="tag">
+    <div th:fragment="currency_input_r(amount)" th:remove="tag">
         <input type="text" th:value="${(CURRENCY_SYMBOL_POSITION=='Before Price'?CURRENCY_SYMBOL:'') + #numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION=='After Price'?CURRENCY_SYMBOL:'')}" readonly class="contact-input col-sm-10"/>
     </div>
+
+<div th:fragment="currency_input(amount)" th:remove="tag">
+    <input type="text" th:value="${(CURRENCY_SYMBOL_POSITION=='Before Price'?CURRENCY_SYMBOL:'') + #numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION=='After Price'?CURRENCY_SYMBOL:'')}" class="contact-input col-sm-10"/>
+</div>
 
 
 

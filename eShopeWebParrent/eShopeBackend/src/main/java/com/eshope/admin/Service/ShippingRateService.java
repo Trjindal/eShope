@@ -1,9 +1,11 @@
 package com.eshope.admin.Service;
 
 import com.eShope.common.entity.Country;
+import com.eShope.common.entity.Product.Product;
 import com.eShope.common.entity.ShippingRate;
 import com.eShope.common.entity.User;
 import com.eshope.admin.Repository.CountryRepository;
+import com.eshope.admin.Repository.ProductRepository;
 import com.eshope.admin.Repository.ShippingRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,12 +22,17 @@ import java.util.NoSuchElementException;
 public class ShippingRateService {
 
     public static final int SHIPPING_RATES_PER_PAGE=10;
+    private static final int DIM_DIVISOR=139;
+
 
     @Autowired
     private ShippingRateRepository shippingRateRepository;
 
     @Autowired
     private CountryRepository countryRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public Page<ShippingRate> listByPage(int pageNum, String sortField, String sortDir, String keyword){
         Sort sort= Sort.by(sortField);
@@ -74,5 +81,20 @@ public class ShippingRateService {
         }catch (NoSuchElementException ex){
             throw new UsernameNotFoundException("Could not find any Shipping Address with Id"+ id);
         }
+    }
+
+    public float calculateShippingCost(Integer productId,Integer countryId,String state){
+
+        ShippingRate shippingRate=shippingRateRepository.findByCountryAndState(countryId,state);
+
+        if(shippingRate==null){
+            throw new UsernameNotFoundException("No shipping rate found for the given destination. You have to enter shipping rate manually");
+        }
+        Product product=productRepository.findById(productId).get();
+        float dimWeight=(product.getLength()*product.getWidth()*product.getHeight())/DIM_DIVISOR;
+        float finalWeight=product.getWeight()>dimWeight?product.getWeight():dimWeight;
+
+        return finalWeight*shippingRate.getRate();
+
     }
 }

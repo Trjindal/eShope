@@ -60,9 +60,8 @@ public class WebSecurityConfig  {
                 .antMatchers("/products","/products/","/products/detail/**","/products/page/**").hasAnyAuthority("Admin","Editor","Salesperson","Shipper")
                 .antMatchers("/products/new","/products/delete/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/products/edit/**","/products/save","/products/editProduct").hasAnyAuthority("Admin","Editor","Salesperson")
-                .antMatchers("/customers/**","/orders/**").hasAnyAuthority("Admin","Salesperson")
+                .antMatchers("/customers/**","/orders/**","/get_shipping_cost","/report/**").hasAnyAuthority("Admin","Salesperson")
 
-                .antMatchers("report/**").hasAnyAuthority("Admin","Salesperson")
                 .antMatchers("articles/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("menu/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/assets/**", "/assets/js/**").permitAll()
