@@ -14,35 +14,7 @@
 </head>
 <body>
 
-<div th:fragment="deleteModalTemplate">
-    <div class="modal fade " id="deleteModal" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content myModal">
-                <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title" id="deleteLabel">Delete Confirmation</h5>
 
-                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <span id="confirmText"></span>
-                </div>
-
-                <div class="modal-footer">
-                    <div class="col-md-2 login-center text-start">
-                        <a type="button" class="btn btn-style btn-style-3 text-left" id="yesButton">Yes</a>
-                    </div>
-                    <div class="col-md-2 login-center text-start">
-                        <button class="btn btn-style btn-style-3 text-left" id="closeButton" data-dismiss="modal">No
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--CLEAR FILTER-->
 <div th:fragment="clear_filter(link)">
@@ -186,6 +158,36 @@
     </script>
 </div>
 
+<div th:fragment="deleteModalTemplate">
+    <div class="modal fade " id="deleteModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content myModal">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="deleteLabel">Delete Confirmation</h5>
+
+                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span id="confirmText"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="col-md-2 login-center text-start">
+                        <a type="button" class="btn btn-style btn-style-3 text-left" id="yesButton">Yes</a>
+                    </div>
+                    <div class="col-md-2 login-center text-start">
+                        <button class="btn btn-style btn-style-3 text-left" id="closeButton" data-dismiss="modal">No
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:fragment="deleteModal(name,link)">
     <script>
     var link="[[${link}]]"
@@ -212,14 +214,14 @@ $('#deleteModal').on('show.bs.modal', function (event) {
  function myTheme(){
     if(toggleSwitch.checked==true){
     if( document.getElementById('myMenu')!=null){
-     document.getElementById('myMenu').style.backgroundColor="black";
+     document.getElementById('myMenu').style.backgroundColor="var(--bg-color)";
     }
-      document.getElementsByClassName('myModal')[0].style.backgroundColor="black";
+      document.getElementsByClassName('myModal')[0].style.backgroundColor="var(--bg-color)";
       if(document.getElementsByClassName('myModal')[1]!=null){
-        document.getElementsByClassName('myModal')[1].style.backgroundColor="black";
+        document.getElementsByClassName('myModal')[1].style.backgroundColor="var(--bg-color)";
       }
       if(document.getElementsByClassName('myModal')[2]!=null){
-        document.getElementsByClassName('myModal')[2].style.backgroundColor="black";
+        document.getElementsByClassName('myModal')[2].style.backgroundColor="var(--bg-color)";
       }
 
 
@@ -316,18 +318,40 @@ $('#deleteModal').on('show.bs.modal', function (event) {
   </div>
   <!--    /pagination     -->
 
-    <div th:fragment="format_currency(amount)" th:remove="tag">
+<div th:fragment="format_currency(amount)" th:remove="tag">
         <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
         <span> [[${#numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
         <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
     </div>
 
-    <div th:fragment="currency_input_r(amount)" th:remove="tag">
+<div th:fragment="currency_input_r(amount)" th:remove="tag">
         <input type="text" th:value="${(CURRENCY_SYMBOL_POSITION=='Before Price'?CURRENCY_SYMBOL:'') + #numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION=='After Price'?CURRENCY_SYMBOL:'')}" readonly class="contact-input col-sm-10"/>
     </div>
 
 <div th:fragment="currency_input(amount)" th:remove="tag">
     <input type="text" th:value="${(CURRENCY_SYMBOL_POSITION=='Before Price'?CURRENCY_SYMBOL:'') + #numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION=='After Price'?CURRENCY_SYMBOL:'')}" class="contact-input col-sm-10"/>
+</div>
+
+<div th:fragment="products_card(listProducts)" >
+    <div class="row justify-content-center align-items-center m-5">
+        <th:block th:each="product:${listProducts}">
+            <div class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center mb-3" >
+                <div class=" w3l-grids-block-5 w-75  ">
+                    <div class="coursecard-single " style="height=500px;">
+                        <a href="" class="linkProduct" th:pid="${product.id}">
+                            <div class="grids5-info position-relative">
+                                <img th:src="@{${product.getMainImagePath}} "  alt="" class="img-fluid"/>
+                            </div>
+                            <div class="content-main-top">
+                                <h4 th:id="pname+${product.id}">[[${product.getShortName}]]</h4>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+
 </div>
 
 

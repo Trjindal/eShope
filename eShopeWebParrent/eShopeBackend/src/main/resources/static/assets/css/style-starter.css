@@ -21850,6 +21850,16 @@ margin:10px;
 
 }
 
+
+
+.nav-link {
+    color:inherit
+}
+
+.nav-link:hover{
+    color: var(--primary-color)!important;
+}
+
 /*
 @media only screen and (max-width: 991px) {
 .userName,.firstName,.lastName{

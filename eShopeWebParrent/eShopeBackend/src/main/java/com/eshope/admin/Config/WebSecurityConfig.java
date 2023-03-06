@@ -53,15 +53,19 @@ public class WebSecurityConfig  {
 
         http.csrf().and()
                 .authorizeHttpRequests()
-                .antMatchers("/settings/**").hasAuthority("Admin")
+                .antMatchers("/states/listByCountry/**").hasAnyAuthority("Admin","Salesperson")
                 .antMatchers("/shipping/**").hasAnyAuthority("Admin","Salesperson")
-                .antMatchers("/users/**","/countries/**","/states/**").hasAuthority("Admin")
+                .antMatchers("/users/**","/countries/**","/states/**","/settings/**").hasAuthority("Admin")
                 .antMatchers("/categories/**","/brands/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/products","/products/","/products/detail/**","/products/page/**").hasAnyAuthority("Admin","Editor","Salesperson","Shipper")
                 .antMatchers("/products/new","/products/delete/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/products/edit/**","/products/save","/products/editProduct").hasAnyAuthority("Admin","Editor","Salesperson")
-                .antMatchers("/customers/**","/orders/**","/get_shipping_cost","/report/**").hasAnyAuthority("Admin","Salesperson")
+                .antMatchers("products/**").hasAnyAuthority("Admin","Editor")
+                .antMatchers("/orders","/orders/","/orders/page/**","/orders/detail/**").hasAnyAuthority("Admin","Salesperson","Shipper")
 
+
+
+                .antMatchers("/customers/**","/orders/**","/get_shipping_cost","/report/**").hasAnyAuthority("Admin","Salesperson")
                 .antMatchers("articles/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("menu/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/assets/**", "/assets/js/**").permitAll()

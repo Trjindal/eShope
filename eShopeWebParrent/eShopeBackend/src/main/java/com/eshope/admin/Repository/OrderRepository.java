@@ -8,8 +8,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface OrderRepository extends PagingAndSortingRepository<Order,Integer> {
 
-    @Query("SELECT o FROM Order o WHERE CONCAT(o.firstName,' ',o.lastName,' ',o.phoneNumber,' ',o.addressLine1,' ',o.addressLine2,' '," +
-            "o.postalCode,' ',o.city,' ',o.state,' ',o.country,' ',o.paymentMethod,' ',o.orderStatus,' ',o.customer.firstName,' ',o.customer.lastName) LIKE %?1%")
+    @Query("SELECT o FROM Order o WHERE CONCAT('#',o.id,CONCAT(o.firstName,' ',o.lastName,' ',o.phoneNumber,' ',o.addressLine1,' ',o.addressLine2,' '," +
+            "o.postalCode,' ',o.city,' ',o.state,' ',o.country,' ',o.paymentMethod,' ',o.orderStatus,' ',o.customer.firstName,' ',o.customer.lastName)) LIKE %?1%")
     public Page<Order> findAll(String keyword, Pageable pageable);
 
     public Long countById(Integer id);

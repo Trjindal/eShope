@@ -1,0 +1,60 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<body>
+<div th:fragment="content">
+  <div  class="row border rounded p-1 " >
+    <div id="productList">
+      <th:block th:each="detail,status:${order.orderDetails}">
+        <div class="row  p-3" th:with="product=${detail.product}">
+          <div class="col-1">
+            <div class="div-count">[[${status.count}]]</div>
+          </div>
+          <input type="hidden" name="productId" th:value="${product.id}" class="hiddenProductId"/>
+          <div class="col-3">
+            <img th:src="@{${product.getMainImagePath}}" class="img-fluid">
+          </div>
+          <div class="col-8">
+            <div class="text-wrap  align-items-center h-100 d-flex ">
+              <b>[[${product.name}]]</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-grids product-block m-4">
+              <div class="row form-group">
+                <label class="col-form-label col-sm-2">Product Cost : </label>
+                <input type="text" th:value="${detail.productCost}" th:rowNumber="${status.count}" class=" col-sm-10 cost-input"/>
+              </div>
+              <div class="row form-group">
+                <label class="col-form-label col-sm-2">Quantity : </label>
+                <input type="number" step="1" min="1" th:rowNumber="${status.count}" th:id="'quantity'+${status.count}" max="5" th:value="${detail.quantity}"  class="quantity-input col-sm-10"/>
+              </div>
+              <div class="row form-group">
+                <label class="col-form-label col-sm-2">Unit Price : </label>
+                <input type="text" th:value="${detail.unitPrice}"  th:rowNumber="${status.count}" th:id="'price'+${status.count}" class=" col-sm-10 price-input"/>
+              </div>
+              <div class="row form-group">
+                <label class="col-form-label col-sm-2">Shipping Cost : </label>
+                <input type="text" th:value="${detail.shippingCost}"  class=" col-sm-10 shippingCost-input"/>
+              </div>
+              <div class="row form-group">
+                <label class="col-form-label col-sm-2">Subtotal : </label>
+                <input type="text" th:value="${detail.subTotal}" readonly th:id="'subTotal'+${status.count}" class=" col-sm-10 subTotal-output"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="w-75 " style="margin:auto">
+      </th:block>
+    </div>
+    <div class="row m-2">
+      <a th:href="@{/orders/search_product}"  >
+      <button class="btn btn-style btn-style-1 text-left w-25" id="addProduct">Add Product</button>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

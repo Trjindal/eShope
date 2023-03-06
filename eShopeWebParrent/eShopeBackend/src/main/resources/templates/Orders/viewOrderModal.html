@@ -31,11 +31,11 @@
                     <label class="col-form-label col-sm-2">Order Id : </label>
                     <input type="text" th:value="${order.id}" readonly class=" col-sm-10"/>
                 </div>
-                <div class="row form-group">
+                <div class="row form-group" sec:authorize="hasAnyAuthority('Admin','Editor')">
                     <label class="col-form-label col-sm-2">Customer : </label>
                     <input type="text" readonly th:value="${order.customer.fullName}" class="contact-input col-sm-10"/>
                 </div>
-                <div class="row form-group">
+                <div class="row form-group" sec:authorize="hasAnyAuthority('Admin','Editor')">
                     <label class="col-form-label col-sm-2">Product Cost : </label>
                     <div th:replace="Fragments/fragment::currency_input_r(${order.productCost})" ></div>
 <!--                    <input type="text" th:value="${order.productCost}" readonly class="contact-input col-sm-10"/>-->
@@ -85,20 +85,20 @@
                         <div class="col-3">
                             <img th:src="@{${product.getMainImagePath}}" class="img-fluid">
                         </div>
-                        <div class="col-8">
+                        <div class="col-8" >
                             <div class="text-wrap">
                                 <b>[[${product.name}]]</b>
-                                <div>
+                                <div sec:authorize="hasAnyAuthority('Admin','Editor')">
                                     Product Cost:
                                     <div th:replace="Fragments/fragment::format_currency(${detail.productCost})" ></div>
                                 </div>
-                                <div>
+                                <div sec:authorize="hasAnyAuthority('Admin','Editor')">
                                     Subtotal: [[${detail.quantity}]] X
                                     <div th:replace="Fragments/fragment::format_currency(${detail.unitPrice})"></div>
                                     =
                                     <div th:replace="Fragments/fragment::format_currency(${detail.subTotal})"></div>
                                 </div>
-                                <div>
+                                <div sec:authorize="hasAnyAuthority('Admin','Editor')">
                                     Shipping Cost: <div th:replace="Fragments/fragment::format_currency(${detail.shippingCost})"></div>
                                 </div>
                             </div>

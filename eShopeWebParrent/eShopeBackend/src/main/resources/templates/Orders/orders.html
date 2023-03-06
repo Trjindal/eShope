@@ -93,7 +93,7 @@
                     <td th:text="${order.orderStatus}"></td>
                     <td>
                         <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this Order details" data-toggle="modal" data-target="#viewOrderModal" ></a>
-                        <a class="fas fa-light fa-pen-to-square" th:href="@{'/orders/edit/'+${order.id}}" title="edit this Order" sec:authorize="hasAnyAuthority('Admin','Editor')"></a>
+                        <a class="fas fa-light fa-pen-to-square" th:href="@{'/orders/edit/'+${order.id}}" title="edit this Order" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson')"></a>
                         <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${order.Id}" sec:authorize="hasAnyAuthority('Admin','Editor')" ></a>
                     </td>
                 </tr>
@@ -124,7 +124,7 @@
             <div class="col-3">
                 <div class="d-flex flex-row justify-content-center mt-2">
                     <a type="button" class="fas fa-file-alt p-1" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this Order details" data-toggle="modal" data-target="#viewOrderModal" ></a>
-                    <a class="fas fa-light fa-pen-to-square p-1" th:href="@{'/orders/edit/'+${order.id}}" title="edit this Order" sec:authorize="hasAnyAuthority('Admin','Editor')"></a>
+                    <a class="fas fa-light fa-pen-to-square p-1" th:href="@{'/orders/edit/'+${order.id}}" title="edit this Order" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson')"></a>
                 </div>
                 <div class="d-flex flex-row justify-content-center mt-2">
                     <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${order.Id}" sec:authorize="hasAnyAuthority('Admin','Editor')" ></a>
@@ -132,6 +132,83 @@
             </div>
         </div>
     </div>
+
+    <th:block th:each="order,status: ${listAllOrders}">
+        <div class="col-12 col-md-4">
+            <div class=" w3l-grids-block-5 w-75  m-3">
+                <div class="card ">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <h6>Order Id: # [[${order.id}]]</h6>
+                            </div>
+                            <div class="col ">
+                                <div class="float-right">
+                                    <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this Order details" data-toggle="modal" data-target="#viewOrderModal" ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body text-left">
+                        <div>
+                            <i class="fas fa-user"></i>
+                            <b>[[${order.RecipientName}]]</b>
+                        </div>
+                        <div>
+                            <i class="fas fa-home"></i>
+                            <b>[[${order.RecipientAddress}]]</b>
+                        </div>
+                        <div>
+                            <i class="fas fa-phone-alt"></i>
+                            <b>[[${order.phoneNumber}]]</b>
+                        </div>
+                        <div th:if="${order.COD}">
+                            <b>COD: </b> <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                            [[${#numbers.formatDecimal(order.total,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+                            <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <div class="row">
+                            <div class="col">
+                                <th:block th:if="${order.picked}">
+                                    <i class="fas fa-people-carry fa-2x"></i>
+                                </th:block>
+                                <th:block th:unless="${order.picked}">
+                                    <i class="fas fa-people-carry fa-2x"></i>
+                                </th:block>
+                            </div>
+                            <div class="col">
+                                <th:block th:if="${order.shipped}">
+                                    <i class="fas fa-shipping-fast fa-2x"></i>
+                                </th:block>
+                                <th:block th:unless="${order.shipped}">
+                                    <i class="fas fa-shipping-fast fa-2x"></i>
+                                </th:block>
+                            </div>
+                            <div class="col">
+                                <th:block th:if="${order.delivered}">
+                                    <i class="fas fa-box-open fa-2x"></i>
+                                </th:block>
+                                <th:block th:unless="${order.delivered}">
+                                    <i class="fas fa-box-open fa-2x"></i>
+                                </th:block>
+                            </div>
+                            <div class="col">
+                                <th:block th:if="${order.returned}">
+                                    <i class="fas fa-undo fa-2x"></i>
+                                </th:block>
+                                <th:block th:unless="${order.returned}">
+                                    <i class="fas fa-undo fa-2x"></i>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </th:block>
     <!-- table less-details END-->
 
 

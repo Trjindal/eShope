@@ -3,7 +3,6 @@ package com.eshope.admin.Service;
 import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Product.Product;
 import com.eShope.common.entity.ShippingRate;
-import com.eShope.common.entity.User;
 import com.eshope.admin.Repository.CountryRepository;
 import com.eshope.admin.Repository.ProductRepository;
 import com.eshope.admin.Repository.ShippingRateRepository;
@@ -83,12 +82,13 @@ public class ShippingRateService {
         }
     }
 
-    public float calculateShippingCost(Integer productId,Integer countryId,String state){
+    public float calculateShippingCost(Integer productId,Integer countryId,String state) throws UsernameNotFoundException {
 
         ShippingRate shippingRate=shippingRateRepository.findByCountryAndState(countryId,state);
 
-        if(shippingRate==null){
-            throw new UsernameNotFoundException("No shipping rate found for the given destination. You have to enter shipping rate manually");
+        if (shippingRate == null) {
+            throw new UsernameNotFoundException("No shipping rate found for the given "
+                    + "destination. You have to enter shipping cost manually.");
         }
         Product product=productRepository.findById(productId).get();
         float dimWeight=(product.getLength()*product.getWidth()*product.getHeight())/DIM_DIVISOR;

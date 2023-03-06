@@ -106,4 +106,52 @@ public class Order extends AbstractAddress {
         DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(this.deliverDate);
     }
+
+    @Transient
+    public String getRecipientName(){
+        String name=firstName;
+        if(lastName!=null&&!lastName.isEmpty())
+            name+=" "+lastName;
+        return name;
+    }
+
+    @Transient
+    public String getRecipientAddress() {
+        return  addressLine1+", " +addressLine2
+                +", "+city+", "+state+", "+country+". Postal Code : "+postalCode+" ." ;
+    }
+
+    @Transient
+    public boolean isCOD(){
+        System.out.println("HERE");
+        return paymentMethod.equals(PaymentMethod.COD);
+    }
+
+    @Transient
+    public boolean isPicked(){
+        return hasStatus(OrderStatus.PICKED);
+    }
+
+    @Transient
+    public boolean isShipped(){
+        return hasStatus(OrderStatus.SHIPPING);
+    }
+    @Transient
+    public boolean isDelivered(){
+        return hasStatus(OrderStatus.DELIVERED);
+    }
+    @Transient
+    public boolean isReturned(){
+        return hasStatus(OrderStatus.RETURNED);
+    }
+
+    public boolean hasStatus(OrderStatus status){
+        for(OrderTrack track:orderTracks){
+            if(track.getStatus().equals(status)){
+                return  true;
+            }
+        }
+        return false;
+    }
+
 }

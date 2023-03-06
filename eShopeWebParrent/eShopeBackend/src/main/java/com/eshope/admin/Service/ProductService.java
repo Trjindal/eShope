@@ -1,6 +1,7 @@
 package com.eshope.admin.Service;
 
 
+import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Product.Product;
 
 import com.eshope.admin.Repository.ProductRepository;
@@ -23,7 +24,7 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public static final int PRODUCTS_PER_PAGE = 5;
+    public static final int PRODUCTS_PER_PAGE = 8;
 
     public Page<Product> listByPage(int pageNum, String sortField, String sortDir, String keyword,Integer categoryId) {
 
@@ -52,6 +53,22 @@ public class ProductService {
 
         return productRepository.findAll(pageable);
     }
+
+
+    public Page<Product> searchProducts(int pageNum, String sortField, String sortDir, String keyword){
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+
+        Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
+
+        if (keyword != null&&!keyword.isEmpty()) {
+            return productRepository.searchProductsByName(keyword, pageable);
+        }
+
+        return productRepository.findAll(pageable);
+    }
+
+
 
     public Product save(Product product){
 
