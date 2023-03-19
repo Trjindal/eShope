@@ -26,7 +26,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -162,14 +161,13 @@ public class CategoryController {
 
 
     @GetMapping("/categories/edit/{id}")
-    public String editCategory(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model,HttpSession session){
+    public String editCategory(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model){
         try{
             Category category=categoryService.getCategoryById(id);
             log.error(category.getName());
             List<Category> listCategories =categoryService.listCategoriesUsedInForm();
             model.addAttribute("category",category);
             model.addAttribute("category1",category);
-            session.setAttribute("id",id);
             model.addAttribute("listCategories",listCategories);
             return "Category/categoryUpdateForm.html";
         }catch (UsernameNotFoundException ex){
@@ -182,9 +180,8 @@ public class CategoryController {
 
 //
     @PostMapping("/categories/editCategory")
-    public String editCategorySave(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model, HttpSession session , @RequestParam("image")MultipartFile multipartFile) throws IOException{
-        log.error("INSIDE");
-        Integer id= (Integer) session.getAttribute("id");
+    public String editCategorySave(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "category") Category category, Errors errors, Model model, @RequestParam("image")MultipartFile multipartFile) throws IOException{
+        Integer id= category.getId();
         log.error(String.valueOf(id));
         Category existingCategory=categoryService.getCategoryById(id);
 
@@ -291,7 +288,7 @@ public class CategoryController {
 
     @GetMapping("/categories/export/pdf")
     public void exportToPdf(HttpServletResponse response) throws IOException {
-        log.error("Inside PDFFF");
+
          List<Category> listCategories=categoryService.listAllCategories();
 
         CategoryPdfExporter exporter=new CategoryPdfExporter();

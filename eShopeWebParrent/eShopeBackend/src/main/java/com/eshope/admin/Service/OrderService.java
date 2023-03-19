@@ -2,6 +2,7 @@ package com.eshope.admin.Service;
 
 import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Order.Order;
+import com.eShope.common.entity.Order.OrderTrack;
 import com.eshope.admin.Repository.CountryRepository;
 import com.eshope.admin.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -69,5 +71,22 @@ public class OrderService {
 
     public List<Country> listAllCountries() {
         return countryRepository.findAllByOrderByNameAsc();
+    }
+
+    public void save(Order order) {
+        List<OrderTrack> orderTracks=order.getOrderTracks();
+        Date highestDate=orderTracks.get(0).getUpdatedTime();
+        for(OrderTrack or:orderTracks){
+            if(highestDate.compareTo(or.getUpdatedTime())<0){
+                highestDate=or.getUpdatedTime();
+                order.setOrderStatus(or.getStatus());
+            }
+        }
+
+        Order existingOrder=orderRepository.findById(order.getId()).get();
+        order.setOrderTime(existingOrder.getOrderTime());
+        order.setCustomer(existingOrder.getCustomer());
+
+        orderRepository.save(order);
     }
 }

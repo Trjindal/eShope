@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
+
 import javax.validation.Valid;
 
 import java.util.List;
@@ -63,11 +63,10 @@ public class CustomerController {
     }
 
     @GetMapping("/customers/edit/{id}")
-    public String editCustomer(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model,HttpSession session){
+    public String editCustomer(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model){
         try{
 
             Customer customer=customerService.getCustomerById(id);
-            session.setAttribute("id",id);
             List<Country> countryList=customerService.listAllCountries();
             model.addAttribute("customer",customer);
             model.addAttribute("countryList",countryList);
@@ -81,9 +80,10 @@ public class CustomerController {
     }
 
     @PostMapping("/customers/editCustomer")
-    public String saveEditCustomer(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "customer") Customer customer, Errors errors, Model model, HttpSession session ){
+    public String saveEditCustomer(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "customer") Customer customer, Errors errors, Model model){
 
-        Integer existingCustomerId= (Integer) session.getAttribute("id");
+        Integer existingCustomerId= customer.getId();
+        log.error(String.valueOf(existingCustomerId));
         Customer existingCustomer=customerService.getCustomerById(existingCustomerId);
 
         //TO CHECK UNIQUE EMAIL ID

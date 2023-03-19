@@ -44,6 +44,7 @@
         <form th:action="@{/customers/editCustomer}" method="post" class="signin-form" th:object="${customer}" >
           <div class="row form-group">
             <div class="col-sm-5">
+              <input type="hidden" th:field="*{id}" placeholder="Name" class="contact-input"/>
               <label class="col-form-label">First Name : </label>
               <input type="text" th:field="*{firstName}" placeholder="First Name*"  class="contact-input"/>
             </div>

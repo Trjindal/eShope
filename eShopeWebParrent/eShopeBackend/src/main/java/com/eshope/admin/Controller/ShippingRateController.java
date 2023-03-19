@@ -2,11 +2,8 @@ package com.eshope.admin.Controller;
 
 
 import com.eShope.common.entity.Country;
-import com.eShope.common.entity.Role;
 import com.eShope.common.entity.ShippingRate;
-import com.eShope.common.entity.User;
 import com.eshope.admin.Service.ShippingRateService;
-import com.eshope.admin.Utility.FileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,15 +11,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -74,11 +67,11 @@ public class ShippingRateController {
     }
 
     @PostMapping("/shipping/saveRates")
-    public String saveShippingRate(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "shippingRate") ShippingRate shippingRate, Errors errors, Model model, HttpSession session){
+    public String saveShippingRate(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "shippingRate") ShippingRate shippingRate, Errors errors, Model model){
 
 
-        Integer id= (Integer) session.getAttribute("id");
-
+        Integer id= shippingRate.getId();
+        log.error(String.valueOf(id));
 
 //        //TO CHECK UNIQUE SHIPPING ADDRESS
         if(id==null) {
@@ -127,14 +120,13 @@ public class ShippingRateController {
 
 
     @GetMapping("/shipping/edit/{id}")
-    public String editShippingAddress(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
+    public String editShippingAddress(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model){
         try{
             ShippingRate shippingRate=shippingRateService.getShippingById(id);
             List<Country> listCountries=shippingRateService.listAllCountries();
             model.addAttribute("listCountries",listCountries);
             model.addAttribute("shippingRate",shippingRate);
             model.addAttribute("shippingRates",shippingRate);
-            session.setAttribute("id",id);
             return "ShippingRates/shippingRatesUpdateForm.html";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("error",ex.getMessage());

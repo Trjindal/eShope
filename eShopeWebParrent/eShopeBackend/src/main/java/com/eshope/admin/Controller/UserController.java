@@ -24,7 +24,7 @@ import org.springframework.util.StringUtils;
 
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -80,7 +80,7 @@ public class UserController {
     }
 
     @PostMapping("/users/saveUser")
-    public String saveUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model, HttpSession session, @RequestParam("image")MultipartFile multipartFile) throws IOException {
+    public String saveUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model,  @RequestParam("image")MultipartFile multipartFile) throws IOException {
 
 
 
@@ -133,16 +133,16 @@ public class UserController {
 
 
     @GetMapping("/users/edit/{id}")
-    public String editUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
+    public String editUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model){
         try{
 
             User user=userService.getUserById(id);
             model.addAttribute("user",user);
             model.addAttribute("users",user);
-            session.setAttribute("id",id);
+
             List<Role> listAllRoles=userService.listAllRoles();
             model.addAttribute("listAllRoles",listAllRoles);
-            session.setAttribute("userId",id);
+
             return "Users/userUpdateForm.html";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
@@ -153,14 +153,14 @@ public class UserController {
     }
 
     @PostMapping("/users/editUser")
-    public String saveEditUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model, HttpSession session , @RequestParam("image")MultipartFile multipartFile) throws IOException{
-
-        Integer id= (Integer) session.getAttribute("id");
+    public String saveEditUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model , @RequestParam("image")MultipartFile multipartFile) throws IOException{
+        log.error(String.valueOf(user.getId()));
+        Integer id= user.getId();
         User existingUser=userService.getUserById(id);
         String savedPassword=existingUser.getPassword();
 
         //TO CHECK UNIQUE EMAIL ID
-        if(existingUser!=null&&userService.getUserById(existingUser.getId())!=null&&!(userService.getUserById(existingUser.getId()).getEmail().matches(user.getEmail()))) {
+        if(existingUser!=null&&!existingUser.getEmail().matches(user.getEmail())) {
             if (user.getEmail() != "" && !userService.isEmailUnique(user.getEmail())) {
                 log.error("Contact form validation failed due to email ");
                 model.addAttribute("emailNotUnique", "There is another user having same email id");

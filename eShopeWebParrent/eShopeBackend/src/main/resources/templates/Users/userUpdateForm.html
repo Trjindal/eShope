@@ -38,6 +38,8 @@
         </ul>
         <form th:action="@{/users/editUser}" method="post" class="signin-form" th:object="${user}" enctype="multipart/form-data">
           <div class="input-grids">
+            <input type="hidden" th:field="*{id}"  placeholder=" id" name="id"
+                   class="contact-input" />
             <input type="email" th:field="*{email}"  placeholder=" Email" name="email"
                    class="contact-input" />
             <input type="text" th:field="*{firstName}"  placeholder="First Name"

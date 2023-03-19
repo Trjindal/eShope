@@ -65,6 +65,7 @@
                 </ul>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <input type="hidden" th:if="${product.category!=null}" id="categoryId" th:value="${product.category.id}">
+                <input type="hidden" th:field="*{id}" placeholder="Name" class="contact-input"/>
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane  p-3 active" id="overview" role="tabpanel" >

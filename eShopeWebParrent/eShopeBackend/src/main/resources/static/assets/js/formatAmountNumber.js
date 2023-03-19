@@ -18,11 +18,25 @@ $(document).ready(function(){
         taxValue=fieldTax.val().replace(",","");
         subTotalValue=fieldSubTotal.val().replace(",","");
         shippingCostValue=fieldShippingCost.val().replace(",","");
-        total=parseFloat(taxValue)+parseFloat(shippingCostValue)+parseFloat(subTotalValue);
-
+        total=parseFloat(taxValue)+parseFloat(subTotalValue);
+        console.log(taxValue)
+        console.log(subTotalValue)
+        console.log(total)
         fieldTotal.val($.number(total,2))
 
     })
+
+     fieldShippingCost.change(function(){
+            taxValue=fieldTax.val().replace(",","");
+            subTotalValue=fieldSubTotal.val().replace(",","");
+            shippingCostValue=fieldShippingCost.val().replace(",","");
+            total=parseFloat(taxValue)+parseFloat(subTotalValue);
+            console.log(taxValue)
+            console.log(subTotalValue)
+            console.log(total)
+            fieldTotal.val($.number(total,2))
+
+        })
 
     $("#productList").on("change",".quantity-input",function(e){
         updateSubTotalWhenQuantityChanged($(this));
@@ -75,7 +89,7 @@ function updateOrderAmounts(){
      $("#shippingCost").val($.number(shippingCost,2))
 
      tax=getNumberValueRemovedThousandSeparator(fieldTax);
-     orderTotal=orderSubTotal+tax+shippingCost;
+     orderTotal=orderSubTotal+tax;
      $("#total").val($.number(orderTotal,2))
 }
 
@@ -89,8 +103,12 @@ function updateSubTotalWhenPriceChanged(input){
     priceValue=input.val().replace(",","");
     rowNumber=input.attr("rowNumber");
     quantityField=$("#quantity"+rowNumber);
+    shippingCostField=$("#shippingCost"+rowNumber)
+
     quantityValue=parseFloat(quantityField.val());
-    newSubTotal=parseFloat(priceValue)*quantityValue;
+    shippingCostValue=parseFloat(shippingCostField.val().replace(",",""));
+
+    newSubTotal=(parseFloat(quantityValue)*priceValue)+shippingCostValue;
 
     subTotalField=$("#subTotal"+rowNumber);
     subTotalField.val($.number(newSubTotal,2))
@@ -101,8 +119,10 @@ function updateSubTotalWhenQuantityChanged(input){
     quantityValue=input.val();
     rowNumber=input.attr("rowNumber");
     priceField=$("#price"+rowNumber);
+    shippingCostField=$("#shippingCost"+rowNumber)
     priceValue=parseFloat(priceField.val().replace(",",""));
-    newSubTotal=parseFloat(quantityValue)*priceValue;
+    shippingCostValue=parseFloat(shippingCostField.val().replace(",",""));
+    newSubTotal=(parseFloat(quantityValue)*priceValue)+shippingCostValue;
 
     subTotalField=$("#subTotal"+rowNumber);
     subTotalField.val($.number(newSubTotal,2))
@@ -129,8 +149,43 @@ function formatProductAmounts(){
     $(".subTotal-output").each(function(e){
                   formatNumberForField($(this));
     })
+
+
 }
 
 function formatNumberForField(fieldRef){
     fieldRef.val($.number(fieldRef.val(),2));
+}
+
+function processFormBeforeSubmit(){
+    setCountryName()
+    removeThousandSeparatorForField(fieldProductCost);
+    removeThousandSeparatorForField(fieldShippingCost)
+    removeThousandSeparatorForField(fieldTax)
+    removeThousandSeparatorForField(fieldSubTotal)
+    removeThousandSeparatorForField(fieldTotal)
+
+    $(".cost-input").each(function(e){
+            removeThousandSeparatorForField($(this))
+    })
+    $(".price-input").each(function(e){
+                removeThousandSeparatorForField($(this))
+    })
+    $(".shippingCost-input").each(function(e){
+                removeThousandSeparatorForField($(this))
+    })
+    $(".subTotal-output").each(function(e){
+                removeThousandSeparatorForField($(this))
+    })
+}
+
+function removeThousandSeparatorForField(fieldRef){
+    fieldRef.val(fieldRef.val().replace(",",""))
+}
+
+function setCountryName(){
+    selectedCountry=$("#country option:selected");
+    console.log(selectedCountry.text())
+    countryName=selectedCountry.text()
+    $("#countryName").val(countryName);
 }

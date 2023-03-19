@@ -7,8 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,6 +32,7 @@ public class Order extends AbstractAddress {
 
     private Date orderTime;
 
+    @Min(value = 1)
     private float shippingCost;
     private float productCost;
     private float subTotal;
@@ -48,10 +52,10 @@ public class Order extends AbstractAddress {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<OrderDetail> orderDetails=new HashSet<>();
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
     @OrderBy("updatedTime ASC")
     private List<OrderTrack> orderTracks=new ArrayList<>();
 
@@ -105,6 +109,15 @@ public class Order extends AbstractAddress {
     public String getDeliverDateOnForm(){
         DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(this.deliverDate);
+    }
+
+    public void setDeliverDateOnForm(){
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.deliverDate=dateFormat.parse("yyyy-MM-dd");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transient

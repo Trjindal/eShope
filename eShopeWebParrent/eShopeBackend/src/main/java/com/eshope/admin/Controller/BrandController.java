@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -143,14 +143,13 @@ public class BrandController {
 
 
     @GetMapping("/brands/edit/{id}")
-    public String editBrand(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session) {
+    public String editBrand(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model) {
         try {
             Brand brand = brandService.getBrandById(id);
             log.error(brand.getName());
             List<Category> listCategories = categoryService.listCategoriesUsedInForm();
             model.addAttribute("brand", brand);
             model.addAttribute("brands", brand);
-            session.setAttribute("id", id);
             model.addAttribute("listCategories", listCategories);
             return "Brand/brandUpdateForm.html";
         } catch (UsernameNotFoundException ex) {
@@ -163,9 +162,9 @@ public class BrandController {
 
     //
     @PostMapping("/brands/editBrand")
-    public String editBrandSave(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "brand") Brand brand, Errors errors, Model model, HttpSession session, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+    public String editBrandSave(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "brand") Brand brand, Errors errors, Model model, @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
-        Integer id = (Integer) session.getAttribute("id");
+        Integer id = brand.getId();
         log.error(String.valueOf(id));
         Brand existingBrand = brandService.getBrandById(id);
 

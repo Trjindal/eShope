@@ -36,35 +36,46 @@
     <div class="row ">
       <div class="col-md contact-right">
         <!-- Nav tabs -->
+
         <ul class="nav nav-tabs " id="myTab" role="tablist">
           <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#overview" role="tab">Overview</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#products" role="tab">Products</a>
+            <a class="nav-link " data-toggle="tab" href="#products" role="tab">Products</a>
           </li>
           <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#shipping" role="tab">Shipping</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " data-toggle="tab" href="#tracking" role="tab">Track</a>
+            <a class="nav-link active" data-toggle="tab" href="#track" role="tab">Track</a>
           </li>
         </ul>
         <!-- Tab panes -->
+        <form th:action="@{/orders/save}" method="post" class="signing-form" onsubmit="return processFormBeforeSubmit()">
+          <input type="hidden" th:field="${order.id}"/>
+          <input type="hidden" th:field="${order.customer}"/>
         <div class="tab-content">
           <div class="tab-pane  p-3 " id="overview" role="tabpanel">
             <div th:replace="Orders/editOrdersOverview::content"></div>
           </div>
-          <div class="tab-pane p-3 active " id="products" role="tabpanel">
+          <div class="tab-pane p-3  " id="products" role="tabpanel">
             <div th:replace="Orders/editOrdersProducts::content"></div>
           </div>
           <div class="tab-pane p-3 " id="shipping" role="tabpanel">
             <div th:replace="Orders/editOrdersShipping::content"></div>
           </div>
-          <div class="tab-pane p-3 " id="tracking" role="tabpanel">
-
+          <div class="tab-pane p-3 active" id="track" role="tabpanel">
+            <div th:replace="Orders/editOrdersTrack::content"></div>
           </div>
         </div>
+          <!--                            SAVE BUTTON-->
+          <div class="text-start">
+            <button type="submit" class="btn btn-style btn-style-3">Save Product</button>
+            <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/orders}">Cancel</a>
+          </div>
+
+        </form>
 
       </div>
     </div>
@@ -132,10 +143,47 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="modalTitle">Warning !!!</h5>
+
+        <button type="button" class="close closeBtn3" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="modalBody">No shipping rate found for the given destination. You have to enter shipping cost manually.</p>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 closeBtn3" >Close</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div th:replace="Fragments/fragment::deleteModalTemplate"/>
+
+<div th:replace="Fragments/fragment::warningModalTemplate"/>
 <!-- footer -->
 <div th:replace="~{Fragments/footer :: footer}">...</div>
 <!-- //footer -->
+<script>
 
+<!--chk.forEach(function(i){-->
+<!--  console.log(i.id)-->
+<!--})-->
+
+
+</script>
 
 <!--    COMMON JAVASCRIPT  -->
 <div th:replace="Fragments/fragment::common_JS"></div>
@@ -145,203 +193,63 @@
 <div th:replace="Fragments/fragment::theme_change"/>
 <!--    /THEME CHANGE    -->
 
-
 //SHOWING ADD PRODUCT MODAL
 <script>
+
+
+
+
   $("#addProduct").on("click",function(e){
   e.preventDefault();
      $('#addProductModal').modal("show")
   })
 
-  $(".closeBtn1").on("click",function(e){
-  console.log($(this));
-  $('#myModal1').modal("hide")
-  })
-
-  $(".closeBtn2").on("click",function(e){
-  console.log($(this));
-  $('#addProductModal').modal("hide")
-  })
-
   $('#addProductModal').on('show.bs.modal', function (event) {
-
   var myLink="http://localhost:8080/eShopeAdmin/orders/search_product";
   $(this).find("iframe").attr("src",myLink);
 })
 
+  $(".closeBtn1").on("click",function(e){
+  $('#myModal1').modal("hide")
+  })
+
+  $(".closeBtn2").on("click",function(e){
+  $('#addProductModal').modal("hide")
+  })
+
+  $(".closeBtn3").on("click",function(e){
+  $('#modalDialog').modal("hide")
+  })
+
+
+
 </script>
 
 
-
-<div class="modal" id="modalDialog" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p id="modalBody">Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-<!--  ADD PRODUCT -->
 <script>
   contextPath="[[@{/}]]";
   var csrfHeaderName="[[${_csrf.headerName}]]";
   var csrfValue="[[${_csrf.token}]]";
-  var chk;
 
-  function addProduct(productId,productName){
-  $('#addProductModal').modal("hide");
-<!--  $('#myModal1').modal('show');-->
-  getShippingCost(productId);
-  }
-
-  function getShippingCost(productId){
-    selectedCountry=$("#country option:selected");
-    countryId=selectedCountry.val();
-
-    state=$("#state").val();
-    if(state.length==0){
-    state=$("#city").val();
-    }
-    requestUrl=contextPath+"get_shipping_cost";
-    alert(requestUrl+" "+csrfHeaderName+" "+ csrfValue);
-    params={productId:productId,countryId:countryId,state:state};
-
-     $.ajax({
-        type:'POST',
-        url:requestUrl,
-        beforeSend:function(xhr){
-            xhr.setRequestHeader(csrfHeaderName,csrfValue);
-        },
-        data:params
-    }).done(function(shippingCost){
-      getProductInfo(productId,shippingCost);
-      alert(shippingCost);
-    }).fail(function(err){
-        $('#modalDialog').modal("show");
-        getProductInfo(productId,0.0);
-        showModalDialog("Warning","haha");
-    });
-  }
-
-  function isProductAlreadyAdded(productId){
-    productExists=false;
-
-    $(".hiddenProductId").each(function(e){
-      newProductId=$(this).val();
-
-      if(newProductId==productId){
-        productExists=true;
-        return productExists;
-      }
-    });
-    return productExists;
-  }
-</script>
-
-<script>
-  function showModalDialog(title, message) {
-	$("#modalTitle").text(title);
-	$("#modalBody").text(message);
-	$("#modalDialog").modal();
-}
 </script>
 
 
 <script>
-function getProductInfo(productId,shippingCost) {
-    requestURL = contextPath + "products/get/" + productId;
-    $.get(requestURL, function(productJSON) {
-        console.log(productJSON);
-
-        productName=productJSON.name;
-        mainImagePath=contextPath.substring(0,contextPath.length-1)+productJSON.imagePath;
-        productCost=$.number(productJSON.cost,2);
-        productPrice=$.number(productJSON.price,2);
-
-       htmlCode= generateProductCode(productId,productName,mainImagePath,productCost,productPrice,shippingCost);
-       $("#productList").append(htmlCode);
-
-    }).fail(function(err){
-      alert(err.responseJSON.message);
-    })
-}
+        function warningModalDialog(message) {
+        $("#warningText").text(message);
+        $("#warningModal").modal('show');
+        }
 </script>
 
-<script>
-
-
-  function generateProductCode(productId,productName,mainImagePath,productCost,productPrice,shippingCost){
-
-    nextCount=$(".hiddenProductId").length+1;
-    quantityId="quantity"+nextCount
-    priceId="price"+nextCount
-    subTotalId="subTotal"+nextCount
-
-    htmlCode=`
-      <div class="row  p-3" >
-        <div class="col-1">
-          <div class="div-count">${nextCount}</div>
-        </div>
-        <input type="hidden" name="productId" value="${productId}" class="hiddenProductId"/>
-        <div class="col-3">
-          <img src="${mainImagePath}" class="img-fluid">
-        </div>
-        <div class="col-8">
-          <div class="text-wrap  align-items-center h-100 d-flex ">
-            <b>${productName}</b>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-grids product-block m-4">
-            <div class="row form-group">
-              <label class="col-form-label col-sm-2">Product Cost : </label>
-              <input type="text" value="${productCost}" rowNumber="${nextCount}" class=" col-sm-10 cost-input"/>
-            </div>
-            <div class="row form-group">
-              <label class="col-form-label col-sm-2">Quantity : </label>
-              <input type="number" step="1" min="1" rowNumber="${nextCount}" id="${quantityId}" max="5" value="1"  class="quantity-input col-sm-10"/>
-            </div>
-            <div class="row form-group">
-              <label class="col-form-label col-sm-2">Unit Price : </label>
-              <input type="text" value="${productPrice}"  rowNumber="${nextCount}" id="${priceId}" class=" col-sm-10 price-input"/>
-            </div>
-            <div class="row form-group">
-              <label class="col-form-label col-sm-2">Shipping Cost : </label>
-              <input type="text" value="${shippingCost}"  class=" col-sm-10 shippingCost-input"/>
-            </div>
-            <div class="row form-group">
-              <label class="col-form-label col-sm-2">Subtotal : </label>
-              <input type="text" value="${productPrice}" readonly id="${subTotalId}" class=" col-sm-10 subTotal-output"/>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr class="w-75 " style="margin:auto">
-    `
-
-    return htmlCode;
-  }
-
-
-</script>
 
 <script th:src="@{/assets/js/jquery.number.min.js}"></script>
 <script th:src="@{/assets/js/formatAmountNumber.js}"></script>
+<script th:src="@{/assets/js/addingProductInEditOrder.js}"></script>
+<script th:src="@{/assets/js/removingProductInEditOrder.js}"></script>
+<script th:src="@{/assets/js/order_form_tracks.js}"></script>
+
+
+
 //TO SHOW COUNTRIES/STATE DROPDOWN
 <script>
     var dropDownCountry;
@@ -361,10 +269,9 @@ function getProductInfo(productId,shippingCost) {
 
     function loadStatesForCountry(){
         selectedCountry=$("#country option:selected");
-        console.log(contextPath);
+
         countryId=selectedCountry.val();
         url=contextPath+"states/listByCountry/"+countryId;
-        console.log(url)
 
         $.get(url,function(responseJSON){
             dataListState.empty();

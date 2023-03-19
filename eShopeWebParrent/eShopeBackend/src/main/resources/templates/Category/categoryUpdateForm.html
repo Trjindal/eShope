@@ -47,6 +47,8 @@
                 <form th:action="@{/categories/editCategory}" method="post" class="signing-form"
                       th:object="${category}" enctype="multipart/form-data">
                     <div class="input-grids">
+                        <input type="hidden" th:field="*{id}" placeholder="Name"
+                               class="contact-input"/>
                         <input type="text" th:field="*{name}" placeholder="Name"
                                class="contact-input"/>
                         <input type="text" th:field="*{alias}" placeholder="Alias"

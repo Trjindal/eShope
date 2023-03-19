@@ -42,6 +42,7 @@
         </ul>
         <form th:action="@{/shipping/saveRates}" method="post" class="signin-form" th:object="${shippingRate}" >
           <div class="input-grids">
+            <input type="hidden" th:field="*{id}" placeholder="Name" class="contact-input"/>
             <select class="my-form-control w-100" th:field="*{country}">
               <th:block th:each="country:${listCountries}">
                 <option th:value="${country.id}">[[${country.name}]]</option>

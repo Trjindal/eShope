@@ -21859,7 +21859,16 @@ margin:10px;
 .nav-link:hover{
     color: var(--primary-color)!important;
 }
-
+.my-form-control input:read-only{
+    color: #86929d;
+    background: var(--bg-grey);
+    font-size: 16px;
+    padding: 14px;
+    border: 2px solid var(--border-color-light);
+    outline: none;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+}
 /*
 @media only screen and (max-width: 991px) {
 .userName,.firstName,.lastName{
@@ -21867,6 +21876,5 @@ margin:10px;
 }
 }
 */
-
 
 

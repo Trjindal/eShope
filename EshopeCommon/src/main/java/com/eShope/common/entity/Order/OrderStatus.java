@@ -13,42 +13,50 @@ public enum OrderStatus {
         public String defaultDescription() {
             return "Order was cancelled.";
         }
-    },PROCESSING {
+    },
+    PROCESSING {
         @Override
         public String defaultDescription() {
             return "Order is being processed.";
         }
-    },PACKAGED {
+    },
+    PACKAGED {
         @Override
         public String defaultDescription() {
             return "products were packaged";
         }
-    },PICKED {
+    },
+    PICKED {
         @Override
         public String defaultDescription() {
             return "Shipper picked the package.";
         }
-    },SHIPPING {
+    },
+    SHIPPING {
         @Override
         public String defaultDescription() {
             return "Shipper is on the way to deliver your package.";
         }
-    },DELIVERED {
+    },
+    DELIVERED {
         @Override
         public String defaultDescription() {
             return "Your Order has been delivered.";
         }
-    },RETURNED {
+    },
+    RETURNED {
         @Override
         public String defaultDescription() {
             return "Products were returned successfully";
         }
-    },PAID {
+    },
+    PAID {
         @Override
         public String defaultDescription() {
             return "Customer has paid this order";
         }
-    },REFUNDED {
+    },
+    REFUNDED {
         @Override
         public String defaultDescription() {
             return "Refund has been initiated";

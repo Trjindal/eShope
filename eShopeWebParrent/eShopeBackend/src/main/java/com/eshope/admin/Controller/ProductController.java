@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -105,7 +104,7 @@ public class ProductController {
                               @Valid @ModelAttribute(value = "product") Product product
             ,Errors errors, Model model,@RequestParam("image") MultipartFile mainImageMultipart
             ,@RequestParam("extraImage") MultipartFile[] extraImageMultiparts,@RequestParam(name = "detailsName",required = false) String[] detailsName
-    ,@RequestParam(name="detailsValue",required = false)String[] detailsValue,HttpSession session) throws IOException {
+    ,@RequestParam(name="detailsValue",required = false)String[] detailsValue) throws IOException {
 
         List<Brand> listBrands = brandService.listAllBrands();
         Integer numberOfExistingExtraImages = product.getImages().size();
@@ -123,7 +122,8 @@ public class ProductController {
                 return "Product/productForm.html";
             }
         }else{
-            Integer id = (Integer) session.getAttribute("id");
+            Integer id = product.getId();
+            log.error(String.valueOf(id));
             Product existingProduct=productService.getProductById(id);
             if(existingProduct!=null&&!(existingProduct.getName().matches(product.getName()))) {
                 if (product.getName() != "" && !productService.isNameUnique(product.getName())) {
@@ -198,12 +198,11 @@ public class ProductController {
 
     //OPENING EDIT_FORM
     @GetMapping("/products/edit/{id}")
-    public String editProduct(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpSession session){
+    public String editProduct(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model){
         try{
             Product product=productService.getProductById(id);
             Integer numberOfExistingExtraImages=product.getImages().size();
             log.error(String.valueOf(product.getDetails()));
-            session.setAttribute("id",id);
             List<Brand> listBrands=brandService.listAllBrands();
             model.addAttribute("product",product);
             model.addAttribute("products",new Product());
@@ -232,9 +231,10 @@ public class ProductController {
             , @RequestParam(name="imageIDs",required = false)String[] imageIDs
             , @RequestParam(name="imageNames",required = false)String[] imageNames
             , @AuthenticationPrincipal EshopeUserDetails loggedUser
-            , HttpSession session) throws IOException {
+            ) throws IOException {
 
-        Integer id = (Integer) session.getAttribute("id");
+        Integer id = product.getId();
+        log.error(String.valueOf(id));
         Product existingProduct = productService.getProductById(id);
 
         if(loggedUser.hasRole("Salesperson")){
