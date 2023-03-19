@@ -217,30 +217,19 @@ $('#deleteModal').on('show.bs.modal', function (event) {
     if( document.getElementById('myMenu')!=null){
      document.getElementById('myMenu').style.backgroundColor="var(--bg-color)";
     }
-      document.getElementsByClassName('myModal')[0].style.backgroundColor="var(--bg-color)";
-      if(document.getElementsByClassName('myModal')[1]!=null){
-        document.getElementsByClassName('myModal')[1].style.backgroundColor="var(--bg-color)";
-      }
-      if(document.getElementsByClassName('myModal')[2]!=null){
-        document.getElementsByClassName('myModal')[2].style.backgroundColor="var(--bg-color)";
-      }
-
-
+    $(".myModal").each(function(i,element){
+       element.style.backgroundColor="var(--bg-color)";
+    })
     }else{
      if( document.getElementById('myMenu')!=null){
      document.getElementById('myMenu').style.backgroundColor="white";
     }
-    document.getElementsByClassName('myModal')[0].style.backgroundColor="white";
-    if(document.getElementsByClassName('myModal')[1]!=null){
-        document.getElementsByClassName('myModal')[1].style.backgroundColor="white";
-      }
-      if(document.getElementsByClassName('myModal')[2]!=null){
-        document.getElementsByClassName('myModal')[2].style.backgroundColor="white";
-      }
-
+    $(".myModal").each(function(i,element){
+       element.style.backgroundColor="white";
+    })
     }}
 
-    setTimeout(myTheme, 100);
+    setTimeout(myTheme, 1);
 
     toggleSwitch.addEventListener('click',function(){
         setTimeout(myTheme, 100);

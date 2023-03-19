@@ -62,6 +62,7 @@ public class WebSecurityConfig  {
                 .antMatchers("/products/edit/**","/products/save","/products/editProduct").hasAnyAuthority("Admin","Editor","Salesperson")
                 .antMatchers("products/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/orders","/orders/","/orders/page/**","/orders/detail/**").hasAnyAuthority("Admin","Salesperson","Shipper")
+                .antMatchers("/orders_shipper/update/**").hasAuthority("Shipper")
 
 
 

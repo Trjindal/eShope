@@ -2,6 +2,7 @@ package com.eshope.admin.Service;
 
 import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Order.Order;
+import com.eShope.common.entity.Order.OrderStatus;
 import com.eShope.common.entity.Order.OrderTrack;
 import com.eshope.admin.Repository.CountryRepository;
 import com.eshope.admin.Repository.OrderRepository;
@@ -88,5 +89,30 @@ public class OrderService {
         order.setCustomer(existingOrder.getCustomer());
 
         orderRepository.save(order);
+    }
+
+    public void updateStatus(Integer orderID,String status){
+        Order existingOrder=orderRepository.findById(orderID).get();
+        OrderStatus statusToUpdate=OrderStatus.valueOf(status);
+
+        if(!existingOrder.hasStatus(statusToUpdate)){
+            List<OrderTrack> orderTracks=existingOrder.getOrderTracks();
+
+            OrderTrack track=new OrderTrack();
+            track.setOrder(existingOrder);
+            track.setStatus(statusToUpdate);
+            track.setUpdatedTime(new Date());
+            track.setNotes(statusToUpdate.defaultDescription());
+
+            orderTracks.add(track);
+
+            existingOrder.setOrderStatus(statusToUpdate);
+            orderRepository.save(existingOrder);
+
+        }
+
+
+
+
     }
 }
