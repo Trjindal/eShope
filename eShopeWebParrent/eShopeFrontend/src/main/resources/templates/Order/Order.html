@@ -81,7 +81,7 @@
                             </td>
                             <td th:text="${order.orderStatus}"></td>
                         <td>
-                            <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this product details" data-toggle="modal" data-target="#viewProductModal" ></a>
+                            <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this product details" data-toggle="modal" data-target="#viewOrderModal" ></a>
                             <th:block th:unless="${order.returnRequested}">
                                 <a class="fas fa-undo" href="" title="Return this order"></a>
                             </th:block>
@@ -103,7 +103,7 @@
                                         </div>
                                         <div class="d-flex ">
                                             <div class="justify-content-center">
-                                                <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this product details" data-toggle="modal" data-target="#viewProductModal" ></a>
+                                                <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this product details" data-toggle="modal" data-target="#viewOrderModal" ></a>
                                                 <th:block th:unless="${order.returnRequested}">
                                                     <a class="fas fa-undo" href="" title="Return this order"></a>
                                                 </th:block>
@@ -143,7 +143,12 @@
 <div th:replace="Fragments/fragment::pagination('/orders/page/','orders')"/>
 <!-- /pagination -->
 
-
+<div class="modal fade " id="viewOrderModal" role="dialog" >
+    <div class="modal-dialog modal-xl " >
+        <div class="modal-content myModal">
+        </div>
+    </div>
+</div>
 
 
 <div th:replace="~{Fragments/footer :: footer}">...</div>
@@ -161,6 +166,17 @@
 
 <!--CLEAR FILTER-->
 <div th:replace="Fragments/fragment::clear_filter('orders')"/>
+
+<script>
+
+$('#viewOrderModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var myLink=button.attr("href");
+  var modal = $(this)
+  modal.find('.modal-content').load(myLink)
+})
+
+</script>
 
 
 </body>

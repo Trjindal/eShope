@@ -3,16 +3,19 @@ package com.eshope.Controller;
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Customer;
 import com.eShope.common.entity.Order.Order;
+import com.eShope.common.entity.Setting.Setting;
 import com.eshope.Service.CustomerService;
 import com.eshope.Service.OrderService;
 import com.eshope.Utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -59,6 +62,25 @@ public class OrderController {
 
         return "Order/order";
     }
+
+    @GetMapping("/orders/detail/{id}")
+    public String detailOrder(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request){
+        try{
+            Customer customer=getAuthenticatedCustomer(request);
+            Order order=orderService.getOrderByIdAndCustomer(id,customer);
+            if(order==null){
+                throw new UsernameNotFoundException("Could not find any order with Id "+ id);
+            }
+//            loadCurrencySetting(request);
+            model.addAttribute("order",order);
+            return "Order/viewOrderModal.html";
+        }catch (UsernameNotFoundException ex){
+            redirectAttributes.addFlashAttribute("message",ex.getMessage());
+            return "redirect:/orders";
+        }
+
+    }
+
 
     private Customer getAuthenticatedCustomer(HttpServletRequest request){
 

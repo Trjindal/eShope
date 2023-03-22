@@ -13,10 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -85,6 +87,14 @@ public class OrderService {
         }
 
         return orderRepository.findAll(customer.getId(),pageable);
+    }
+
+    public Order getOrderByIdAndCustomer(Integer id,Customer customer) {
+        try{
+            return orderRepository.findByIdAndCustomer(id,customer);
+        }catch (NoSuchElementException ex){
+            throw new UsernameNotFoundException("Could not find any order with Id "+ id);
+        }
     }
 
 }
