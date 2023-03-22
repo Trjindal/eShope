@@ -116,8 +116,16 @@
     <!-- //Js scripts -->
   </div>
 
+<!-- ROW HEADINGS-->
+<th class="sorting" scope="col" th:fragment="column_link(link,fieldName,columnLabel)">
+    <a th:href="@{'/'+${link}+'/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">[[${columnLabel}]]</a>
+    <span th:if="${sortField!=fieldName}" class="fas fa-sort-up" style="font-size:8px;"></span>
+    <span th:if="${sortField==fieldName}" th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}" style="font-size:8px;"></span>
+</th>
+<!--/ ROW HEADINGS-->
 
-    <div th:fragment="products_card(listProducts)" >
+
+<div th:fragment="products_card(listProducts)" >
         <div class="row justify-content-center align-items-center m-5">
             <th:block th:each="product:${listProducts}">
                 <div class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center mb-3" >
@@ -217,8 +225,12 @@
 
 <div th:fragment="format_currency(amount)" class="d-inline">
     <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
-    [[${#numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+    <span>[[${#numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
     <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+</div>
+
+<div th:fragment="format_time(dateTime)" th:remove="tag">
+    <span th:text="${#dates.format(dateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
 </div>
 
 <!--    SEARCH BAR  -->
@@ -240,6 +252,45 @@
     </div>
 </div>
 <!--    /SEARCH BAR  -->
+
+<!--    THEME CHANGE    -->
+<div th:fragment="theme_change">
+    <script>
+ function myTheme(){
+    if(toggleSwitch.checked==true){
+    if( document.getElementById('myMenu')!=null){
+     document.getElementById('myMenu').style.backgroundColor="var(--bg-color)";
+    }
+    $(".myModal").each(function(i,element){
+       element.style.backgroundColor="var(--bg-color)";
+    })
+    }else{
+     if( document.getElementById('myMenu')!=null){
+     document.getElementById('myMenu').style.backgroundColor="white";
+    }
+    $(".myModal").each(function(i,element){
+       element.style.backgroundColor="white";
+    })
+    }}
+
+    setTimeout(myTheme, 1);
+
+    toggleSwitch.addEventListener('click',function(){
+        setTimeout(myTheme, 100);
+    });
+    </script>
+</div>
+<!--    /THEME CHANGE    -->
+
+<div th:fragment="clear_filter(link)">
+    <script>
+        var link="[[${link}]]"
+        function clearFilter(){
+        window.location="/eShope/"+link;
+        }
+
+    </script>
+</div>
 
 <body>
 

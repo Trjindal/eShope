@@ -21781,3 +21781,50 @@ color:red;
     padding: initial;
     border: initial;
 }
+
+.user-block input{
+    width: 50%;
+    color: var(--heading-color);
+    background: var(--bg-grey);
+    font-size: 16px;
+    padding: 6px;
+    border: 2px solid var(--border-color-light);
+    outline: none;
+
+    border-radius: var(--border-radius);
+}
+
+@media only screen and (max-width: 768px) {
+
+
+  div.full-details{
+  display:none
+  }
+    div.less-details{
+    display:block
+    }
+    .table-responsive-class {
+         margin: none;
+          width: 100% !important;
+      }
+      .tablePhotosHeader,.tablePhotos{
+        display:none;
+      }
+    .userName{
+          display:none;
+     }
+     #usersImg {
+         width: 15vw;
+         border-radius:50px;
+     }
+}
+@media only screen and (min-width: 768px) {
+     div.full-details{
+      display:block
+      }
+        div.less-details{
+        display:none
+        }
+
+
+}

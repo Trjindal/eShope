@@ -9,6 +9,10 @@ import com.eShope.common.entity.Product.Product;
 import com.eshope.PoJo.CheckoutInfo;
 import com.eshope.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,6 +22,7 @@ import java.util.Set;
 @Service
 public class OrderService {
 
+    public static final int ORDERS_PER_PAGE = 5;
     @Autowired
     private OrderRepository orderRepository;
 
@@ -66,4 +71,20 @@ public class OrderService {
         return orderRepository.save(newOrder);
 
     }
+
+
+    public Page<Order> listByPage(Customer customer,int pageNum, String sortField, String sortDir, String keyword) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+
+        Pageable pageable = PageRequest.of(pageNum - 1, ORDERS_PER_PAGE, sort);
+
+        if (keyword != null) {
+            Integer id= customer.getId();
+            return orderRepository.findAll(keyword,id, pageable);
+        }
+
+        return orderRepository.findAll(customer.getId(),pageable);
+    }
+
 }

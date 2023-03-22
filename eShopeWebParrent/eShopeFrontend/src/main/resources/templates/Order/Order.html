@@ -1,0 +1,167 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Shopping Cart','none')"/>
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5">
+        <div class="container pt-4 pb-sm-4">
+            <h4 class="inner-text-title pt-5">Your Orders</h4>
+            <ul class="breadcrumbs-custom-path">
+                <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
+                <li class="active">Your Orders</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+    <div class="px-md-3 py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-md-5 mb-4 " style="max-width:500px;">
+            <h3 class="title-style">Your Orders</h3>
+        </div>
+
+        <div class="table-responsive-class">
+
+            <ul>
+                <li class="alert alert-success text-center" role="alert" th:if="${message!=null}">[[${message}]] </li>
+            </ul>
+
+            <div class="row mb-4">
+                <div class="overview-wrap user-block">
+                    <form th:action="@{/orders/page/1}" class="w-100">
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <div class="d-flex flex-row">
+                            <input type="search" name="orderKeyword" required th:value="${orderKeyword}" class="m-3"
+                                   placeholder="Search box">
+                            <button type="submit" value="search" class=" btn btn-style btn-style-2   text-center"><i
+                                    class="fas fa-regular fa-magnifying-glass"></i></button>
+                            <button type="button" value="Clear" class=" btn btn-style btn-style-2   text-left"
+                                    onclick="clearFilter()">Clear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--        table started-->
+            <div class="full-details">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark w-100">
+                    <tr>
+                        <th th:replace="~{Fragments/fragment::column_link('orders','id','Id')}"></th>
+                        <th th:replace="~{Fragments/fragment::column_link('orders','orderTime','Order Time')}"></th>
+                        <th scope="col">Products</th>
+                        <th th:replace="~{Fragments/fragment::column_link('orders','total','Total')}"></th>
+                        <th th:replace="~{Fragments/fragment::column_link('orders','orderStatus','Status')}"></th>
+
+                        <th class="sorting" scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="order: ${listAllOrders}">
+                            <td scope="row" th:text="${order.id}"></td>
+                            <td>
+                                <div th:replace="~{Fragments/fragment::format_time(${order.orderTime})}">Time</div>
+                            </td>
+                            <td th:utext="${order.productNames}"></td>
+                            <td>
+                                <div th:replace="~{Fragments/fragment::format_currency(${order.total})}">Total</div>
+                            </td>
+                            <td th:text="${order.orderStatus}"></td>
+                        <td>
+                            <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this product details" data-toggle="modal" data-target="#viewProductModal" ></a>
+                            <th:block th:unless="${order.returnRequested}">
+                                <a class="fas fa-undo" href="" title="Return this order"></a>
+                            </th:block>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="less-details">
+                <th:block th:each="order,status: ${listAllOrders}">
+                    <div class="col-12 col-md-4">
+                        <div class=" w3l-grids-block-5   m-3">
+                            <div class="card myModal" style="box-shadow: 0.1px 0.1px 0.1px 2px #ffffff24;">
+                                <div class="card-header">
+                                    <div class="d-flex">
+                                        <div class="col">
+                                            <h6>Order Id: # [[${order.id}]]</h6>
+                                        </div>
+                                        <div class="d-flex ">
+                                            <div class="justify-content-center">
+                                                <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this product details" data-toggle="modal" data-target="#viewProductModal" ></a>
+                                                <th:block th:unless="${order.returnRequested}">
+                                                    <a class="fas fa-undo" href="" title="Return this order"></a>
+                                                </th:block>
+                                            </div>
+                                            &nbsp;
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body text-left">
+                                    <b>Products :</b>
+                                    <div  th:utext="${order.productNames}"></div>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between ">
+
+                                        <div>
+                                            <i class="fas fa-duotone fa-money-bill"></i>
+                                            <b><div th:replace="~{Fragments/fragment::format_currency(${order.total})}">Total</div></b>
+                                        </div>
+                                        <div>
+                                            <b>[[${order.orderStatus}]]</b>
+                                        </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/orders/page/','orders')"/>
+<!-- /pagination -->
+
+
+
+
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--    THEME CHANGE    -->
+<div th:replace="Fragments/fragment::theme_change"/>
+<!--    /THEME CHANGE    -->
+
+
+<!--CLEAR FILTER-->
+<div th:replace="Fragments/fragment::clear_filter('orders')"/>
+
+
+</body>
+</html>

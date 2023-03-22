@@ -69,9 +69,9 @@
               <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                   <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span sec:authentication="principal.fullName" class="userName"></span></a>
                   <div class="dropdown-menu">
-                      <a class="dropdown-item " th:href="@{/account}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/account' ? 'active':''}"><i class="fa-solid fa-circle-info"></i> &nbsp; My Account</a>
-                      <a class="dropdown-item " th:href="@{/address_book}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/address_book' ? 'active':''}"><i class="fa-solid fa-address-book"></i> &nbsp; Address Book</a>
-                      <a th:href="@{/settings}" class="dropdown-item"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/settings' ? 'active':''}" sec:authorize="hasAuthority('Admin')"> <i class="fas fa-solid fa-gear"></i>&nbsp; Setting</a>
+                      <a class="dropdown-item " th:href="@{/account}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShope/account' ? 'active':''}" sec:authenticated()><i class="fa-solid fa-circle-info"></i> &nbsp; My Account</a>
+                      <a class="dropdown-item " th:href="@{/orders}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShope/orders' ? 'active':''}"><i class="fa-solid fa-address-book"></i> &nbsp; My Orders</a>
+                      <a class="dropdown-item " th:href="@{/address_book}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShope/address_book' ? 'active':''}"><i class="fa-solid fa-address-book"></i> &nbsp; Address Book</a>
                       <a class="dropdown-item " href="" id="logoutLink" ><i class="fas fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
                   </div>
               </li>
