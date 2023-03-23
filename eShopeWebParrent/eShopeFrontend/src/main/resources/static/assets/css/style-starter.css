@@ -21651,6 +21651,20 @@ color: var(--heading-color);
     border: 2px solid var(--border-color-light);
     outline: none;
     margin-bottom: 20px;
+     appearance:auto;
+    border-radius: var(--border-radius);
+}
+
+.product-block input:read-only,
+.product-block textarea:read-only{
+    color: #86929d;
+    background: var(--bg-grey);
+    font-size: 16px;
+    padding: 14px;
+    appearance:auto;
+    border: 2px solid var(--border-color-light);
+    outline: none;
+    margin-bottom: 20px;
     border-radius: var(--border-radius);
 }
 

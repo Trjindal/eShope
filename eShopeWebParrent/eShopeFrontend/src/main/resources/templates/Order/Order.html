@@ -79,11 +79,11 @@
                             <td>
                                 <div th:replace="~{Fragments/fragment::format_currency(${order.total})}">Total</div>
                             </td>
-                            <td th:text="${order.orderStatus}"></td>
+                            <td th:class="'textOrderStatus'+${order.id}" th:text="${order.orderStatus}"></td>
                         <td>
                             <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this product details" data-toggle="modal" data-target="#viewOrderModal" ></a>
-                            <th:block th:unless="${order.returnRequested}">
-                                <a class="fas fa-undo" href="" title="Return this order"></a>
+                            <th:block th:if="${order.returnRequested == false && order.delivered == true && order.returned == false}">
+                                <a class="fas fa-undo linkReturnOrder" th:classappend="'linkReturn'+${order.id}" th:orderId="${order.id}" href="" title="Return this order"></a>
                             </th:block>
                         </td>
                     </tr>
@@ -104,8 +104,8 @@
                                         <div class="d-flex ">
                                             <div class="justify-content-center">
                                                 <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/orders/detail/'+${order.id}}" title="view this product details" data-toggle="modal" data-target="#viewOrderModal" ></a>
-                                                <th:block th:unless="${order.returnRequested}">
-                                                    <a class="fas fa-undo" href="" title="Return this order"></a>
+                                                <th:block th:if="${order.returnRequested == false && order.delivered == true && order.returned == false}">
+                                                    <a class="fas fa-undo linkReturnOrder" th:classappend="'linkReturn'+${order.id}" th:orderId="${order.id}" href="" title="Return this order"></a>
                                                 </th:block>
                                             </div>
                                             &nbsp;
@@ -124,7 +124,7 @@
                                             <b><div th:replace="~{Fragments/fragment::format_currency(${order.total})}">Total</div></b>
                                         </div>
                                         <div>
-                                            <b>[[${order.orderStatus}]]</b>
+                                            <b th:class="'textOrderStatus'+${order.id}">[[${order.orderStatus}]]</b>
                                         </div>
 
                                 </div>
@@ -150,6 +150,48 @@
     </div>
 </div>
 
+<!--RETURN MODAL-->
+<div class="modal fade " id="returnOrderModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content myModal">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title" id="returnModalTitle">Return Order</h5>
+
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form onsubmit="return submitReturnOrderForm();">
+                <div class="modal-body">
+                <div class="product-block" id="divReason">
+                    <p class="m-2">Reason :</p>
+                    <div><input type="radio" name="returnReason"value="I bought the wrong items" required>   I bought the wrong items</div>
+                    <div><input type="radio" name="returnReason"value="I received the wrong items">   I received the wrong items</div>
+                    <div><input type="radio" name="returnReason"value="The product was damaged/defected">    The product was damaged/defected</div>
+                    <div><input type="radio" name="returnReason"value="Product quality is not as expected.">   Product quality is not as expected.</div>
+                    <textarea class="w-100 p-2" id="returnNote" placeholder="Additional information (Optional)" rows="2" maxlength="120"></textarea>
+                </div>
+                <div id="divMessage">
+                    The request has been sent
+                </div>
+
+            </div>
+                <div class="modal-footer">
+                <div class="col-6 login-center text-start">
+                    <button type="submit" class="btn btn-style btn-style-3 text-left" id="firstButton">Send Request</button>
+                </div>
+                <div class="col-6 login-center text-start">
+                    <button type="button" class="btn btn-style btn-style-3 text-left" id="secondButton" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!--    /RETURN MODAL   -->
+
+
 
 <div th:replace="~{Fragments/footer :: footer}">...</div>
 <!-- //footer -->
@@ -168,15 +210,26 @@
 <div th:replace="Fragments/fragment::clear_filter('orders')"/>
 
 <script>
+    contextPath="[[@{/}]]"
+    var csrfHeaderName="[[${_csrf.headerName}]]";
+    var csrfValue="[[${_csrf.token}]]";
+
+</script>
+
+<script>
 
 $('#viewOrderModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget)
   var myLink=button.attr("href");
   var modal = $(this)
+
   modal.find('.modal-content').load(myLink)
 })
 
 </script>
+
+<script type="text/javascript" th:src="@{/assets/js/returnOrder.js}"></script>
+
 
 
 </body>

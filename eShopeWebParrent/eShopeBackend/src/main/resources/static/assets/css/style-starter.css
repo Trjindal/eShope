@@ -21735,6 +21735,7 @@ color: var(--heading-color);
     padding: 14px;
     border: 2px solid var(--border-color-light);
     outline: none;
+    appearance:auto;
     margin-bottom: 20px;
     border-radius: var(--border-radius);
 }
@@ -21745,6 +21746,7 @@ color: var(--heading-color);
     background: var(--bg-grey);
     font-size: 16px;
     padding: 14px;
+    appearance:auto;
     border: 2px solid var(--border-color-light);
     outline: none;
     margin-bottom: 20px;
@@ -21869,6 +21871,12 @@ margin:10px;
     margin-bottom: 20px;
     border-radius: var(--border-radius);
 }
+
+
+.product-block input[type="radio"] {
+
+}
+
 /*
 @media only screen and (max-width: 991px) {
 .userName,.firstName,.lastName{
