@@ -52,7 +52,7 @@ public class ReviewService {
     public void delete(Integer id) throws UsernameNotFoundException{
         Long countById=reviewRepository.countById(id);
         if(countById==null||countById==0){
-            throw new UsernameNotFoundException("Could not found any order with such Id ");
+            throw new UsernameNotFoundException("Could not found any review with such Id ");
         }
         reviewRepository.deleteById(id);
     }

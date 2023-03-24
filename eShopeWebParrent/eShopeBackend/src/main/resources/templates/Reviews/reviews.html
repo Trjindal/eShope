@@ -68,8 +68,8 @@
         <thead class="table-dark w-100">
         <tr>
           <th th:replace="~{Fragments/fragment::column_link('reviews','id',' Id')}"></th>
-          <th th:replace="~{Fragments/fragment::column_link('reviews','product.shortName','Product')}"></th>
-          <th th:replace="~{Fragments/fragment::column_link('reviews','customer.fullName','Customer')}"></th>
+          <th th:replace="~{Fragments/fragment::column_link('reviews','product.name','Product')}"></th>
+          <th th:replace="~{Fragments/fragment::column_link('reviews','customer.firstName','Customer')}"></th>
           <th th:replace="~{Fragments/fragment::column_link('reviews','rating','Rating')}"></th>
           <th th:replace="~{Fragments/fragment::column_link('reviews','reviewTime','Review Time')}"></th>
           <th class="sorting" scope="col"></th>
@@ -106,7 +106,7 @@
             <div class="card-header">
               <div class="d-flex">
                 <div class="col">
-                  <h6>Order Id: # [[${review.id}]]</h6>
+                  <h6>Review Id: # [[${review.id}]]</h6>
                 </div>
                 <div class="d-flex ">
                   <div class="justify-content-center">

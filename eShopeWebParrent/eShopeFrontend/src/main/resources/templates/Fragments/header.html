@@ -44,6 +44,10 @@
 <!--             th:classappend="${#httpServletRequest.getRequestURI() == '/contact' ? 'active':''}"-->
             <a th:href="@{/payments}" class="nav-link">Payments</a>
           </li>
+            <li class="nav-item" >
+
+                <a th:href="@{/reviews}" class="nav-link" th:classappend="${#httpServletRequest.getRequestURI() == 'eShope/reviews' ? 'active':''}">Reviews</a>
+            </li>
           <li class="nav-item" >
 <!--             th:classappend="${#httpServletRequest.getRequestURI() == '/dashboard' ? 'active':''}"-->
             <a th:href="@{/customers}"  class="nav-link">Shipping & Delivery</a>

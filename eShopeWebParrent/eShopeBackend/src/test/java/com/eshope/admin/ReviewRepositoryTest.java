@@ -27,10 +27,10 @@ public class ReviewRepositoryTest {
     @Test
     public void testCreateReview() {
 
-        Integer productId = 1;
+        Integer productId = 34;
         Product product = new Product(productId);
 
-        Integer customerId = 1;
+        Integer customerId = 44;
         Customer customer = new Customer(customerId);
 
         Review review = new Review();
