@@ -1,0 +1,47 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<div class="modal-header border-bottom-0">
+  <h5 class="modal-title text-center" id="viewReviewLabel">Review Details</h5>
+  <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body product-block" th:object="${review}">
+  <div class="input-grids">
+    <div class="row form-group">
+      <label class="col-form-label col-sm-2">Product Name : </label>
+      <input type="text" th:field="*{product.shortName}" placeholder="product" readonly class="contact-input col-sm-10"/>
+    </div>
+    <div class="row form-group">
+      <label class="col-form-label col-sm-2">Customer Name : </label>
+      <input type="text" th:field="*{customer.fullName}" placeholder="product" readonly class="contact-input col-sm-10"/>
+    </div>
+    <div class="row form-group">
+      <label class="col-form-label col-sm-2">Rating : </label>
+      <input type="text" th:field="*{rating}" placeholder="product" readonly class="contact-input col-sm-10"/>
+    </div>
+    <div class="row form-group">
+      <label class="col-form-label col-sm-2">Review Time : </label>
+      <input type="text" th:field="*{reviewTime}" placeholder="product" readonly class="contact-input col-sm-10"/>
+    </div>
+    <div class="row form-group">
+      <label class="col-form-label col-sm-2">Headline : </label>
+      <input type="text" th:field="*{headline}" readonly placeholder="product"  class="contact-input col-sm-10"/>
+    </div>
+    <div class="row form-group">
+      <label class="col-form-label col-sm-2">Comment : </label>
+      <input type="text" th:field="*{comment}" readonly placeholder="product"  class="contact-input col-sm-10"/>
+    </div>
+  </div>
+
+
+</div>
+
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn btn-style btn-style-3 " data-dismiss="modal">Close</button>
+</div>
+</html>
+

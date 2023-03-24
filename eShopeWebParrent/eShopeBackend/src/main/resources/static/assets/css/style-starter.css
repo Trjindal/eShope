@@ -21873,9 +21873,14 @@ margin:10px;
 }
 
 
-.product-block input[type="radio"] {
 
+
+.myDropdown:hover .dropdown-menu{
+ display: block;
+ margin-top: 0;
 }
+
+
 
 /*
 @media only screen and (max-width: 991px) {

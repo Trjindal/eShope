@@ -31,9 +31,23 @@
           <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Editor')">
             <a th:href="@{/brands}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/brands' ? 'active':''}">Brands</a>
           </li>
-          <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson','Shipper')">
+          <li class="nav-item" sec:authorize="hasAnyAuthority('Salesperson','Shipper')">
             <a th:href="@{/products}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/products' ? 'active':''}">Products</a>
           </li>
+          <li class="nav-item" sec:authorize="hasAnyAuthority('Assistant')">
+            <a th:href="@{/reviews}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/reviews' ? 'active':''}">Review</a>
+          </li>
+          <ul class="navbar-nav " sec:authorize="hasAnyAuthority('Admin','Editor')">
+            <li class="nav-item dropdown myDropdown" >
+              <a th:href="@{/products}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/products' ? 'active':''}">Products</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item " th:href="@{/products}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/products' ? 'active':''}"></span>View All</a>
+                <a class="dropdown-item" th:href="@{/products/new}"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/products/new' ? 'active':''}" >Create New</a>
+                <a class="dropdown-item " th:href="@{/reviews}" sec:authorize="hasAnyAuthority('Admin')"  > Reviews</a>
+
+              </div>
+            </li>
+          </ul>
           <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson')">
             <a th:href="@{/customers}"  class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/customers' ? 'active':''}">Customers</a>
           </li>
@@ -56,8 +70,8 @@
             </li>
         </ul>
         <ul class="navbar-nav ">
-          <li class="nav-item dropdown" >
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span sec:authentication="principal.fullName" class="userName"></span></a>
+          <li class="nav-item dropdown myDropdown" >
+            <a class="nav-link dropdown-toggle " data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span sec:authentication="principal.fullName" class="userName"></span></a>
             <div class="dropdown-menu">
               <a class="dropdown-item " th:href="@{/account}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/account' ? 'active':''}"><span class="fas fa-solid fa-right-from-bracket"></span>My Account</a>
               <a th:href="@{/settings}" class="dropdown-item"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/settings' ? 'active':''}" sec:authorize="hasAuthority('Admin')"> <span class="fas fa-solid fa-gear"></span> Setting</a>

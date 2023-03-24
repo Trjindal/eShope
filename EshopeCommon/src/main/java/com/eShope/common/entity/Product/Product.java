@@ -84,6 +84,8 @@ public class Product {
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductDetails> details=new ArrayList<>();
 
+    private int reviewCount;
+    private float averageRating;
 
 
     @Transient
