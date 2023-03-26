@@ -141,4 +141,16 @@ public class Product {
         }
         return false;
     }
+
+    @Transient
+    public String getURI(){
+        return "/p/"+this.alias+"/";
+    }
+
+    @Transient
+    private boolean customerCanReview;
+
+    @Transient
+    private boolean reviewedByCustomer;
+
 }

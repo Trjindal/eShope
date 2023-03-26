@@ -1,8 +1,11 @@
 
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <head th:replace="Fragments/fragment::page_head(${pageTitle},'tag')"/>
 
-<head th:replace="Fragments/fragment::page_head(${pageTitle},'none')"/>
+
+</head>
 <body>
 
 
@@ -42,13 +45,14 @@
     <div class="d-flex justify-content-center mb-2 ">
       <img id="bigImage" th:src="@{${product.mainImagePath}}" class="img-fluid" index="0" style="height:350px; border-radius:5px;">
     </div>
-    <div class="d-flex flex-row justify-content-center ">
-      <div class="m-2 border border-secondary p-1">
-        <img class="image-thumbnail" th:src="@{${product.mainImagePath}}" height="50" index="0">
+    <!--    <div class="d-flex flex-row justify-content-center ">-->
+    <div class="col-sm-12">
+      <div class="m-2 d-inline p-1">
+        <img class="image-thumbnail mt-2 border border-secondary p-1" th:src="@{${product.mainImagePath}}" height="50" index="0">
       </div>
       <th:block th:each="extraImg,status:${product.images}">
-        <div class="m-2 border border-secondary p-1">
-          <img class="image-thumbnail" th:src="@{${extraImg.getImagePath}}" height="50" th:index="${status.count}">
+        <div class="mt-2 d-inline p-1">
+          <img class="image-thumbnail mt-2 border border-secondary p-1" th:src="@{${extraImg.getImagePath}}" height="50" th:index="${status.count}">
         </div>
       </th:block>
     </div>
@@ -58,6 +62,15 @@
     <div>
       <h2>[[${product.name}]]</h2>
     </div>
+    <div class="d-flex align-items-end">
+      <div class="col-xs">
+        <input type="text" class="product-detail-rating-star" dir="ltr" data-size="md" th:value="${product.averageRating}">
+      </div>
+      <div class="col-xs px-2">
+        <a th:href="@{${product.URI}+'#review'}">[[${product.reviewCount}]] rating(s)</a>
+      </div>
+    </div>
+
     <div>
       <span>Brand : [[${product.brand.name}]]</span>
       <div >
@@ -123,8 +136,55 @@
      </div>
    </th:block>
   </div>
+  <!-- REVIEWS-->
+  <div class="row" id="review p-3" >
+    <div class="col-12 ">
+      <div class="accordion myModal " id="accordionPanelsStayOpenExample">
+    <div class="accordion-item ">
+      <h2 class="accordion-header">
+        <button class="accordion-button text-center" type="button" data-toggle="collapse" data-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+          Reviews
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse myModal show">
+        <div class="accordion-body tex-center" >
+          <div class="row m-2">
+              <div class="col-12">
+                <th:block th:each="review : ${listReviews}">
+                <div class="row m-2">
+                  <div class="col-12 m-2">
+                    <input type="text" class="product-detail-rating-star " dir="ltr" data-size="xs" th:value="${review.rating}">
+                    <h6 class="m-1">[[${review.headline}]]</h6>
+                    <span class="text-muted">Reviewed by [[${review.customer.fullName}]] on <span th:replace="Fragments/fragment::format_time(${review.reviewTime})"></span></span>
+                  </div>
+                  <div class="col-sm-12 m-2">
+                    [[${review.comment}]]
+                  </div>
+                </div>
+                  <hr>
+                </th:block>
+              </div>
+            <div class="row m-2">
+              <div class="col-md-4 col-12">
+                <a th:href="@{/orders/search_product}" th:if="${product.reviewCount>3}" >
+                  <a class="btn btn-style btn-style-1 text-left " id="addProduct" >See more reviews</a>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    </div>
+  </div>
+  <!-- REVIEWS-->
+
 </div>
 <!--PRODUCT DETAILS END-->
+
 
 
 
@@ -161,6 +221,38 @@
 
 <div th:replace="Fragments/images_carousel::content"></div>
 
+<!--ADD PRODUCT MODAL-->
+<div class="modal fade " id="addProductModal" role="dialog" th:alias="${product.alias}">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" >Reviews</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item" style="height: 20rem!important;"></iframe>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 " data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--  /ADD PRODUCT MODAL    -->
+
+
+
+
+
 <script type="text/javascript">
 
   contextPath="[[@{/}]]"
@@ -193,6 +285,46 @@
 </script>
 <script type="text/javascript" th:src="@{/assets/js/quantity_control.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/add_to_cart.js}"></script>
+
+<link th:href="@{/assets/rating-star/css/star-rating.css}" media="all" rel="stylesheet" type="text/css" />
+<script th:src="@{/assets/rating-star/js/star-rating.js}" type="text/javascript"></script>
+<link th:href="@{/assets/rating-star/themes/krajee-svg/theme.css}" media="all" rel="stylesheet" type="text/css" />
+<script th:src="@{/assets/rating-star/themes/krajee-svg/theme.js}"></script>
+<div th:replace="Fragments/fragment::theme_change"></div>
+
+
+//SHOWING ADD PRODUCT MODAL
+<script>
+
+  var alias;
+
+
+  $("#addProduct").on("click",function(e){
+  e.preventDefault();
+     $('#addProductModal').modal("show")
+
+  })
+
+  $('#addProductModal').on('show.bs.modal', function (event) {
+  alias=$(this).attr('alias')
+  var myLink="http://localhost:80/eShope/ratings/"+alias;
+
+  $(this).find("iframe").attr("src",myLink);
+})
+
+
+
+</script>
+
+
+<script>
+  $(".product-detail-rating-star").rating({
+    displayOnly:true,
+    hoverOnClera:false,
+    showCaption:false,
+    theme:'krajee-svg'
+  })
+</script>
 
 </body>
 </html>

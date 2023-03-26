@@ -3,9 +3,12 @@ package com.eshope.Controller;
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Customer;
 import com.eShope.common.entity.Order.Order;
+import com.eShope.common.entity.Order.OrderDetail;
+import com.eShope.common.entity.Product.Product;
 import com.eShope.common.entity.Setting.Setting;
 import com.eshope.Service.CustomerService;
 import com.eshope.Service.OrderService;
+import com.eshope.Service.ReviewService;
 import com.eshope.Utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -25,6 +29,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @Autowired
     private CustomerService customerService;
@@ -71,6 +78,7 @@ public class OrderController {
             if(order==null){
                 throw new UsernameNotFoundException("Could not find any order with Id "+ id);
             }
+            setProductReviewableStatus(customer,order);
 //            loadCurrencySetting(request);
             model.addAttribute("order",order);
             return "Order/viewOrderModal.html";
@@ -78,6 +86,25 @@ public class OrderController {
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
             return "redirect:/orders";
         }
+
+    }
+
+    private void setProductReviewableStatus(Customer customer, Order order) {
+       Iterator<OrderDetail> iterator = order.getOrderDetails().iterator();
+
+       while (iterator.hasNext()){
+           OrderDetail orderDetail= iterator.next();
+           Product product=orderDetail.getProduct();
+           Integer productId= product.getId();
+
+           boolean didCustomerReviewProduct=reviewService.didCustomerReviewProduct(customer,productId);
+           product.setReviewedByCustomer(didCustomerReviewProduct);
+
+           if(!didCustomerReviewProduct){
+               boolean canCustomerReviewProduct=reviewService.canCustomerReviewProduct(customer,productId);
+            product.setCustomerCanReview(canCustomerReviewProduct);
+           }
+       }
 
     }
 

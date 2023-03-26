@@ -27,7 +27,7 @@ public class ReviewRepositoryTest {
     @Test
     public void testCreateReview() {
 
-        Integer productId = 34;
+        Integer productId = 23;
         Product product = new Product(productId);
 
         Integer customerId = 44;
@@ -37,7 +37,7 @@ public class ReviewRepositoryTest {
         review.setHeadline("Perfect for my needs. Loving it!");
         review.setComment("Nice to have: wireless remote, iOS app, GPS...");
         review.setReviewTime(new Date());
-        review.setRating(5);
+        review.setRating(2);
         review.setCustomer(customer);
         review.setProduct(product);
 

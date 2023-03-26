@@ -42,4 +42,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product,In
     @Query("Update Product p SET p.name=p.name,p.alias=p.alias,p.shortDescription=p.shortDescription where p.id=?1")
     Product updateProductById(Product product);
 
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Product p SET p.averageRating = COALESCE((SELECT AVG(r.rating) FROM Review r WHERE r.product.id= ?1 ),0), "
+            +" p.reviewCount = (SELECT COUNT(r.id) FROM Review r WHERE r.product.id = ?1) WHERE p.id = ?1 ")
+    public void updateReviewCountAndAverageRating(Integer productId);
 }

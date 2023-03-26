@@ -2,8 +2,10 @@ package com.eshope.Controller;
 
 import com.eShope.common.entity.Category;
 import com.eShope.common.entity.Product.Product;
+import com.eShope.common.entity.Review;
 import com.eshope.Service.CategoryService;
 import com.eshope.Service.ProductService;
+import com.eshope.Service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -26,6 +28,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping("c/{category_alias}")
     public String viewCategoryByFirstPage(@PathVariable("category_alias") String alias, Model model,RedirectAttributes redirectAttributes){
@@ -81,10 +86,12 @@ public class ProductController {
 
             //        FOR BREADCRUMBS FINDING ALL PARENT CATEGORIES
             List<Category> listCategoryParents=categoryService.getCategoryParent(product.getCategory());
+            Page<Review> listReviews=reviewService.list3MostRecentReviewsByProduct(product);
 
             model.addAttribute("pageTitle",product.getShortName());
             model.addAttribute("listCategoryParents",listCategoryParents);
             model.addAttribute("product",product);
+            model.addAttribute("listReviews",listReviews);
 
             return "product_detail";
         }catch (UsernameNotFoundException ex){

@@ -96,6 +96,12 @@
                                         <div th:replace="Fragments/fragment::format_currency(${detail.shippingCost})"></div>
                                         =
                                         <div th:replace="Fragments/fragment::format_currency(${detail.subTotal}+${detail.shippingCost})"></div>
+                                        <div class="p-3" th:if="${!product.reviewedByCustomer && product.customerCanReview}">
+                                            <a href="" class="btn btn-info">Write Review</a>
+                                        </div>
+                                        <div class="p-3" th:if="${product.reviewedByCustomer}">
+                                            <a href="" class="btn btn-warning">See your Review</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

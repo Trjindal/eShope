@@ -1,0 +1,107 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Reviews','none')"/>
+
+<body>
+
+<!-- header -->
+<div id="site-header" class=" row">
+    <div class="container d-none">
+        <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+            <input type="submit" />
+        </form>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <!-- toggle switch for light and dark theme -->
+            <div class="cont-ser-position ">
+                <nav class="navigation">
+                    <div class="theme-switch-wrapper">
+                        <label class="theme-switch" for="checkbox">
+                            <input type="checkbox" id="checkbox">
+                            <div class="mode-container">
+                                <i class="gg-sun"></i>
+                                <i class="gg-moon"></i>
+                            </div>
+                        </label>
+                    </div>
+                </nav>
+            </div>
+            <!-- //toggle switch for light and dark theme -->
+        </nav>
+    </div>
+</div>
+<!-- //header -->
+
+<div class="row m-2">
+    <div class="col-12">
+        <th:block th:each="review : ${listAllReviews}">
+            <div class="row m-2">
+                <div class="col-12 m-2">
+                    <input type="text" class="product-detail-rating-star " dir="ltr" data-size="xs" th:value="${review.rating}">
+                    <h6 class="m-1">[[${review.headline}]]</h6>
+                    <span class="text-muted">Reviewed by [[${review.customer.fullName}]] on <span th:replace="Fragments/fragment::format_time(${review.reviewTime})"></span></span>
+                </div>
+                <div class="col-sm-12 m-2">
+                    [[${review.comment}]]
+                </div>
+            </div>
+            <hr>
+        </th:block>
+    </div>
+    </div>
+</div>
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/ratings/'+${productAlias}+'/page/','reviews')"/>
+<!-- /pagination -->
+
+
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+
+<link th:href="@{/assets/rating-star/css/star-rating.css}" media="all" rel="stylesheet" type="text/css" />
+<script th:src="@{/assets/rating-star/js/star-rating.js}" type="text/javascript"></script>
+<link th:href="@{/assets/rating-star/themes/krajee-svg/theme.css}" media="all" rel="stylesheet" type="text/css" />
+<script th:src="@{/assets/rating-star/themes/krajee-svg/theme.js}"></script>
+
+<script>
+  $(".product-detail-rating-star").rating({
+    displayOnly:true,
+    hoverOnClera:false,
+    showCaption:false,
+    theme:'krajee-svg'
+  })
+</script>
+
+<!--<script>-->
+
+<!--     $(".closeBtn2").on("click",function(e){-->
+<!--  console.log($(this));-->
+<!--  $('#myModal').modal("hide")-->
+<!--  })-->
+
+
+<!--    $(".linkProduct").on("click",function(e){-->
+<!--        e.preventDefault();-->
+<!--        productId=$(this).attr("pid");-->
+<!--        productName=$("#pname"+productId).text();-->
+
+<!--        if(window.parent.isProductAlreadyAdded(productId)){-->
+
+<!--      $('#myModal').modal('show');-->
+<!--      $('#confirmText').text("The product "+productName+" was already added.");-->
+<!--    }else{-->
+<!--            window.parent.addProduct(productId,productName);-->
+<!--    }-->
+
+<!--    })-->
+<!--</script>-->
+
+</body>
+</html>

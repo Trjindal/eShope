@@ -4,6 +4,7 @@ import com.eShope.common.entity.Order.Order;
 import com.eShope.common.entity.Order.OrderTrack;
 import com.eShope.common.entity.Review;
 import com.eShope.common.entity.User;
+import com.eshope.admin.Repository.ProductRepository;
 import com.eshope.admin.Repository.ReviewRepository;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
 
     public Page<Review> listByPage(int pageNum, String sortField, String sortDir, String keyword){
         Sort sort= Sort.by(sortField);
@@ -57,6 +62,7 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
     public void saveReview(Review existingReview) {
+        productRepository.updateReviewCountAndAverageRating(existingReview.getProduct().getId());
         reviewRepository.save(existingReview);
     }
 

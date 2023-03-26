@@ -17,17 +17,17 @@ import java.time.Instant;
 @Component
 public class LoggerAspect {
 
-//    @Around("execution(* com.eshope.admin..*.*(..))")
-//    public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
-//        log.info(joinPoint.getSignature().toString() + " method execution start");
-//        Instant start = Instant.now();
-//        Object returnObj = joinPoint.proceed();
-//        Instant finish = Instant.now();
-//        long timeElapsed = Duration.between(start, finish).toMillis();
-//        log.info("Time took to execute " + joinPoint.getSignature().toString() + " method is : "+timeElapsed);
-//        log.info(joinPoint.getSignature().toString() + " method execution end");
-//        return returnObj;
-//    }
+    @Around("execution(* com.eshope.admin..*.*(..))")
+    public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
+        log.info(joinPoint.getSignature().toString() + " method execution start");
+        Instant start = Instant.now();
+        Object returnObj = joinPoint.proceed();
+        Instant finish = Instant.now();
+        long timeElapsed = Duration.between(start, finish).toMillis();
+        log.info("Time took to execute " + joinPoint.getSignature().toString() + " method is : "+timeElapsed);
+        log.info(joinPoint.getSignature().toString() + " method execution end");
+        return returnObj;
+    }
 
     @AfterThrowing(value = "execution(* com.eshope.admin.*.*(..))",throwing = "ex")
     public void logException(JoinPoint joinPoint, Exception ex) {

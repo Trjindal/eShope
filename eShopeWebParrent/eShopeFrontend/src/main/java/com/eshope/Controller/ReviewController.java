@@ -1,8 +1,10 @@
 package com.eshope.Controller;
 
 import com.eShope.common.entity.Customer;
+import com.eShope.common.entity.Product.Product;
 import com.eShope.common.entity.Review;
 import com.eshope.Service.CustomerService;
+import com.eshope.Service.ProductService;
 import com.eshope.Service.ReviewService;
 import com.eshope.Utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class ReviewController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private ReviewService reviewService;
@@ -58,6 +63,47 @@ public class ReviewController {
 
         return "Reviews/review";
     }
+
+
+    @GetMapping("ratings/{productAlias}")
+    public String listReviewByFirstProductPage(@PathVariable(name="productAlias") String productAlias,Model model){
+        return listReviewByProductPage(1,productAlias,model,"reviewTime","desc");
+    }
+
+    @GetMapping("/ratings/{productAlias}/page/{pageNum}")
+    public String listReviewByProductPage(@PathVariable(name = "pageNum") int pageNum,@PathVariable(name = "productAlias") String productAlias, Model model, @Param("sortField") String sortField, @Param("sortDir") String sortDir) {
+
+        Product product=null;
+
+        try{
+            product=productService.getProductByAlias(productAlias);
+        }catch (UsernameNotFoundException e){
+            return "error.html";
+        }
+        Page<Review> page = reviewService.listByProduct(product,pageNum, sortField, sortDir);
+        List<Review> listReviews = page.getContent();
+
+        long startCount = (pageNum - 1) * reviewService.REVIEWS_PER_PAGE + 1;
+        long endCount = startCount + reviewService.REVIEWS_PER_PAGE - 1;
+        if (endCount > page.getTotalElements()) {
+            endCount = page.getTotalElements();
+        }
+
+        model.addAttribute("productAlias",productAlias);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listAllReviews", listReviews);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        return "Reviews/reviewsByProduct";
+    }
+
+
 
     @GetMapping("/reviews/detail/{id}")
     public String detailReview(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request){
