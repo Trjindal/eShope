@@ -67,7 +67,7 @@ public class ReviewRepositoryTest {
 
     @Test
     public void testUpdateReviewById() {
-        Integer id = 2;
+        Integer id = 1;
         Review review = reviewRepository.findById(id).get();
 
         String headline = "An awesome camera at an awesome price";

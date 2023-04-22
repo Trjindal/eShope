@@ -65,7 +65,7 @@ public class WebSecurityConfig {
         http.csrf().and()
                 .authorizeHttpRequests().antMatchers("/customer").authenticated()
                 .antMatchers("/register/update").authenticated()
-                .antMatchers("/account","/register/update","/cart","/address_book/**","/checkout","/place_order","/process_paypal_order","/orders/**").authenticated()
+                .antMatchers("/account","/register/update","/cart","/address_book/**","/checkout","/place_order","/process_paypal_order","/orders/**","/write_review/**","/post_review").authenticated()
 
                 .anyRequest().permitAll()
                 .and().formLogin().loginPage("/login")

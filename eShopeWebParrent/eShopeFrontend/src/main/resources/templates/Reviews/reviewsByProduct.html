@@ -39,8 +39,8 @@
         <th:block th:each="review : ${listAllReviews}">
             <div class="row m-2">
                 <div class="col-12 m-2">
-                    <input type="text" class="product-detail-rating-star " dir="ltr" data-size="xs" th:value="${review.rating}">
                     <h6 class="m-1">[[${review.headline}]]</h6>
+                    <input type="text" class="product-detail-rating-star " dir="ltr" data-size="xs" th:value="${review.rating}">
                     <span class="text-muted">Reviewed by [[${review.customer.fullName}]] on <span th:replace="Fragments/fragment::format_time(${review.reviewTime})"></span></span>
                 </div>
                 <div class="col-sm-12 m-2">

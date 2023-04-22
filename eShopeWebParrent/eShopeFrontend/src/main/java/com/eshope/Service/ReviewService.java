@@ -5,6 +5,7 @@ import com.eShope.common.entity.Order.OrderStatus;
 import com.eShope.common.entity.Product.Product;
 import com.eShope.common.entity.Review;
 import com.eshope.Repository.OrderDetailRepository;
+import com.eshope.Repository.ProductRepository;
 import com.eshope.Repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class ReviewService {
@@ -24,6 +27,9 @@ public class ReviewService {
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public Page<Review> listByPage(Customer customer, int pageNum, String sortField, String sortDir, String keyword) {
         Sort sort = Sort.by(sortField);
@@ -53,6 +59,15 @@ public class ReviewService {
         return reviewRepository.findByProduct(product,pageable);
     }
 
+    public Review save(Review review){
+        review.setReviewTime(new Date());
+        Review savedReview = reviewRepository.save(review);
+
+        Integer productId=savedReview.getProduct().getId();
+        productRepository.updateReviewCountAndAverageRating(productId);
+
+        return savedReview;
+    }
 
     public Page<Review> listByProduct(Product product, int pageNum, String sortField, String sortDir){
         Sort sort = Sort.by(sortField);

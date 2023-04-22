@@ -31,7 +31,7 @@ public class OrderRepositoryTests {
     @Test
     public void testCreateOrderWithSingleProduct(){
         Customer customer=entityManager.find(Customer.class,44);
-        Product product=entityManager.find(Product.class,1);
+        Product product=entityManager.find(Product.class,23);
 
         Order order=new Order();
 
@@ -136,7 +136,7 @@ public class OrderRepositoryTests {
 
     @Test
     public void testUpdateOrder(){
-        Integer orderId=2;
+        Integer orderId=4;
         Order order=orderRepository.findById(orderId).get();
 
         order.setOrderTime(new Date());
@@ -150,7 +150,7 @@ public class OrderRepositoryTests {
 
     @Test
     public void testGetOrder(){
-        Integer orderId=3;
+        Integer orderId=4;
         Order order=orderRepository.findById(orderId).get();
 
         assertThat(order).isNotNull();
@@ -168,7 +168,7 @@ public class OrderRepositoryTests {
 
     @Test
     public void testUpdateOrderTracks(){
-        Integer orderId=6;
+        Integer orderId=4;
         Order order=orderRepository.findById(orderId).get();
 
         OrderTrack newTrack=new OrderTrack();

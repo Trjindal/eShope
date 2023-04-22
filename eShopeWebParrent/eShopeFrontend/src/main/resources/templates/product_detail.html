@@ -137,7 +137,7 @@
    </th:block>
   </div>
   <!-- REVIEWS-->
-  <div class="row" id="review p-3" >
+  <div class="row  p-3" id="review" >
     <div class="col-12 ">
       <div class="accordion myModal " id="accordionPanelsStayOpenExample">
     <div class="accordion-item ">
@@ -153,8 +153,8 @@
                 <th:block th:each="review : ${listReviews}">
                 <div class="row m-2">
                   <div class="col-12 m-2">
-                    <input type="text" class="product-detail-rating-star " dir="ltr" data-size="xs" th:value="${review.rating}">
                     <h6 class="m-1">[[${review.headline}]]</h6>
+                    <input type="text" class="product-detail-rating-star " dir="ltr" data-size="xs" th:value="${review.rating}">
                     <span class="text-muted">Reviewed by [[${review.customer.fullName}]] on <span th:replace="Fragments/fragment::format_time(${review.reviewTime})"></span></span>
                   </div>
                   <div class="col-sm-12 m-2">
@@ -166,9 +166,18 @@
               </div>
             <div class="row m-2">
               <div class="col-md-4 col-12">
-                <a th:href="@{/orders/search_product}" th:if="${product.reviewCount>3}" >
-                  <a class="btn btn-style btn-style-1 text-left " id="addProduct" >See more reviews</a>
-                </a>
+
+                <div th:if="${customerCanReview}">
+<!--                  <a class="text-primary " id="addReview" type="button" data-toggle="modal" data-target="#addReviewModal" data-whatever="${product.Id}">Write your review</a>-->
+                    <a class="text-primary " id="reviewBtn" type="button" data-toggle="modal"
+                     data-target="#addReviewModal" th:attr="data-whatever=${product.Id}">Write your review</a>
+                </div>
+                <div th:if="${customerReviewed}">
+                  <span class="text-muted">You already reviewed this product.</span>
+                </div>
+                <div th:href="@{/orders/search_product}" th:if="${product.reviewCount>3}" >
+                  <a class="text-primary text-left "  >See more reviews</a>
+                </div>
               </div>
 
             </div>
@@ -221,7 +230,7 @@
 
 <div th:replace="Fragments/images_carousel::content"></div>
 
-<!--ADD PRODUCT MODAL-->
+<!--See reviews MODAL-->
 <div class="modal fade " id="addProductModal" role="dialog" th:alias="${product.alias}">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content myModal">
@@ -247,10 +256,35 @@
     </div>
   </div>
 </div>
-<!--  /ADD PRODUCT MODAL    -->
+<!--  /See reviews MODAL    -->
 
 
 
+<!--  ADD REVIEW MODAL -->
+<div class="modal fade " id="addReviewModal" role="dialog">
+  <div class="modal-dialog ">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="deleteLabel">Add Review</h5>
+
+        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">-->
+          <iframe class="w-100 embed-responsive-item" style="height: 30rem!important;"></iframe>
+        </div>
+      </div>
+        <div class="modal-footer">
+          <div class="text-end">
+            <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn btn-style btn-style-3 closeBtn" >Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  /ADD REVIEW MODAL -->
 
 
 <script type="text/javascript">
@@ -320,11 +354,25 @@
 <script>
   $(".product-detail-rating-star").rating({
     displayOnly:true,
-    hoverOnClera:false,
+    hoverOnClear:false,
     showCaption:false,
     theme:'krajee-svg'
   })
 </script>
+
+<!--CHK-->
+<script>
+
+$('#addReviewModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var recipient = button.data('whatever')
+  var modal = $(this)
+  var myLink="http://localhost:80/eShope/write_review/product/"+recipient;
+  modal.find("iframe").attr("src",myLink);
+})
+
+</script>
+<!--CHKKK-->
 
 </body>
 </html>

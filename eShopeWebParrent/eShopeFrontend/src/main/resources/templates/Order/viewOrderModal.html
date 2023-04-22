@@ -97,10 +97,12 @@
                                         =
                                         <div th:replace="Fragments/fragment::format_currency(${detail.subTotal}+${detail.shippingCost})"></div>
                                         <div class="p-3" th:if="${!product.reviewedByCustomer && product.customerCanReview}">
-                                            <a href="" class="btn btn-info">Write Review</a>
+
+                                            <a th:href="@{'/write_review/product/'+${product.id}}"  id="reviewBtn" type="button" data-toggle="modal"
+                                               data-target="#addReviewModal" th:attr="data-whatever=${product.Id}" class="btn btn-info">Write Review</a>
                                         </div>
                                         <div class="p-3" th:if="${product.reviewedByCustomer}">
-                                            <a href="" class="btn btn-warning">See your Review</a>
+                                            <a th:href="@{'/reviews'}" class="btn btn-warning">See your Review</a>
                                         </div>
                                     </div>
                                 </div>
@@ -222,5 +224,8 @@
 <div class="modal-footer">
     <button type="button" class="btn btn btn-style btn-style-3 " data-dismiss="modal">Close</button>
 </div>
+
+
+
 </html>
 

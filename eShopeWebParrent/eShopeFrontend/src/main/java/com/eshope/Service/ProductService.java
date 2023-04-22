@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 
 @Service
 public class ProductService {
@@ -30,6 +32,14 @@ public class ProductService {
         Product product=productRepository.findByAlias(alias);
         if(product==null){
             throw new UsernameNotFoundException("Could not found any product with alias " + alias);
+        }
+        return product;
+    }
+
+    public Product getProductById(Integer id){
+        Product product=productRepository.findById(id).get();
+        if(product==null){
+            throw new NoSuchElementException("Could not found any product with Id " + id);
         }
         return product;
     }

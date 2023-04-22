@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,7 +104,57 @@ public class ReviewController {
         return "Reviews/reviewsByProduct";
     }
 
+    @GetMapping("/write_review/product/{productId}")
+    public String showReviewForm(@PathVariable("productId") Integer productId,Model model,HttpServletRequest request){
 
+        Review review=new Review();
+
+        Product product =null;
+
+        try{
+            product=productService.getProductById(productId);
+        }catch (UsernameNotFoundException ex){
+            return "error/404";
+        }
+        model.addAttribute("product",product);
+        model.addAttribute("review",review);
+//        TO CHECK IF CUSTOMER HAS REVIEWED THE PRODUCT OR NOT
+        Customer customer=getAuthenticatedCustomer(request);
+        if(customer!=null) {
+            boolean customerReviewed = reviewService.didCustomerReviewProduct(customer, product.getId());
+            if(customerReviewed){
+                model.addAttribute("customerReviewed",true);
+            }else{
+                boolean customerCanReview=reviewService.canCustomerReviewProduct(customer,product.getId());
+                if(customerCanReview){
+                    model.addAttribute("customerCanReview",true);
+                }else{
+                    model.addAttribute("noReviewPermission",true);
+                }
+
+            }
+        }
+        return "reviews/reviewForm";
+    }
+
+
+    @PostMapping("/post_review")
+    public String saveReview(Model model,Review review,Integer productId,HttpServletRequest request){
+        Customer customer=getAuthenticatedCustomer(request);
+        Product product=null;
+        try {
+            product=productService.getProductById(productId);
+        }catch (UsernameNotFoundException ex){
+            return "error/404";
+        }
+        review.setProduct(product);
+        review.setCustomer(customer);
+        Review savedReview=reviewService.save(review);
+
+        model.addAttribute("review",savedReview);
+
+        return "reviews/reviewDone";
+    }
 
     @GetMapping("/reviews/detail/{id}")
     public String detailReview(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request){
@@ -114,6 +165,7 @@ public class ReviewController {
                 throw new UsernameNotFoundException("Could not find any review with Id "+ id);
             }
             model.addAttribute("review",review);
+
             return "Reviews/viewReviewModal.html";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());

@@ -1,11 +1,14 @@
 package com.eshope.Controller;
 
 import com.eShope.common.entity.Category;
+import com.eShope.common.entity.Customer;
 import com.eShope.common.entity.Product.Product;
 import com.eShope.common.entity.Review;
 import com.eshope.Service.CategoryService;
+import com.eshope.Service.CustomerService;
 import com.eshope.Service.ProductService;
 import com.eshope.Service.ReviewService;
+import com.eshope.Utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -31,6 +35,9 @@ public class ProductController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping("c/{category_alias}")
     public String viewCategoryByFirstPage(@PathVariable("category_alias") String alias, Model model,RedirectAttributes redirectAttributes){
@@ -80,13 +87,26 @@ public class ProductController {
     }
 
     @GetMapping("p/{product_alias}")
-    public String viewProductDetail(@PathVariable("product_alias") String alias, Model model){
+    public String viewProductDetail(@PathVariable("product_alias") String alias, Model model,HttpServletRequest request){
         try {
             Product product= productService.getProductByAlias(alias);
 
             //        FOR BREADCRUMBS FINDING ALL PARENT CATEGORIES
             List<Category> listCategoryParents=categoryService.getCategoryParent(product.getCategory());
             Page<Review> listReviews=reviewService.list3MostRecentReviewsByProduct(product);
+
+//            TO CHECK IF CUSTOMER HAS REVIEWED THE PRODUCT OR NOT
+            Customer customer=getAuthenticatedCustomer(request);
+            if(customer!=null) {
+                boolean customerReviewed = reviewService.didCustomerReviewProduct(customer, product.getId());
+                if(customerReviewed){
+                    model.addAttribute("customerReviewed",true);
+                }else{
+                    boolean customerCanReview=reviewService.canCustomerReviewProduct(customer,product.getId());
+                    model.addAttribute("customerCanReview",customerCanReview);
+                }
+            }
+
 
             model.addAttribute("pageTitle",product.getShortName());
             model.addAttribute("listCategoryParents",listCategoryParents);
@@ -125,6 +145,12 @@ public class ProductController {
         model.addAttribute("listResult",listResult);
 
         return "search_result";
+    }
+
+    private Customer getAuthenticatedCustomer(HttpServletRequest request){
+
+        String email= Utility.getEmailOfAuthenticatedCustomer(request);
+        return customerService.getCustomerByEmail(email);
     }
 
 
