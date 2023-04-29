@@ -1,0 +1,89 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Edit Question','none')"/>
+
+
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Question</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li><i class="fas fa-angle-right"></i><a th:href="@{/questions}">Questions</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>Edit Question</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="container py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+      <p class="text-uppercase">Edit Existing Question</p>
+      <h3 class="title-style">Registration Form</h3>
+    </div>
+    <div class="row product-block">
+      <div class=" contact-right">
+        <ul>
+          <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('question.*')}" th:text="${error}" ></li>
+        </ul>
+        <form th:action="@{/questions/save}" method="post" class="signing-form"
+              th:object="${question}" >
+          <div class="input-grids">
+            <input type="hidden" th:field="*{id}" />
+            <div class="row form-group">
+              <label class="col-form-label col-sm-2">Product Name : </label>
+              <input type="text" th:field="*{product.shortName}" placeholder="product" readonly class="contact-input col-sm-10"/>
+            </div>
+            <div class="row form-group mb-3">
+              <label class="col-form-label col-sm-2">Question : </label>
+              <div class="contact-input col-sm-10">
+                <input type="text" th:field="*{questionContent}" placeholder="question content" maxlength="254" class="w-100 mb-1"  />
+                <span class="text-muted ">&nbsp; Asked by : <b>[[${question.asker.fullName}]]</b> on [[${question.askTime}]]</span>
+              </div>
+            </div>
+            <div class="row form-group">
+              <label class="col-form-label col-sm-2">Answer : </label>
+              <div class="contact-input col-sm-10">
+                <textarea type="text" th:field="*{answer}" placeholder="answer" maxlength="254"  class="w-100 mb-1"/>
+                <span th:if="${question.answer!=null}">
+                  <span th:if="${question.answer!=''}" class="text-muted ">&nbsp; Answered by : <b>[[${question.answerer.fullName}]]</b> on [[${question.answerTime}]]</span>
+                </span>
+              </div>
+            </div>
+            <div class="row form-group mb-2">
+              <label class="col-form-label col-3">Approved : </label>
+              <input type="checkbox" id="my-chkbox" th:field="*{approved}" name="approved"  class="col-2 "/>
+            </div>
+            <div class="text-start">
+              <button type="submit" class="btn btn-style btn-style-3">Save</button>
+              <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/questions}">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+
+
+
+</body>
+
+</html>

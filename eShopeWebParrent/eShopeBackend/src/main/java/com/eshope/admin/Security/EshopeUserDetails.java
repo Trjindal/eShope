@@ -81,4 +81,8 @@ public class EshopeUserDetails implements UserDetails {
     public boolean hasRole(String roleName){
         return user.hasRole(roleName);
     }
+
+    public User getUser(){
+        return user;
+    }
 }
