@@ -3,11 +3,9 @@ package com.eshope.Controller;
 import com.eShope.common.entity.Category;
 import com.eShope.common.entity.Customer;
 import com.eShope.common.entity.Product.Product;
+import com.eShope.common.entity.Question;
 import com.eShope.common.entity.Review;
-import com.eshope.Service.CategoryService;
-import com.eshope.Service.CustomerService;
-import com.eshope.Service.ProductService;
-import com.eshope.Service.ReviewService;
+import com.eshope.Service.*;
 import com.eshope.Utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +33,9 @@ public class ProductController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @Autowired
     private CustomerService customerService;
@@ -94,6 +95,8 @@ public class ProductController {
             //        FOR BREADCRUMBS FINDING ALL PARENT CATEGORIES
             List<Category> listCategoryParents=categoryService.getCategoryParent(product.getCategory());
             Page<Review> listReviews=reviewService.list3MostRecentReviewsByProduct(product);
+            Page<Question> listQuestions=questionService.list3MostRecentQuestionsByProduct(product);
+
 
 //            TO CHECK IF CUSTOMER HAS REVIEWED THE PRODUCT OR NOT
             Customer customer=getAuthenticatedCustomer(request);
@@ -112,7 +115,7 @@ public class ProductController {
             model.addAttribute("listCategoryParents",listCategoryParents);
             model.addAttribute("product",product);
             model.addAttribute("listReviews",listReviews);
-
+            model.addAttribute("listQuestions",listQuestions);
             return "product_detail";
         }catch (UsernameNotFoundException ex){
             return "error/404";

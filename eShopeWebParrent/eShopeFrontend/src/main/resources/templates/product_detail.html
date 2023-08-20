@@ -140,9 +140,9 @@
   <div class="row  p-3" id="review" >
     <div class="col-12 ">
       <div class="accordion myModal " id="accordionPanelsStayOpenExample">
-    <div class="accordion-item ">
+    <div class="accordion-item " style="border:none;">
       <h2 class="accordion-header">
-        <button class="accordion-button text-center" type="button" data-toggle="collapse" data-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+        <button class="accordion-button text-center myModal" style="color:inherit;" type="button" data-toggle="collapse" data-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
           Reviews
         </button>
       </h2>
@@ -175,8 +175,9 @@
                 <div th:if="${customerReviewed}">
                   <span class="text-muted">You already reviewed this product.</span>
                 </div>
-                <div th:href="@{/orders/search_product}" th:if="${product.reviewCount>3}" >
-                  <a class="text-primary text-left "  >See more reviews</a>
+                <div  th:if="${product.reviewCount>3}" >
+                  <a class="text-primary text-left" th:href="@{'/ratings/'+${product.alias}}" type="button" data-toggle="modal"
+                     data-target="#reviewModal">See more reviews</a>
                 </div>
               </div>
 
@@ -190,6 +191,65 @@
     </div>
   </div>
   <!-- REVIEWS-->
+
+
+<!--  QUESTIONS-->
+  <div class="row  p-3" id="questions" >
+    <div class="col-12 ">
+      <div class="accordion myModal " >
+        <div class="accordion-item " style="border:none;">
+          <h2 class="accordion-header">
+            <button class="accordion-button text-center myModal" style="color:inherit;" type="button" data-toggle="collapse" data-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+              Frequently Asked Questions
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse myModal show">
+            <div class="accordion-body tex-center" >
+              <div class="row m-2">
+                <div class="col-12">
+                  <th:block th:each="question : ${listQuestions}">
+                    <div class="row m-2">
+                      <div class="col-12 m-2">
+                        <h6 class="m-1">Q. [[${question.questionContent}]]</h6>
+                        <span class="text-muted">Asked by [[${question.asker.fullName}]] on <span th:replace="Fragments/fragment::format_time(${question.askTime})"></span></span>
+                      </div>
+                      <div class="col-sm-12 m-2" th:if="${question.answer!=null}">
+                      A. &nbsp;  [[${question.answer}]]
+                      </div>
+                      <div class="col-sm-12 m-2" th:if="${question.answer==null}">
+                        Question is not answered yet
+                      </div>
+                    </div>
+                    <hr>
+                  </th:block>
+                </div>
+                <div class="row m-2">
+                  <div class="col-md-4 col-12">
+
+                    <div th:if="${customerCanReview}">
+                      <!--                  <a class="text-primary " id="addReview" type="button" data-toggle="modal" data-target="#addReviewModal" data-whatever="${product.Id}">Write your review</a>-->
+                      <a class="text-primary " id="reviewBtn" type="button" data-toggle="modal"
+                         data-target="#addReviewModal" th:attr="data-whatever=${product.Id}">Write your review</a>
+                    </div>
+                    <div th:if="${customerReviewed}">
+                      <span class="text-muted">You already reviewed this product.</span>
+                    </div>
+                    <div  th:if="${product.reviewCount>3}" >
+                      <a class="text-primary text-left" th:href="@{'/ratings/'+${product.alias}}" type="button" data-toggle="modal"
+                         data-target="#reviewModal">See more reviews</a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--  QUESTIONS-->
 
 </div>
 <!--PRODUCT DETAILS END-->
@@ -231,7 +291,7 @@
 <div th:replace="Fragments/images_carousel::content"></div>
 
 <!--See reviews MODAL-->
-<div class="modal fade " id="addProductModal" role="dialog" th:alias="${product.alias}">
+<div class="modal fade " id="reviewModal" role="dialog" th:alias="${product.alias}">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content myModal">
       <div class="modal-header border-bottom-0">
@@ -368,6 +428,13 @@ $('#addReviewModal').on('show.bs.modal', function (event) {
   var recipient = button.data('whatever')
   var modal = $(this)
   var myLink="http://localhost:80/eShope/write_review/product/"+recipient;
+  modal.find("iframe").attr("src",myLink);
+})
+
+$('#reviewModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var modal = $(this)
+  var myLink=button[0].href;
   modal.find("iframe").attr("src",myLink);
 })
 
