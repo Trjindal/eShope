@@ -3,7 +3,7 @@ package com.eshope;
 import com.eShope.common.entity.Address;
 import com.eShope.common.entity.Country;
 import com.eShope.common.entity.Customer;
-import com.eshope.Repository.AddressRepository;
+import com.eshope.consumer.Repository.AddressRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

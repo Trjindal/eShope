@@ -37,7 +37,6 @@ public class UserController {
     private UserService userService;
 
 
-
     @GetMapping("/users")
     public String listAllUsers(Model model){
         return listByPage(1,model,"id","asc",null);

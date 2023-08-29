@@ -1,7 +1,7 @@
 package com.eshope;
 
 import com.eShope.common.entity.Category;
-import com.eshope.Repository.CategoryRepository;
+import com.eshope.consumer.Repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

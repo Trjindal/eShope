@@ -4,7 +4,7 @@ package com.eshope;
 import com.eShope.common.entity.CartItem;
 import com.eShope.common.entity.Customer;
 import com.eShope.common.entity.Product.Product;
-import com.eshope.Repository.ShoppingCartRepository;
+import com.eshope.consumer.Repository.ShoppingCartRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

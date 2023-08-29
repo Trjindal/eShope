@@ -2,7 +2,7 @@ package com.eshope;
 
 import com.eShope.common.entity.Country;
 import com.eShope.common.entity.ShippingRate;
-import com.eshope.Repository.ShippingRateRepository;
+import com.eshope.consumer.Repository.ShippingRateRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

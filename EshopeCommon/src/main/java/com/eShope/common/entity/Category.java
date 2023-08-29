@@ -76,6 +76,6 @@ public class Category {
 
 //        return "/assets/images/users/default-user.png";
 
-        return "/category-photos/"+this.id+"/"+this.image;
+        return "static/assets/images/category-photos/"+this.id+"/"+this.image;
     }
 }

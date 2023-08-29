@@ -1,7 +1,7 @@
 package com.eshope;
 
 
-import com.eshope.PoJo.OrderReturnRequest;
+import com.eshope.consumer.PoJo.OrderReturnRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,7 @@
 package com.eShope.common.entity;
 
 import com.eShope.common.annotation.ChangePasswordValidator;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -81,7 +83,7 @@ public class User {
     public String getPhotosImagePath(){
         if((Object) id==null ||photos==null) return "/assets/images/users/default-user.png";
 
-        return "/user-photos/"+this.id+"/"+this.photos;
+        return "/assets/images/user-photos/"+this.id+"/"+this.photos;
     }
 
     @Transient

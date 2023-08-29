@@ -1,6 +1,6 @@
 package com.eshope;
 
-import com.eshope.PoJo.PayPalOrderResponse;
+import com.eshope.consumer.PoJo.PayPalOrderResponse;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.*;
