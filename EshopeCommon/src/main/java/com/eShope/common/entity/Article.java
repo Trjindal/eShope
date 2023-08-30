@@ -28,7 +28,7 @@ public class Article  {
 
     @Column(nullable = false, length = 500)
     @NotBlank(message="Alias must not be blank")
-    @Size(min=3, message="Alias must be at least 5 characters long")
+    @Size(min=5, message="Alias must be at least 5 characters long")
     private String alias;
 
     @Enumerated(EnumType.ORDINAL)
@@ -113,5 +113,10 @@ public class Article  {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Article [title=" + title + ", type=" + type + "]";
     }
 }

@@ -1,11 +1,14 @@
 package com.eshope.admin.Repository;
 
 import com.eShope.common.entity.Article;
+import com.eShope.common.entity.ArticleType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.List;
 
 public interface ArticleRepository extends PagingAndSortingRepository<Article, Integer> {
     @Query("SELECT NEW Article(a.id, a.title, a.type, a.updatedTime, a.published, a.user) "
@@ -19,6 +22,8 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, I
     @Query("UPDATE Article a SET a.published = ?2 WHERE a.id = ?1")
     @Modifying
     public void updatePublishStatus(Integer id, boolean published);
+
+    public List<Article> findByTypeOrderByTitle(ArticleType type);
 
     Article getArticleByTitle(String title);
 

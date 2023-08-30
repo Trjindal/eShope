@@ -47,7 +47,7 @@ public class Product {
     @Size(min=10,max =4096, message="Full Description must be at least 10 and at most 4095 characters long")
     private String fullDescription;
 
-    @Column(name = "created_time")
+    @Column(name = "created_time", nullable = false, updatable = false)
     private Date createdTime;
     @Column(name = "updated_time")
     private Date updateTime;

@@ -21,11 +21,11 @@
                     <div class="col-lg-2 col-md-3 col-6 footer-list-29 mt-md-0 mt-4">
                         <ul>
                             <h6 class="footer-title-29">Quick Links</h6>
-                            <li><a th:href="@{/about}">About Us</a></li>
-                            <li><a th:href="@{/courses}">Courses</a></li>
-                            <li><a th:href="@{/contact}">Become a Teacher</a></li>
-                            <li><a th:href="@{/contact}">Contact Us</a></li>
-                            <li><a th:href="@{/contact}">Career</a></li>
+                            <th:block th:each="footerMenu : ${footerMenuItems}">
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{'/m/' + ${footerMenu.alias}}">[[${footerMenu.title}]]</a>
+                                </li>
+                            </th:block>
                         </ul>
                     </div>
                     <div class="col-lg-2 col-md-3 col-6 ps-lg-5 ps-lg-4 footer-list-29 mt-md-0 mt-4">
@@ -38,15 +38,7 @@
                             <li><a th:href="@{/courses}">Courses</a></li>
                         </ul>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-8 footer-list-29 mt-lg-0 mt-4 ps-lg-5">
-                        <h6 class="footer-title-29">Subscribe</h6>
-                        <form action="#" class="subscribe d-flex" method="post">
-                            <input type="email" name="email" placeholder="Email Address" required="">
-                            <button class="button-style"><span class="fa fa-paper-plane"
-                                    aria-hidden="true"></span></button>
-                        </form>
-                        <p class="mt-3">Subscribe to our mailing list and get updates to your email inbox.</p>
-                    </div>
+
                 </div>
                 <!-- copyright -->
             <p class="copy-footer-29 text-center pt-lg-2 mt-5 pb-2">[[${COPYRIGHT}]]</p>

@@ -1,6 +1,7 @@
 package com.eshope.admin.Service;
 
 import com.eShope.common.entity.Article;
+import com.eShope.common.entity.ArticleType;
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.User;
 import com.eshope.admin.Repository.ArticleRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -48,8 +50,8 @@ public class ArticleService {
 
     public boolean isAliasUnique(String alias) {
 
-        Article ArticleByTitle = articleRepository.getArticleByAlias(alias);
-        return ArticleByTitle == null;
+        Article ArticleByAlias = articleRepository.getArticleByAlias(alias);
+        return ArticleByAlias == null;
     }
     public void save(Article article, User user) {
         setDefaultAlias(article);
@@ -57,6 +59,10 @@ public class ArticleService {
         article.setUser(user);
 
         articleRepository.save(article);
+    }
+
+    public List<Article> listArticlesForMenu() {
+        return articleRepository.findByTypeOrderByTitle(ArticleType.MENU_BOUND);
     }
 
     private void setDefaultAlias(Article article) {

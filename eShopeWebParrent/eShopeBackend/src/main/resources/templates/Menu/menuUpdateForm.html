@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Edit Menu','none')"/>
+
+<body>
+
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Edit Menu</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li><i class="fas fa-angle-right"></i><a th:href="@{/menus}">Menus</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>Edit Menu</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="container py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+      <p class="text-uppercase">Edit Menu</p>
+      <h3 class="title-style">Registration Form</h3>
+    </div>
+    <div class="row contact-block">
+      <ul>
+        <li class="alert alert-danger" role="alert" th:if="${titleNotUnique!=null}"
+            th:text="${titleNotUnique}"></li>
+        <li class="alert alert-danger" role="alert" th:if="${aliasNotUnique!=null}"
+            th:text="${aliasNotUnique}"></li>
+        <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('menu.*')}"
+            th:text="${error}"/>
+      </ul>
+      <form th:action="@{/menus/save}" method="post" class="signing-form"
+            th:object="${menu}">
+        <div class=" contact-right">
+          <div class="input-grids">
+            <div class="row form-group">
+              <input type="hidden" th:field="*{id}" placeholder="Title"
+                     class="contact-input"/>
+              <input type="hidden" th:field="*{position}" placeholder="Title"
+                     class="contact-input"/>
+              <label class="col-form-label col-4">Title : </label>
+              <div class="col-8">
+                <input type="text" th:field="*{title}" placeholder="Title"
+                       class="contact-input"/>
+              </div>
+            </div>
+            <div class="row form-group">
+              <label class="col-form-label col-4">Alias : </label>
+              <div class="col-8">
+                <input type="text" th:field="*{alias}" placeholder="Alias"
+                       class="contact-input"/>
+              </div>
+            </div>
+            <div class="row form-group">
+              <label class="col-form-label col-4">Article : </label>
+              <div class="col-8">
+                <select th:field="*{article}" required="required" class="my-form-control w-100">
+                  <th:block th:each="menuArticle : ${listArticles}">
+                    <option th:value="${menuArticle.id}">[[${menuArticle.title}]]</option>
+                  </th:block>
+                </select>
+              </div>
+            </div>
+            <div class="row form-group">
+              <label class="col-form-label col-4">Type: </label>
+              <div class="col-8">
+                <select th:field="*{type}" class="my-form-control w-100" >
+                  <option value="HEADER">Header Menu</option>
+                  <option value="FOOTER">Footer Menu</option>
+                </select>
+              </div>
+            </div>
+            <div class="row form-group">
+              <label class="col-form-label col-4">Enabled : </label>
+              <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled"  class="col-8"/>
+            </div>
+          </div>
+        </div>
+        <div class="text-start">
+          <button type="submit" class="btn btn-style btn-style-3">Save Menu</button>
+          <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/menus}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+<script th:src="@{/assets/richtext/jquery.richtext.min.js}"></script>
+<!--SHOW IMAGE THUMBNAIL-->
+<script th:src="@{/assets/js/imageThumbnail_ProductDetails.js}"></script>
+<!--THEME CHANGE-->
+
+</body>
+
+</html>

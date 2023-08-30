@@ -85,6 +85,12 @@ public class ArticleController {
                 return "Articles/articleForm";
 
             }
+            //DISPLAYING ERROR MESSAGES
+            if (errors.hasErrors()) {
+
+                log.error("New Article form validation failed due to : " + errors.toString());
+                return "Articles/articleForm";
+            }
         }else{
             Article previousArticle=articleService.getArticleById(article.getId());
             //TO CHECK UNIQUE TITLE
@@ -92,25 +98,26 @@ public class ArticleController {
             if (article.getTitle() != ""&& !article.getTitle().equals(previousArticle.getTitle()) && !articleService.isTitleUnique(article.getTitle())) {
                 log.error("Article form validation failed due to name ");
                 model.addAttribute("titleNotUnique", "There is another article having same title");
-                return "Articles/articleForm";
+                return "Articles/articleUpdateForm";
 
             }
             //TO CHECK UNIQUE ALIAS
             if (article.getAlias() != "" &&!article.getAlias().equals(previousArticle.getAlias())&& !articleService.isAliasUnique(article.getAlias())) {
                 log.error("Article form validation failed due to alias ");
                 model.addAttribute("AliasNotUnique", "There is another article having same alias");
-                return "Articles/articleForm";
+                return "Articles/articleUpdateForm";
 
+            }
+            //DISPLAYING ERROR MESSAGES
+            if (errors.hasErrors()) {
+
+                log.error("New Article form validation failed due to : " + errors.toString());
+                return "Articles/articleUpdateForm";
             }
         }
 
 
-        //DISPLAYING ERROR MESSAGES
-        if (errors.hasErrors()) {
 
-            log.error("New Article form validation failed due to : " + errors.toString());
-            return "Articles/articleForm";
-        }
             articleService.save(article, userDetails.getUser());
 
         redirectAttributes.addFlashAttribute("message", "The article has been saved successfully.");

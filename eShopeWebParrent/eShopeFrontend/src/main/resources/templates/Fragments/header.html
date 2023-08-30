@@ -36,23 +36,17 @@
             <!--  SEARCH BAR  -->
             <div th:replace="Fragments/fragment::search_nav"></div>
             <!--  /SEARCH BAR  -->
-          <li class="nav-item" >
-<!--            th:classappend="${#httpServletRequest.getRequestURI() == '/courses' ? 'active':''}"-->
-            <a th:href="@{/careers}" class="nav-link">Careers</a>
-          </li>
-          <li class="nav-item" >
-<!--             th:classappend="${#httpServletRequest.getRequestURI() == '/contact' ? 'active':''}"-->
-            <a th:href="@{/payments}" class="nav-link">Payments</a>
-          </li>
-            <li class="nav-item" >
 
-                <a th:href="@{/reviews}" class="nav-link" th:classappend="${#httpServletRequest.getRequestURI() == 'eShope/reviews' ? 'active':''}">Reviews</a>
-            </li>
-          <li class="nav-item" >
-<!--             th:classappend="${#httpServletRequest.getRequestURI() == '/dashboard' ? 'active':''}"-->
-            <a th:href="@{/customers}"  class="nav-link">Shipping & Delivery</a>
-          </li>
-          <li class="nav-item"  sec:authorize="isAnonymous()">
+            <!-- Start of Dynamic Header Menu Items -->
+            <th:block th:each="headerMenu : ${headerMenuItems}">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/m/' + ${headerMenu.alias}}">[[${headerMenu.title}]]</a>
+                </li>
+            </th:block>
+            <!-- End of Dynamic Header Menu Items -->
+
+
+
 <!--            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
             <a th:href="@{/register}"   class="nav-link">Register</a>
           </li>
