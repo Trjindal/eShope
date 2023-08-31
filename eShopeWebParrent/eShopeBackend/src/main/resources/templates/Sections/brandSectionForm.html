@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Home Page Customization | ${pageTitle} ','none')"/>
+
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Home Page Customization</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>[[${pageTitle}]]</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<div class="site-section">
+
+  <div class="table-responsive-class">
+
+    <div class="row mb-4">
+      <div class="overview-wrap">
+        <h3 class="heading-21921 p-3">Home Page Customization | [[${pageTitle}]]</h3>
+      </div>
+      <div class="row contact-block">
+        <form th:action="@{/sections/save/product}" th:object="${section}" method="post"
+              class="signing-form">
+          <div class=" contact-right">
+            <div class="input-grids">
+
+              <input type="hidden" th:field="*{id}"/>
+              <input type="hidden" th:field="*{type}"/>
+              <input type="hidden" th:field="*{sectionOrder}"/>
+              <div th:replace="sections/generalSectionForm :: content">General Section Form</div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Brands:</label>
+                <div class="col-sm-10">
+                  <div>
+                    <select id="brands" multiple class="form-control" style="resize: vertical; height: 200px">
+                      <option th:each="brand : ${listBrands}" th:value="${brand.id}" th:text="${brand.name}" />
+                    </select>
+                  </div>
+                  <div>
+                    <input type="button" class="btn btn-secondary m-3" id="buttonAddBrand" value="Choose Brand" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Chosen Brands:</label>
+                <div class="col-sm-10">
+                  <div>
+                    <select multiple="multiple" id="chosenBrands" name="chosenBrands" class="form-control" style="resize: vertical; height: 150px">
+                      <th:block th:each="brandSection : ${section.brandSections}">
+                        <option th:value="${brandSection.brand.id} + '-' + ${brandSection.id}" th:text="${brandSection.brand.name}" />
+                      </th:block>
+                    </select>
+                  </div>
+                  <div class="m-2">
+                    <a class="fas fa-trash icon-dark" id="linkRemoveBrand" href="" title="Remove this brand" ></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="fas fa-chevron-up icon-dark" id="linkMoveBrandUp" href="" title="Move this brand up"></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a class="fas fa-chevron-down icon-dark" id="linkMoveBrandDown" href="" title="Move this brand down"></a>
+                  </div>
+                </div>
+              </div>
+              <div class="text-start">
+                <button type="submit" class="btn btn-style btn-style-3">Save Section</button>
+                <a type="button" value="cancel" class="btn btn-style btn-style-3"
+                   th:href="@{/sections}">Cancel</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+<script>
+  var chosenBrandsDropDown;
+var allBrandsDropDown;
+
+$(document).ready(function() {
+	chosenBrandsDropDown = $('#chosenBrands');
+	allBrandsDropDown = $('#brands');
+
+	$("#buttonAddBrand").on("click", function(e) {
+		addSelectedBrand();
+	});
+
+	$("#linkRemoveBrand").on("click", function(e) {
+		e.preventDefault();
+		removeAChosenBrand();
+	});
+
+	$("#linkMoveBrandUp").on("click", function(e) {
+		e.preventDefault();
+		moveAChosenBrandUp();
+	});
+
+	$("#linkMoveBrandDown").on("click", function(e) {
+		e.preventDefault();
+		moveAChosenBrandDown();
+	});
+});
+
+function addSelectedBrand() {
+	allBrandsDropDown.children('option:selected').each(function() {
+		selectedBrand = $(this);
+
+		brandId = selectedBrand.val();
+		brandName = selectedBrand.text();
+
+		dropdownChosenBrands = $('#chosenBrands');
+
+		if (!isBrandAdded(brandId)) {
+			$("<option>").val(brandId + "-0").text(brandName).appendTo(dropdownChosenBrands);
+		}
+
+	});
+}
+
+function isBrandAdded(brandId) {
+	isAdded = false;
+
+	chosenBrandsDropDown.children('option').each(function() {
+		chosenBrand = $(this);
+		chosenBrandId = chosenBrand.val().split("-")[0];
+
+		if (brandId == chosenBrandId) {
+			isAdded = true;
+			return;
+		}
+	});
+
+	return isAdded;
+}
+
+function removeAChosenBrand() {
+	chosenBrandId = chosenBrandsDropDown.val();
+
+	$("#chosenBrands option[value='" + chosenBrandId + "']").remove();
+}
+
+function moveAChosenBrandUp() {
+	selectedChosenBrand = $("#chosenBrands option:selected");
+	if (selectedChosenBrand != null) {
+		chosenBrandAbove = selectedChosenBrand.prev();
+		selectedChosenBrand.insertBefore(chosenBrandAbove);
+	}
+}
+
+function moveAChosenBrandDown() {
+	selectedChosenBrand = $("#chosenBrands option:selected");
+	if (selectedChosenBrand != null) {
+		chosenBrandBelow = selectedChosenBrand.next();
+		selectedChosenBrand.insertAfter(chosenBrandBelow);
+	}
+}
+
+function processBeforeSubmit() {
+	chosenBrandsDropDown.children('option').each(function() {
+		$(this).prop('selected', true);
+	});
+
+}
+</script>
+<!--THEME CHANGE-->
+<div th:replace="Fragments/fragment::theme_change"/>
+</body>
+</html>

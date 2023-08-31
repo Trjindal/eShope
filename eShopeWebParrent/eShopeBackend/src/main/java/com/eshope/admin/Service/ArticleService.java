@@ -65,6 +65,9 @@ public class ArticleService {
         return articleRepository.findByTypeOrderByTitle(ArticleType.MENU_BOUND);
     }
 
+    public List<Article> listAll() {
+        return articleRepository.findPublishedArticlesWithIDAndTitleOnly();
+    }
     private void setDefaultAlias(Article article) {
         if (article.getAlias() == null || article.getAlias().isEmpty()) {
             article.setAlias(article.getTitle().replaceAll(" ", "-"));

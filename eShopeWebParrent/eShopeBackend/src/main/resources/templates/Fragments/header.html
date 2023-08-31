@@ -21,51 +21,56 @@
       <div class="collapse navbar-collapse" id="navbarScroll">
         <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
           <li class="nav-item" sec:authorize="hasAuthority('Admin')">
-            <a th:href="@{/users}" class="nav-link"   th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/users' ? 'active':''}" aria-current="page">Users</a>
+            <a th:href="@{/users}" class="nav-link"   th:classappend="${#httpServletRequest.getRequestURI() == '/users' ? 'active':''}" aria-current="page">Users</a>
 
 
           </li>
           <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Editor')" >
-            <a th:href="@{/categories}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/categories' ? 'active':''}">Categories</a>
+            <a th:href="@{/categories}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/categories' ? 'active':''}">Categories</a>
           </li>
           <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Editor')">
-            <a th:href="@{/brands}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/brands' ? 'active':''}">Brands</a>
+            <a th:href="@{/brands}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/brands' ? 'active':''}">Brands</a>
           </li>
           <li class="nav-item" sec:authorize="hasAnyAuthority('Salesperson','Shipper')">
-            <a th:href="@{/products}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/products' ? 'active':''}">Products</a>
+            <a th:href="@{/products}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/products' ? 'active':''}">Products</a>
           </li>
           <li class="nav-item" sec:authorize="hasAnyAuthority('Assistant')">
-            <a th:href="@{/reviews}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/reviews' ? 'active':''}">Review</a>
+            <a th:href="@{/reviews}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/reviews' ? 'active':''}">Review</a>
           </li>
           <ul class="navbar-nav " sec:authorize="hasAnyAuthority('Admin','Editor')">
             <li class="nav-item dropdown myDropdown" >
-              <a th:href="@{/products}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/products' ? 'active':''}">Products</a>
+              <a th:href="@{/products}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/products' ? 'active':''}">Products</a>
               <div class="dropdown-menu">
-                <a class="dropdown-item " th:href="@{/products}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/products' ? 'active':''}"></span>View All</a>
-                <a class="dropdown-item" th:href="@{/products/new}"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/products/new' ? 'active':''}" >Create New</a>
+                <a class="dropdown-item " th:href="@{/products}" th:classappend="${#httpServletRequest.getRequestURI() == '/products' ? 'active':''}"></span>View All</a>
+                <a class="dropdown-item" th:href="@{/products/new}"  th:classappend="${#httpServletRequest.getRequestURI() == '/products/new' ? 'active':''}" >Create New</a>
                 <a class="dropdown-item " th:href="@{/reviews}" sec:authorize="hasAnyAuthority('Admin')"  > Reviews</a>
 
               </div>
             </li>
           </ul>
           <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson')">
-            <a th:href="@{/customers}"  class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/customers' ? 'active':''}">Customers</a>
+            <a th:href="@{/customers}"  class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/customers' ? 'active':''}">Customers</a>
           </li>
             <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson')">
-                <a th:href="@{/shipping}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/shipping' ? 'active':''}">Shipping</a>
+                <a th:href="@{/shipping}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/shipping' ? 'active':''}">Shipping</a>
             </li>
           <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson')">
-            <a th:href="@{/report}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/report' ? 'active':''}">Sales Report</a>
+            <a th:href="@{/report}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/report' ? 'active':''}">Sales Report</a>
           </li>
             <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson','Shipper')">
-                <a th:href="@{/orders}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/orders' ? 'active':''}">Orders</a>
+                <a th:href="@{/orders}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/orders' ? 'active':''}">Orders</a>
             </li>
             <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Editor')" >
-                <a th:href="@{/articles}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/articles' ? 'active':''}">Articles</a>
+                <a th:href="@{/articles}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/articles' ? 'active':''}">Articles</a>
             </li>
             <li class="nav-item"  sec:authorize="hasAnyAuthority('Admin','Editor')">
-                <a th:href="@{/menus}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/menu' ? 'active':''}">Menu</a>
+                <a th:href="@{/menus}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/menu' ? 'active':''}">Menus</a>
             </li>
+          <th:block sec:authorize="hasAuthority('Editor')">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/sections}">Home Page</a>
+            </li>
+          </th:block>
             <li class="nav-item" >
             </li>
         </ul>
@@ -73,8 +78,8 @@
           <li class="nav-item dropdown myDropdown" >
             <a class="nav-link dropdown-toggle " data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span sec:authentication="principal.fullName" class="userName"></span></a>
             <div class="dropdown-menu">
-              <a class="dropdown-item " th:href="@{/account}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/account' ? 'active':''}"><span class="fas fa-solid fa-right-from-bracket"></span>My Account</a>
-              <a th:href="@{/settings}" class="dropdown-item"  th:classappend="${#httpServletRequest.getRequestURI() == '/eShopeAdmin/settings' ? 'active':''}" sec:authorize="hasAuthority('Admin')"> <span class="fas fa-solid fa-gear"></span> Setting</a>
+              <a class="dropdown-item " th:href="@{/account}" th:classappend="${#httpServletRequest.getRequestURI() == '/account' ? 'active':''}"><span class="fas fa-solid fa-right-from-bracket"></span>My Account</a>
+              <a th:href="@{/settings}" class="dropdown-item"  th:classappend="${#httpServletRequest.getRequestURI() == '/settings' ? 'active':''}" sec:authorize="hasAuthority('Admin')"> <span class="fas fa-solid fa-gear"></span> Setting</a>
               <a class="dropdown-item " href="" id="logoutLink" ><span class="fas fa-solid fa-right-from-bracket"></span> Logout</a>
 
             </div>

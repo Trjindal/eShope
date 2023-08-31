@@ -13,6 +13,7 @@ import java.util.Locale;
 @Entity
 @Getter
 @Setter
+@Table(name = "order_track")
 public class OrderTrack {
 
     @Id

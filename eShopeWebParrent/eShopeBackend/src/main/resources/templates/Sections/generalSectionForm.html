@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+<div class="row form-group">
+  <label class="col-form-label col-4">Heading : </label>
+  <div class="col-8">
+    <input type="text" th:field="*{heading}" placeholder="Heading"
+           class="contact-input"/>
+  </div>
+</div>
+<div class="row form-group">
+  <label class="col-form-label col-4">Description : </label>
+  <div class="col-8">
+                  <textarea rows="3" th:field="*{description}" placeholder="description"
+                            class="contact-input"/>
+  </div>
+</div>
+<div class="row form-group">
+  <label class="col-form-label col-4">Enabled : </label>
+  <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled"
+         class="col-8"/>
+</div>
+</div>
+</body>
+</html>

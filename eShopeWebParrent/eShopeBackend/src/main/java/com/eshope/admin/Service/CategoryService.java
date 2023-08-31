@@ -40,6 +40,7 @@ public class CategoryService {
         return categoryRepository.findAll(pageable);
     }
 
+
     public boolean isNameUnique(String name) {
         Category categoryByName = categoryRepository.getCategoryByName(name);
 

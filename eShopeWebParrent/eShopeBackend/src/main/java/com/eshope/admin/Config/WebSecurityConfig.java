@@ -56,7 +56,7 @@ public class WebSecurityConfig  {
                 .antMatchers("/states/listByCountry/**").hasAnyAuthority("Admin","Salesperson")
                 .antMatchers("/shipping/**").hasAnyAuthority("Admin","Salesperson")
                 .antMatchers("/users/**","/countries/**","/states/**","/settings/**").hasAuthority("Admin")
-                .antMatchers("/categories/**","/brands/**","/articles/**", "/menus/**").hasAnyAuthority("Admin","Editor")
+                .antMatchers("/categories/**","/brands/**","/articles/**", "/menus/**","/sections/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/products","/products/","/products/detail/**","/products/page/**").hasAnyAuthority("Admin","Editor","Salesperson","Shipper")
                 .antMatchers("/products/new","/products/delete/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/products/edit/**","/products/save","/products/editProduct").hasAnyAuthority("Admin","Editor","Salesperson")

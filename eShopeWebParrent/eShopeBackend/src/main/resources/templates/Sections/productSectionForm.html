@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Home Page Customization | ${pageTitle} ','none')"/>
+
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Home Page Customization</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>[[${pageTitle}]]</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<div class="site-section">
+
+  <div class="table-responsive-class">
+
+    <div class="row mb-4">
+      <div class="overview-wrap">
+        <h3 class="heading-21921 p-3">Home Page Customization | [[${pageTitle}]]</h3>
+      </div>
+      <div class="row contact-block">
+        <form th:action="@{/sections/save/product}" th:object="${section}" method="post"
+            class="signing-form">
+          <div class=" contact-right">
+            <div class="input-grids">
+
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{type}"/>
+                <input type="hidden" th:field="*{sectionOrder}"/>
+              <div th:replace="sections/generalSectionForm :: content">General Section Form</div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Products:</label>
+                <div class="col-sm-10">
+                  <a th:href="@{'/orders/search_product'}" id="addProduct" class="btn btn-success">Add a Product</a>
+                </div>
+              </div>
+              <div class="row" id="productList">
+                <th:block th:each="productSection, status : ${section.productSections}">
+                  <div class="col-sm-2" th:id="'col' + ${status.count}" draggable="true" ondragstart="dragProduct(event)" th:with="product = ${productSection.product}">
+                    <input type="hidden" name="productId" th:value="${product.id}" class="product-id-hidden" />
+                    <input type="hidden" name="productSectionId" th:value="${productSection.id}" />
+                    <div class="mt-1">
+                      <a class="fas fa-trash icon-dark link-remove" href="" th:colNumber="${status.count}"></a>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <a class="fas fa-chevron-left icon-dark link-move-left" href="" title="Move this product to the left" th:colNumber="${status.count}"></a>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <a class="fas fa-chevron-right icon-dark link-move-right" href="" title="Move this product to the right" th:colNumber="${status.count}"></a>
+                    </div>
+                    <div><img th:src="@{${product.mainImagePath}}" height="100px" /></div>
+                    <div>
+                      <b>[[${product.name}]]</b>
+                    </div>
+                  </div>
+                </th:block>
+              </div>
+            </div>
+          </div>
+          <div class="text-start">
+            <button type="submit" class="btn btn-style btn-style-3">Save Section</button>
+            <a type="button" value="cancel" class="btn btn-style btn-style-3"
+               th:href="@{/sections}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="modal fade text-center" id="addProductModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalTitle">Add Product</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item"></iframe>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-style btn-style-1 text-left " data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--THEME CHANGE-->
+<div th:replace="Fragments/fragment::theme_change"/>
+
+<!--</script>-->
+
+</body>
+</html>
