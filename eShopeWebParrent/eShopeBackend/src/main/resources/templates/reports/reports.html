@@ -1,0 +1,74 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Sales Report','none')"/>
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Sales Report</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li class="/"><a th:href="@{/index}">Dashboard</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>Sales Report</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div>
+    <h2>Sales Report</h2>
+  </div>
+
+  <div>
+    <ul class="nav nav-tabs" id="reportTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#date" role="tab">Sales by Date</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#category" role="tab">Sales by Category</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#product" role="tab">Sales by Product</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active p-3" id="date" role="tabpanel">
+        <div th:replace="reports/sales_report_by_date::content"></div>
+      </div>
+      <div class="tab-pane p-3" id="category" role="tabpanel">
+        <h2>Sales by Category</h2>
+      </div>
+      <div class="tab-pane p-3" id="product" role="tabpanel">
+        <h2>Sales by Product</h2>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	contextPath = "[[@{/}]]";
+
+	$(document).ready(function() {
+		google.charts.load('current', {'packages': ['corechart']});
+		google.charts.setOnLoadCallback(loadSalesReportByDate);
+	});
+
+</script>
+<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
+
+<script type="text/javascript" th:src="@{assets/js/sales_report_by_date.js}"></script>
+</body>
+</html>

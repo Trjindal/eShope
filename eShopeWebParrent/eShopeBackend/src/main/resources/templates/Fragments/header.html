@@ -54,9 +54,9 @@
             <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson')">
                 <a th:href="@{/shipping}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/shipping' ? 'active':''}">Shipping</a>
             </li>
-          <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson')">
-            <a th:href="@{/report}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/report' ? 'active':''}">Sales Report</a>
-          </li>
+<!--          <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson')">-->
+<!--            <a th:href="@{/reports}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/report' ? 'active':''}">Sales Report</a>-->
+<!--          </li>-->
             <li class="nav-item" sec:authorize="hasAnyAuthority('Admin','Salesperson','Shipper')">
                 <a th:href="@{/orders}" class="nav-link"  th:classappend="${#httpServletRequest.getRequestURI() == '/orders' ? 'active':''}">Orders</a>
             </li>

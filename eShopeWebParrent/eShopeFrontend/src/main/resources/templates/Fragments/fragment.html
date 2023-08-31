@@ -131,12 +131,9 @@
                 <div class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center mb-3" >
                     <div class=" w3l-grids-block-5 w-75  ">
                         <div class="coursecard-single " style="height=500px;">
-                            <div class="grids5-info position-relative">
+                            <a th:href="@{'/p/'+${product.alias}}" class="grids5-info position-relative">
                                 <img th:src="@{${product.getMainImagePath}} "  alt="" class="img-fluid"/>
-                                <!--        <div class="meta-list">-->
-                                <!--          <a>Education</a>-->
-                                <!--        </div>-->
-                            </div>
+                            </a>
                             <div class="content-main-top">
                                 <div class="content-top mb-4 mt-3">
                                     <ul class="list-unstyled d-flex align-items-center justify-content-between">

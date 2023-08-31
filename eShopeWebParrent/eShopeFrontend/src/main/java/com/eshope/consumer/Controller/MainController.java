@@ -2,7 +2,10 @@ package com.eshope.consumer.Controller;
 
 
 import com.eShope.common.entity.Category;
+import com.eShope.common.entity.Section.Section;
+import com.eShope.common.entity.Section.SectionType;
 import com.eshope.consumer.Service.CategoryService;
+import com.eshope.consumer.Service.SectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,10 +29,18 @@ public class MainController {
     @Autowired
     private CategoryService categoryService;
 
+
+    @Autowired private SectionService sectionService;
+
     @GetMapping({"","/","/home"})
     public String viewHomePage(Model model){
-        List<Category> listCategories=categoryService.listNoChildrenCategories();
-        model.addAttribute("listCategories",listCategories);
+        List<Section> listSections = sectionService.listEnabledSections();
+        model.addAttribute("listSections", listSections);
+
+        if (hasAllCategoriesSection(listSections)) {
+            List<Category> listCategories = categoryService.listNoChildrenCategories();
+            model.addAttribute("listCategories", listCategories);
+        }
         return "index";
     }
 
@@ -62,6 +73,16 @@ public class MainController {
             log.error(String.valueOf(auth != null));
         }
         return "redirect:/login?logout=true";
+    }
+
+    private boolean hasAllCategoriesSection(List<Section> listSections) {
+        for (Section section : listSections) {
+            if (section.getType().equals(SectionType.ALL_CATEGORIES)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

@@ -53,7 +53,7 @@ public class WebSecurityConfig  {
 
         http.csrf().and()
                 .authorizeHttpRequests()
-                .antMatchers("/states/listByCountry/**").hasAnyAuthority("Admin","Salesperson")
+                .antMatchers("/states/listByCountry/**","/reports/**").hasAnyAuthority("Admin","Salesperson")
                 .antMatchers("/shipping/**").hasAnyAuthority("Admin","Salesperson")
                 .antMatchers("/users/**","/countries/**","/states/**","/settings/**").hasAuthority("Admin")
                 .antMatchers("/categories/**","/brands/**","/articles/**", "/menus/**","/sections/**").hasAnyAuthority("Admin","Editor")

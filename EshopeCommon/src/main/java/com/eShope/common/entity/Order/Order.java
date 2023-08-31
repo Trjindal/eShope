@@ -67,6 +67,17 @@ public class Order extends AbstractAddress {
         return firstName+" "+lastName;
     }
 
+    public Order() {
+    }
+
+    public Order(Integer id, Date orderTime, float productCost, float subtotal, float total) {
+        this.id = id;
+        this.orderTime = orderTime;
+        this.productCost = productCost;
+        this.subTotal = subtotal;
+        this.total = total;
+    }
+
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

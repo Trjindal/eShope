@@ -3,7 +3,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
+</head>
 <head th:replace="Fragments/fragment::page_head('Home','none')"/>
+<link th:href="@{/star-rating/css/star-rating.css}" media="all" rel="stylesheet" type="text/css" />
+<script th:src="@{/star-rating/js/star-rating.js}" type="text/javascript"></script>
+<link rel="stylesheet" th:href="@{/star-rating/themes/krajee-svg/theme.css}" media="all" type="text/css"/>
+<script th:src="@{/star-rating/themes/krajee-svg/theme.js}" type="text/javascript"></script>
+</head>
 <body>
 
 <!-- header -->
@@ -29,23 +35,46 @@
 <!-- courses section -->
 <div class="w3l-grids-block-5 py-5">
     <div class="container py-md-5 py-4">
-        <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <p class="text-uppercase">Best Categories</p>
-            <h3 class="title-style">Find The Right Category For You</h3>
-        </div>
+
         <ul class="mb-3">
             <li class="alert alert-success text-center" role="alert" th:if="${message!=null}">[[${message}]] </li>
         </ul>
-        <div  class="d-flex  border" style=" flex-wrap:wrap;">
-               <div class="p-2" th:each="category:${listCategories}">
-                   <div class="p-2 myBorder d-flex align-items-center" style="width:150px; height:100px">
-                       <a th:href="@{'/c/'+${category.alias}}" class="p-2"><img th:src="@{${category.getPhotosImagePath}}" width="50" style="border-radius:100px;"></a>
-                       <div>
-                           <a  th:href="@{'/c/'+${category.alias}}">[[${category.name}]]</a>
-                       </div>
-                   </div>
-               </div>
-        </div>
+
+        <th:block th:each="section : ${listSections}">
+            <div class="title-main text-center mx-auto my-md-5 my-4" >
+                <p class="text-uppercase">[[${section.heading}]]</p>
+                <th:block th:unless="${section.type.toString() == 'Text'}">
+                    <h3 class="title-style mx-auto" th:text="${section.description}" style="max-width:500px;">[[${section.description}]]</h3>
+                </th:block>
+                <th:block th:if="${section.type.toString() == 'Text'}">
+                    <div th:utext="${section.description}" class="col border p-2 m-2"></div>
+                </th:block>
+            </div>
+
+            <div  th:if="${section.type.toString() == 'All_Categories'}">
+                <div th:replace="homepage/all_categories_section :: content">All Categories Section</div>
+            </div>
+
+            <div  th:unless="${#lists.isEmpty(section.productSections)}">
+                <div th:replace="homepage/product_section :: content">Product Section</div>
+            </div>
+
+            <div th:unless="${#lists.isEmpty(section.categorySections)}">
+                <div th:replace="homepage/category_section :: content">Category Section</div>
+            </div>
+
+            <div  th:unless="${#lists.isEmpty(section.brandSections)}">
+                <div th:replace="homepage/brand_section :: content">Brand Section</div>
+            </div>
+
+            <div  th:unless="${#lists.isEmpty(section.articleSections)}">
+                <div th:replace="homepage/article_section :: content">Article Section</div>
+            </div>
+
+        </th:block>
+
+        <div>&nbsp;</div>
+
     </div>
 </div>
 <!-- //courses section -->

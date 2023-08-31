@@ -87,6 +87,10 @@ public class Product {
     private int reviewCount;
     private float averageRating;
 
+    public Product(String name) {
+        this.name=name;
+    }
+
 
     @Transient
     public String getMainImagePath(){
