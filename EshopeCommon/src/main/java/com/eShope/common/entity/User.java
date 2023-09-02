@@ -1,6 +1,7 @@
 package com.eShope.common.entity;
 
 import com.eShope.common.annotation.ChangePasswordValidator;
+import com.eShope.common.entity.Setting.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -82,8 +83,9 @@ public class User {
 
     public String getPhotosImagePath(){
         if((Object) id==null ||photos==null) return "/assets/images/users/default-user.png";
+        String imgUrl= Constants.changeName(this.photos);
+        return Constants.S3_BASE_URI+"user-photos/"+this.id+"/"+imgUrl;
 
-        return "/assets/images/user-photos/"+this.id+"/"+this.photos;
     }
 
     @Transient

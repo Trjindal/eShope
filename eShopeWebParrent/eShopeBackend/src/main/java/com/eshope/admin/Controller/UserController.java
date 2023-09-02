@@ -9,6 +9,7 @@ import com.eshope.admin.Utility.FileUploadUtil;
 import com.eshope.admin.CSVExporter.UserCsvExporter;
 import com.eshope.admin.ExcelExporter.UserExcelExporter;
 import com.eshope.admin.PDFExporter.UserPdfExporter;
+import com.eshope.admin.Utility.GoogleCloudStorageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -217,8 +218,9 @@ public class UserController {
             existingUser.setPhotos(fileName);
             User savedUser=userService.editUser(existingUser);
             String uploadDir="user-photos/"+savedUser.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+            GoogleCloudStorageUtil.deleteFolder(uploadDir);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName,multipartFile.getInputStream());
+
         }
 
         //SAVE DETAILS
@@ -239,6 +241,8 @@ public class UserController {
     public String deleteUser(@PathVariable(name="id")Integer id,Model model,RedirectAttributes redirectAttributes){
         try{
             userService.delete(id);
+            String userPhotosDir = "user-photos/" + id;
+            GoogleCloudStorageUtil.deleteFolder(userPhotosDir);
             redirectAttributes.addFlashAttribute("message","The user ID "+id+"has been deleted successfully");
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());

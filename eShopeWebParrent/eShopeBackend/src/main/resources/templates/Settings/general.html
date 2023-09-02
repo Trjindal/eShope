@@ -22,7 +22,7 @@
                 <img id="thumbnail" alt="Site Logo Thumbnail" th:if="${SITE_LOGO=='None'||SITE_LOGO=='none'}" class="col-sm-6" style="width:150px; height:100px;"
                      th:src="@{/assets/images/users/default-user.png}">
                 <img id="thumbnail" alt="Site Logo Thumbnail" th:unless="${SITE_LOGO=='None'||SITE_LOGO=='none'}" class="col-sm-6" style="width:150px; height:100px;"
-                      th:src="@{${SITE_LOGO}}">
+                      th:src="@{${S3_BASE_URI +SITE_LOGO}}">
             </div>
             <div class="row form-group">
                 <label class="col-form-label col-sm-2">Currency Type : </label>

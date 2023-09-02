@@ -8,6 +8,7 @@ import com.eshope.admin.Repository.CurrencyRepository;
 import com.eshope.admin.Repository.SettingRepository;
 import com.eshope.admin.Utility.FileUploadUtil;
 
+import com.eshope.admin.Utility.GoogleCloudStorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -50,9 +51,11 @@ public class SettingService {
             String value="/site-logo/"+fileName;
             Setting setting=settingBag.updateSiteLogo(value);
             settingRepository.save(setting);
-            String uploadDir="./site-logo/";
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+            String uploadDir="site-logo";
+            GoogleCloudStorageUtil.deleteFolder(uploadDir);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName,multipartFile.getInputStream());
+//            FileUploadUtil.cleanDir(uploadDir);
+//            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
 
         }
     }

@@ -1,5 +1,6 @@
 package com.eShope.common.entity;
 
+import com.eShope.common.entity.Setting.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -75,7 +76,7 @@ public class Category {
             return "/assets/images/users/default-user.png";
 
 //        return "/assets/images/users/default-user.png";
-
-        return "static/assets/images/category-photos/"+this.id+"/"+this.image;
+        String imgUrl= Constants.changeName(this.image);
+        return Constants.S3_BASE_URI+"category-photos/"+this.id+"/"+imgUrl;
     }
 }

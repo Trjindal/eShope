@@ -1,5 +1,6 @@
 package com.eShope.common.entity;
 
+import com.eShope.common.entity.Setting.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -64,7 +65,8 @@ public class Brand {
     public String getLogoPath(){
         if(this.id==null)
             return "/assets/images/users/default-user.png";
-        return "/brand-photos/"+this.id+"/"+this.logo;
+        String imgUrl=Constants.changeName(this.logo);
+        return Constants.S3_BASE_URI+"brand-photos/"+this.id+"/"+imgUrl;
     }
 
 

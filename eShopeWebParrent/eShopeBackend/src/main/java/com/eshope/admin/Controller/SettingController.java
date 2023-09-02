@@ -1,6 +1,7 @@
 package com.eshope.admin.Controller;
 
 import com.eShope.common.entity.Currency;
+import com.eShope.common.entity.Setting.Constants;
 import com.eShope.common.entity.Setting.Setting;
 import com.eshope.admin.Entity.GeneralSettingBag;
 import com.eshope.admin.Repository.CurrencyRepository;
@@ -36,6 +37,7 @@ public class SettingController {
         List<Currency> listCurrencies=currencyRepository.findAllByOrderByNameAsc();
 
         model.addAttribute("listCurrencies",listCurrencies);
+        model.addAttribute("S3_BASE_URI", Constants.S3_BASE_URI);
 
         for(Setting setting:listSettings){
             model.addAttribute(setting.getKey(),setting.getValue());
@@ -56,6 +58,8 @@ public class SettingController {
         redirectAttributes.addFlashAttribute("message","General settings have been saved");
         return "redirect:/settings";
     }
+
+
 
     @PostMapping("/settings/save_mail_server")
     public String saveMailServerSettings( HttpServletRequest request, RedirectAttributes redirectAttributes){

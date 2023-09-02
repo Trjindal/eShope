@@ -1,5 +1,6 @@
 package com.eShope.common.entity.Product;
 
+import com.eShope.common.entity.Setting.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,6 +38,7 @@ public class ProductImage {
 
     @Transient
     public String getImagePath(){
-        return "/product-photos/"+product.getId()+"/extras/"+this.name;
+        String imgUrl= Constants.changeName(this.name);
+        return Constants.S3_BASE_URI +"product-photos/"+product.getId()+"/extras/"+imgUrl;
     }
 }

@@ -2,6 +2,7 @@ package com.eShope.common.entity.Product;
 
 import com.eShope.common.entity.Brand;
 import com.eShope.common.entity.Category;
+import com.eShope.common.entity.Setting.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -96,7 +97,8 @@ public class Product {
     public String getMainImagePath(){
 
         if(id==null||mainImage==null||mainImage.isEmpty()) return "/images/image-thumbnail.png";
-        return "/product-photos/"+this.id+"/"+this.mainImage;
+        String imgUrl=Constants.changeName(this.mainImage);
+        return Constants.S3_BASE_URI +"product-photos/"+this.id+"/"+imgUrl;
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.eshope.admin.Service.CategoryService;
 import com.eshope.admin.Repository.BrandRepository;
 import com.eshope.admin.Service.BrandService;
 import com.eshope.admin.Utility.FileUploadUtil;
+import com.eshope.admin.Utility.GoogleCloudStorageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -220,8 +221,8 @@ public class BrandController {
             existingBrand.setLogo(fileName);
             Brand savedBrand = brandRepository.save(existingBrand);
             String uploadDir = "brand-photos/" + savedBrand.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            GoogleCloudStorageUtil.deleteFolder(uploadDir);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName,multipartFile.getInputStream());
         }
 
 
@@ -244,6 +245,8 @@ public class BrandController {
     public String deleteBrand(@PathVariable(name = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
             brandService.delete(id);
+            String brandDir = "brand-photos/" + id;
+            GoogleCloudStorageUtil.deleteFolder(brandDir);
             redirectAttributes.addFlashAttribute("message", "The brand ID " + id + " has been deleted successfully");
         } catch (UsernameNotFoundException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());

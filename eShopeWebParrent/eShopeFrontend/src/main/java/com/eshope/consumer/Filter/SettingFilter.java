@@ -1,6 +1,7 @@
 package com.eshope.consumer.Filter;
 
 import com.eShope.common.entity.Menu;
+import com.eShope.common.entity.Setting.Constants;
 import com.eShope.common.entity.Setting.Setting;
 import com.eshope.consumer.Service.MenuService;
 import com.eshope.consumer.Service.SettingService;
@@ -27,6 +28,9 @@ public class SettingFilter implements Filter {
 
         HttpServletRequest request=(HttpServletRequest) servletRequest;
         String url=((HttpServletRequest) servletRequest).getRequestURL().toString();
+        request.setAttribute("S3_BASE_URI", Constants.S3_BASE_URI);
+
+
         if(url.endsWith(".css")||url.endsWith(".js")||url.endsWith(".png")||url.endsWith("jpg")||url.endsWith(".jpeg")||url.endsWith(".woff2")){
             filterChain.doFilter(servletRequest,servletResponse);
             return;

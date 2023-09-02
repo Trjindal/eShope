@@ -9,6 +9,7 @@ import com.eshope.admin.PDFExporter.CategoryPdfExporter;
 import com.eshope.admin.Service.CategoryService;
 
 import com.eshope.admin.Utility.FileUploadUtil;
+import com.eshope.admin.Utility.GoogleCloudStorageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -237,8 +238,8 @@ public class CategoryController {
             existingCategory.setImage(fileName);
             Category savedCategory=categoryService.saveCategory(existingCategory);
             String uploadDir="category-photos/"+savedCategory.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+            GoogleCloudStorageUtil.deleteFolder(uploadDir);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName,multipartFile.getInputStream());
         }
 
 
@@ -259,6 +260,8 @@ public class CategoryController {
         try{
             if(categoryService.getCategoryById(id).getChildren().isEmpty()){
                 categoryService.delete(id);
+                String categoryDir = "category-images/" + id;
+                GoogleCloudStorageUtil.deleteFolder(categoryDir);
                 redirectAttributes.addFlashAttribute("message","The Category ID "+id+" has been deleted successfully");
             }
             else{
