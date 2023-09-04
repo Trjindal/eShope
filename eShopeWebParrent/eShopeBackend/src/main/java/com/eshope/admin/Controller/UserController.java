@@ -1,5 +1,6 @@
 package com.eshope.admin.Controller;
 
+import com.eShope.common.entity.Article;
 import com.eShope.common.entity.Role;
 import com.eShope.common.entity.User;
 import com.eshope.admin.Service.UserService;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -240,9 +242,17 @@ public class UserController {
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable(name="id")Integer id,Model model,RedirectAttributes redirectAttributes){
         try{
-            userService.delete(id);
-            String userPhotosDir = "user-photos/" + id;
+
+            User user=userService.getUserById(id);
+            User deletedUser=userService.getUserById(0);
+            String userPhotosDir = "user-photos/" + id+"/";
             GoogleCloudStorageUtil.deleteFolder(userPhotosDir);
+            List<Article> articles = user.getArticles();
+            for (Article article : articles) {
+                article.setUser(deletedUser);
+            }
+            user.setArticles(new ArrayList<>());
+            userService.delete(id);
             redirectAttributes.addFlashAttribute("message","The user ID "+id+"has been deleted successfully");
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());

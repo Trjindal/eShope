@@ -23,11 +23,11 @@
           <input type="submit" />
       </form>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a th:if="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>[[${SITE_NAME}]]</a>
-        <a th:unless="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><img id="siteLogo" width="100" th:src="@{${S3_BASE_URI +SITE_LOGO}}"></a>
-        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
-              data-target="#navbarScroll,#searchNavbar" aria-controls="navbarScroll" aria-expanded="false"
-              aria-label="Toggle navigation">
+        <a th:if="${SITE_LOGO=='None'||SITE_LOGO=='null'}" th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>[[${SITE_NAME}]]</a>
+        <a th:unless="${SITE_LOGO=='None'||SITE_LOGO=='null'}" th:href="@{/home}" class="navbar-brand"><img id="siteLogo" width="100" th:src="@{${SITE_LOGO}}"></a>
+    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+          data-target="#navbarScroll,#searchNavbar" aria-controls="navbarScroll" aria-expanded="false"
+          aria-label="Toggle navigation">
             <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
             <span class="navbar-toggler-icon fa icon-close fa-times"></span>
         </button>

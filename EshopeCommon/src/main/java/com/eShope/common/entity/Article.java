@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "articles")
@@ -123,4 +124,6 @@ public class Article  {
     public String toString() {
         return "Article [title=" + title + ", type=" + type + "]";
     }
+
+
 }

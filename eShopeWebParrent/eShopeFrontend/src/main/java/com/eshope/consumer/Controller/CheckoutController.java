@@ -82,7 +82,7 @@ public class CheckoutController {
         String currencyCode= settingService.getCurrencyCode();
         PaymentSettingBag paymentSettings=settingService.getPaymentSettings();
         String paypalClientId=paymentSettings.getClientId();
-
+        System.out.println("mu"+paypalClientId);
         model.addAttribute("paypalClientId",paypalClientId);
         model.addAttribute("currencyCode",currencyCode);
         model.addAttribute("customer",customer);
@@ -162,7 +162,7 @@ public class CheckoutController {
         String content=emailSettings.getOrderConfirmationContent();
 
         subject=subject.replace("[[orderId]]",String.valueOf(order.getId()));
-
+        subject=subject.replace("[[name]]",String.valueOf(order.getCustomer().getFullName()));
         MimeMessage message=mailSender.createMimeMessage();
         MimeMessageHelper helper=new MimeMessageHelper(message);
 

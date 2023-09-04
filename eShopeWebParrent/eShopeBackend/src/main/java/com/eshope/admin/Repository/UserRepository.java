@@ -16,6 +16,13 @@ public interface UserRepository extends PagingAndSortingRepository<User,Integer>
     @Query("SELECT u FROM User u WHERE u.email=:email")
     public User getUserByEmail(@Param("email") String email);
 
+    @Query("SELECT u FROM User u WHERE u.id <> 0 AND (LOWER(u.firstName) LIKE %:keyword% OR LOWER(u.lastName) LIKE %:keyword% OR LOWER(u.email) LIKE %:keyword%)")
+    Page<User> findAllNonZeroIdUsers(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("SELECT u FROM User u WHERE u.id <> 0")
+    Page<User> findAllNonZeroIdUsers(Pageable pageable);
+
+
     @Transactional
     @Modifying
     @Query("Update User u SET u.email=?1,u.password=?2,u.firstName=?3,u.lastName=?4,u.enabled=?5  WHERE u.id=?6")

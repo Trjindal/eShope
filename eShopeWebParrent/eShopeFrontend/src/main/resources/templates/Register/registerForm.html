@@ -14,10 +14,10 @@
     <div class="container py-md-5 py-4">
         <div class="signup-content">
             <div class="signup-img">
-                <img class="img-fluid"th:src="@{/images/2.png}" style="height:100%" >
+                <img class="img-fluid d-none d-sm-block "th:src="@{/images/2.png}" style="height:100%" >
             </div>
             <div class="signup-form">
-                <form th:action="@{/register/save}" method="post" class="signing-form register-form contact-block" th:object="${customer}" >
+                <form th:action="@{/register/save}" method="post" class="signing-form contact-block" th:object="${customer}" >
                     <div class="input-grids">
                         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
                             <p class="text-uppercase">New Customer?</p>

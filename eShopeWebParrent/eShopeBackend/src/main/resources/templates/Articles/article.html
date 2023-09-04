@@ -43,6 +43,7 @@
     <!-- /   add new Articles button    -->
     <ul>
       <li class="alert alert-success text-center" role="alert" th:if="${message!=null}">[[${message}]] </li>
+      <li class="alert alert-danger text-center" role="alert" th:if="${errorMessage!=null}">[[${errorMessage}]] </li>
     </ul>
 
     <div class="row mb-4">

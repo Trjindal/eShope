@@ -11,9 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -59,6 +57,9 @@ public class User {
     )
     private Set<Role> roles=new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();
+
     public User(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
@@ -91,6 +92,19 @@ public class User {
     @Transient
     public String getFullName(){
         return firstName+" "+lastName;
+    }
+
+    public List<Article> getArticlesByUser() {
+        // Ensure the articles collection is fetched
+//        Hibernate.initialize(articles);
+
+        List<Article> userArticles = new ArrayList<>();
+        for (Article article : articles) {
+            if (this.equals(article.getUser())) {
+                userArticles.add(article);
+            }
+        }
+        return userArticles;
     }
 
     public boolean hasRole(String roleName){

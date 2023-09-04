@@ -35,6 +35,7 @@ public class Order extends AbstractAddress {
     @Min(value = 1)
     private float shippingCost;
     private float productCost;
+    @Column(name = "subtotal")
     private float subTotal;
     private float tax;
     private float total;
@@ -46,6 +47,7 @@ public class Order extends AbstractAddress {
     private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="status")
     private OrderStatus orderStatus;
 
     @ManyToOne

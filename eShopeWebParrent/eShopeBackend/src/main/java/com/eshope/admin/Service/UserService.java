@@ -41,10 +41,10 @@ public class UserService {
         Pageable pageable=PageRequest.of(pageNum-1,USERS_PER_PAGE,sort);
 
         if(keyword!=null){
-            return userRepository.findAll(keyword,pageable);
+            return userRepository.findAllNonZeroIdUsers(keyword,pageable);
         }
 
-        return userRepository.findAll(pageable);
+        return userRepository.findAllNonZeroIdUsers(pageable);
     }
 
     public List<Role> listAllRoles(){

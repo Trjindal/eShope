@@ -10,8 +10,8 @@
 <header id="site-header" class="fixed-top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-between">
-            <a th:if="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>[[${SITE_NAME}]]</a>
-            <a th:unless="${SITE_LOGO=='None'||SITE_LOGO=='none'}" th:href="@{/home}" class="navbar-brand"><img id="siteLogo" width="100" th:src="@{${SITE_LOGO}}"></a>
+            <a th:if="${SITE_LOGO=='None'||SITE_LOGO=='null'}" th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>[[${SITE_NAME}]]</a>
+            <a th:unless="${SITE_LOGO=='None'||SITE_LOGO=='null'}" th:href="@{/home}" class="navbar-brand"><img id="siteLogo" width="100" th:src="@{${SITE_LOGO}}"></a>
             <!-- toggle switch for light and dark theme -->
             <div class="cont-ser-position">
                 <nav class="navigation">

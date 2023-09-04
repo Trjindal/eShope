@@ -87,11 +87,12 @@ public class SettingController {
     }
 
     private void updateSettingValuesFromForm(HttpServletRequest request,List<Setting> listSetting){
+        System.out.println("90");
         for(Setting setting:listSetting){
             log.error(String.valueOf(setting));
             String value=request.getParameter(setting.getKey());
             String key=request.getParameter(setting.getValue());
-//            log.error("KEY "+key+" VALUE "+value);
+            log.error("KEY "+key+" VALUE "+value);
             if(value!=null){
                 setting.setValue(value);
                 log.error("Updated "+String.valueOf(setting));

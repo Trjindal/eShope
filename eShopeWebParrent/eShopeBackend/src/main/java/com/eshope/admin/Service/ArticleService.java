@@ -92,7 +92,11 @@ public class ArticleService {
     public void deleteArticleById(Integer id) throws UsernameNotFoundException {
         if (!articleRepository.existsById(id)) {
             throw new UsernameNotFoundException("Could not find any article with ID " + id);
+        }try{
+            articleRepository.deleteById(id);
+        }catch (Exception e){
+            throw new RuntimeException(e);
         }
-        articleRepository.deleteById(id);
+
     }
 }

@@ -21,6 +21,7 @@ public class OrderDetail {
     private float productCost;
     private float shippingCost;
     private float unitPrice;
+    @Column(name = "subtotal")
     private float subTotal;
 
     @ManyToOne

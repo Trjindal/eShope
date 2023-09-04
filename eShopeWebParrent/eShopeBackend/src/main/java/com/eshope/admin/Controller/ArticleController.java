@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -44,6 +45,7 @@ public class ArticleController {
         if (endCount > page.getTotalElements()) {
             endCount = page.getTotalElements();
         }
+
 
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("startCount", startCount);
@@ -179,7 +181,9 @@ public class ArticleController {
             articleService.deleteArticleById(id);
             ra.addFlashAttribute("message", "The article ID " + id + " has been deleted.");
         } catch (UsernameNotFoundException ex) {
-            ra.addFlashAttribute("message", ex.getMessage());
+            ra.addFlashAttribute("errorMessage", ex.getMessage());
+        }catch (Exception ex){
+            ra.addFlashAttribute("errorMessage", "Before deleting this article edit/delete all the menus having  this article");
         }
 
         return defaultRedirectURL;

@@ -62,7 +62,7 @@ public class OrderService {
             orderDetail.setQuantity(item.getQuantity());
             orderDetail.setUnitPrice(product.getDiscountPrice());
             orderDetail.setProductCost(product.getCost());
-            orderDetail.setSubTotal(item.getSubTotal());
+            orderDetail.setSubTotal(product.getDiscountPrice()* item.getQuantity());
             orderDetail.setShippingCost(item.getShippingCost());
 
             orderDetails.add(orderDetail);
