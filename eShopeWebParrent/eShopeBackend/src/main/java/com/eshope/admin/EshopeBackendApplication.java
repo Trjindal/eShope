@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //@SpringBootApplication
 @SpringBootApplication(scanBasePackages = "com.eshope.admin.*")
-@ComponentScan(basePackages = {"com.eshope.admin.Controller","com.eshope.admin.Service","com.eshope.admin.Config"})
+@ComponentScan(basePackages = {"com.eshope.admin.*"})
 @EntityScan(basePackages = {"com.eshope.admin.Entity","com.eShope.common.entity"})
 @EnableJpaRepositories( basePackages = "com.eshope.admin.Repository")
 

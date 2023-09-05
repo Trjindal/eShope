@@ -2,7 +2,9 @@ package com.eshope.admin.Service;
 
 
 import com.eShope.common.entity.Brand;
+import com.eShope.common.entity.Product.Product;
 import com.eshope.admin.Repository.BrandRepository;
+import com.eshope.admin.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,9 @@ public class BrandService {
     @Autowired
     BrandRepository brandRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     public static final int BRANDS_PER_PAGE = 5;
 
     public Page<Brand> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
@@ -33,7 +38,7 @@ public class BrandService {
             return brandRepository.findAll(keyword, pageable);
         }
 
-        return brandRepository.findAll(pageable);
+        return brandRepository.findAllNonZeroId(pageable);
     }
 
     public boolean isNameUnique(String name) {
@@ -51,15 +56,21 @@ public class BrandService {
     }
 
     public void delete(Integer id) throws UsernameNotFoundException {
-        Long countById=brandRepository.countById(id);
-        if(countById==null||countById==0){
+        Brand brand=getBrandById(id);
+        Brand deletedBrand=getBrandById(0);
+        if(brand==null){
             throw new UsernameNotFoundException("Could not found any brand with Id "+id);
+        }
+        List<Product> productList =brand.getProducts();
+        for(Product product:productList){
+            product.setBrand(deletedBrand);
+            productRepository.save(product);
         }
         brandRepository.deleteById(id);
     }
 
     public List<Brand> listAllBrands(){
-        return (List<Brand>) brandRepository.findAll(Sort.by("Name").ascending());
+        return  brandRepository.findAllNonZeroId();
     }
 
 }

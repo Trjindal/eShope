@@ -1,5 +1,8 @@
 package com.eShope.common.entity;
 
+import com.eShope.common.entity.Product.Product;
+import com.eShope.common.entity.Section.BrandSection;
+import com.eShope.common.entity.Section.CategorySection;
 import com.eShope.common.entity.Setting.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +11,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -31,7 +36,7 @@ public class Brand {
     private String logo;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="brands_categories",
             joinColumns=@JoinColumn(name="brand_id"),
@@ -39,6 +44,12 @@ public class Brand {
     )
     private Set<Category> categories =new HashSet<>();
 
+    @OneToMany(mappedBy = "brand")
+    private List<Product> products=new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "brand",cascade = CascadeType.ALL)
+    List<BrandSection> brandSectionList=new ArrayList<>();
     public Brand(String name) {
         this.name=name;
         this.logo="brand-logo";

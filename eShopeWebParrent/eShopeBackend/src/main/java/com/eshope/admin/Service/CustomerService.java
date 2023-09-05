@@ -1,11 +1,12 @@
 package com.eshope.admin.Service;
 
 
-import com.eShope.common.entity.Country;
-import com.eShope.common.entity.Customer;
-import com.eShope.common.entity.User;
+import com.eShope.common.entity.*;
+import com.eShope.common.entity.Order.Order;
 import com.eshope.admin.Repository.CountryRepository;
 import com.eshope.admin.Repository.CustomerRepository;
+import com.eshope.admin.Repository.OrderRepository;
+import com.eshope.admin.Repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,12 @@ public class CustomerService {
     @Autowired
     CountryRepository countryRepository;
 
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    ReviewRepository reviewRepository;
+
     public Page<Customer> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
         Sort sort= Sort.by(sortField);
         sort=sortDir.equals("asc")?sort.ascending():sort.descending();
@@ -42,10 +49,24 @@ public class CustomerService {
     }
 
     public void delete(Integer id) throws UsernameNotFoundException {
-        Long countById=customerRepository.countById(id);
-        if(countById==null||countById==0){
+        Customer customer=customerRepository.getById(id);
+        if(customer==null){
             throw new UsernameNotFoundException("Could not found any Customer with Id "+id);
         }
+        Customer deletedCustomer=getCustomerById(0);
+
+        List<Order> orders = customer.getOrders();
+        for (Order order : orders) {
+            order.setCustomer(deletedCustomer);
+            orderRepository.save(order);
+        }
+
+        List<Review> reviewList=customer.getReviews();
+        for(Review review:reviewList){
+            review.setCustomer(deletedCustomer);
+            reviewRepository.save(review);
+        }
+
         customerRepository.deleteById(id);
     }
 

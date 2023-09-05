@@ -25,4 +25,6 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customer,
     public void updateEnableStatus(Integer id,boolean enabled);
 
     public Customer getCustomerByEmail(String email);
+
+    Customer getById(Integer id);
 }

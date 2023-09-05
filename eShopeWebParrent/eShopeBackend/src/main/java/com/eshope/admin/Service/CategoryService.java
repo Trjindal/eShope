@@ -2,7 +2,9 @@ package com.eshope.admin.Service;
 
 
 import com.eShope.common.entity.Category;
+import com.eShope.common.entity.Product.Product;
 import com.eshope.admin.Repository.CategoryRepository;
+import com.eshope.admin.Repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,8 @@ public class CategoryService {
 
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public Page<Category> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
         Sort sort = Sort.by(sortField);
@@ -37,7 +41,7 @@ public class CategoryService {
             return categoryRepository.findAll(keyword, pageable);
         }
 
-        return categoryRepository.findAll(pageable);
+        return categoryRepository.findAllNonZeroCategory(pageable);
     }
 
 
@@ -48,7 +52,7 @@ public class CategoryService {
     }
 
     public List<Category> listAllCategories(){
-        return (List<Category>) categoryRepository.findAll(Sort.by("Name").ascending());
+        return  (List<Category>) categoryRepository.findAllNonZeroCategory();
     }
 
     public Category saveCategory(Category category) {
@@ -65,7 +69,7 @@ public class CategoryService {
     public List<Category> listCategoriesUsedInForm() {
         List<Category> categoriesUsedInForm = new ArrayList<>();
 
-        Iterable<Category> categoriesInDB = categoryRepository.findAll();
+        Iterable<Category> categoriesInDB = categoryRepository.findAllNonZeroCategory();
 
         for (Category category : categoriesInDB) {
             if (category.getParent() == null) {
@@ -88,9 +92,15 @@ public class CategoryService {
     }
 
     public void delete(Integer id) throws UsernameNotFoundException {
-        Long countById = categoryRepository.countById(id);
-        if (countById == null || countById == 0) {
+        Category category = getCategoryById(id);
+        Category deletedCategory=getCategoryById(0);
+        if (category == null ) {
             throw new UsernameNotFoundException("Could not found any category with Id " + id);
+        }
+        List<Product> productList=category.getProducts();
+        for(Product product:productList){
+            product.setCategory(deletedCategory);
+            productRepository.save(product);
         }
         categoryRepository.deleteById(id);
     }

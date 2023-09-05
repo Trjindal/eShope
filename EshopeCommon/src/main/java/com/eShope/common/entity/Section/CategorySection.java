@@ -24,6 +24,7 @@ public class CategorySection  {
     @JoinColumn(name = "category_id")
     private Category category;
 
+
     public int getCategoryOrder() {
         return categoryOrder;
     }

@@ -1,7 +1,11 @@
 package com.eShope.common.entity.Product;
 
 import com.eShope.common.entity.Brand;
+import com.eShope.common.entity.CartItem;
 import com.eShope.common.entity.Category;
+import com.eShope.common.entity.Order.OrderDetail;
+import com.eShope.common.entity.Review;
+import com.eShope.common.entity.Section.ProductSection;
 import com.eShope.common.entity.Setting.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -84,6 +88,20 @@ public class Product {
 
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductDetails> details=new ArrayList<>();
+
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Review> reviews=new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderDetail> orderDetailList =new ArrayList<>();
+
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ProductSection> productSections=new ArrayList<>();
+
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<CartItem> cartItems=new ArrayList<>();
+
+
 
     private int reviewCount;
     private float averageRating;

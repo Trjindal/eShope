@@ -1,14 +1,19 @@
 package com.eShope.common.entity;
 
+import com.eShope.common.entity.Product.Product;
+import com.eShope.common.entity.Section.CategorySection;
 import com.eShope.common.entity.Setting.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -48,6 +53,16 @@ public class Category {
     //FOR PRODUCT SEARCH PARENT_ID WILL BE LIKE -8-9-
    @Column(name = "all_parent_ids",length = 256,nullable = true)
     private String allParentIDs;
+
+   @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+   List<CategorySection> categorySectionList=new ArrayList<>();
+
+    @ManyToMany(mappedBy = "categories")
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
+    private Set<Brand> brands = new HashSet<>();
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products=new ArrayList<>();
 
     public Category(String name) {
         this.name=name;

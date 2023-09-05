@@ -70,6 +70,8 @@ public class OrderController {
     }
 
 
+
+
     @GetMapping("/orders/detail/{id}")
     public String detailOrder(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model,HttpServletRequest request){
         try{
@@ -173,6 +175,7 @@ public class OrderController {
         }
     }
 
+//    NEED TO VERIFY
     private void updateProductDetails(Order order, HttpServletRequest request) {
         String[] detailIds=request.getParameterValues("detailId");
         String[] productIds=request.getParameterValues("productId");
@@ -203,29 +206,6 @@ public class OrderController {
     }
 
 
-//    @PostMapping("/users/editUser")
-//    public String saveEditUser(RedirectAttributes redirectAttributes, @Valid @ModelAttribute(value = "user") User user, Errors errors, Model model , @RequestParam("image")MultipartFile multipartFile) throws IOException{
-//        log.error(String.valueOf(user.getId()));
-//        Integer id= user.getId();
-//        User existingUser=userService.getUserById(id);
-//        String savedPassword=existingUser.getPassword();
-//
-//
-//        //DISPLAYING ERROR MESSAGES
-//        if(errors.hasErrors()){
-//            log.error("Contact form validation failed due to : " + errors.toString());
-//            List<Role> listAllRoles=userService.listAllRoles();
-//            model.addAttribute("listAllRoles",listAllRoles);
-//            model.addAttribute("users",existingUser);
-//            return "Users/userUpdateForm.html";
-//        }
-//
-//        userService.editUser(existingUser);
-//
-//        redirectAttributes.addFlashAttribute("message","The user has been edited successfully");
-//        return "redirect:/users";
-//
-//    }
 
     //DELETE CONTROLLER
     @GetMapping("/orders/delete/{id}")

@@ -24,11 +24,11 @@ public abstract class AbstractAddress {
     @Size(min=10,max=15, message="Phone number must be at least 10 and at most 15 numbers long")
     protected String phoneNumber;
 
-    @Column(name="address_line_1",nullable = false,length = 64)
+    @Column(name="address_line1",nullable = false,length = 64)
     @Size(min=3,max=45, message="Address Line 1  must be at least 3 and at most 45 characters long")
     protected String addressLine1;
 
-    @Column(name = "address_line_2",nullable = true,length = 64)
+    @Column(name = "address_line2",nullable = true,length = 64)
     @Size(min=0,max=45, message="Address Line 2 must be at most 45 characters long")
     protected String addressLine2;
 

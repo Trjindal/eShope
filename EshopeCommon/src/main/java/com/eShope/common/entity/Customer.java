@@ -1,5 +1,6 @@
 package com.eShope.common.entity;
 
+import com.eShope.common.entity.Order.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,10 +35,15 @@ public class Customer extends AbstractAddress{
     @Column(nullable = false,length = 64)
     String password;
 
+    @OneToMany(mappedBy = "customer")
+    List<Review> reviews;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
+
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    private List<Address> allAddresses;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
@@ -52,6 +60,12 @@ public class Customer extends AbstractAddress{
 
     @Column(nullable = true,length = 30)
     private String resetPasswordToken;
+
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @Override
     public String toString() {

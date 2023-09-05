@@ -57,7 +57,7 @@ public class User {
     )
     private Set<Role> roles=new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<Article> articles = new ArrayList<>();
 
     public User(String email, String password, String firstName, String lastName) {

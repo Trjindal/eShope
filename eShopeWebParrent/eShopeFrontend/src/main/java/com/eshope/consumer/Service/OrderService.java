@@ -68,6 +68,23 @@ public class OrderService {
             orderDetails.add(orderDetail);
         }
 
+        OrderTrack track = new OrderTrack();
+        track.setOrder(newOrder);
+        track.setStatus(OrderStatus.NEW);
+        track.setNotes(OrderStatus.NEW.defaultDescription());
+        track.setUpdatedTime(new Date());
+
+        newOrder.getOrderTracks().add(track);
+
+        if(paymentMethod.equals(PaymentMethod.PAYPAL)){
+            OrderTrack track1 = new OrderTrack();
+            track1.setOrder(newOrder);
+            track1.setStatus(OrderStatus.PAID);
+            track1.setNotes(OrderStatus.PAID.defaultDescription());
+            track1.setUpdatedTime(new Date());
+            newOrder.getOrderTracks().add(track1);
+        }
+
         return orderRepository.save(newOrder);
 
     }
