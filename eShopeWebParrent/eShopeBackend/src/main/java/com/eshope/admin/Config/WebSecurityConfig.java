@@ -53,22 +53,22 @@ public class WebSecurityConfig  {
 
         http.csrf().and()
                 .authorizeHttpRequests()
-                .antMatchers("/states/listByCountry/**","/reports/**").hasAnyAuthority("Admin","Salesperson")
-                .antMatchers("/shipping/**").hasAnyAuthority("Admin","Salesperson")
-                .antMatchers("/users/**","/countries/**","/states/**","/settings/**").hasAuthority("Admin")
-                .antMatchers("/categories/**","/brands/**","/articles/**", "/menus/**","/sections/**").hasAnyAuthority("Admin","Editor")
-                .antMatchers("/products","/products/","/products/detail/**","/products/page/**").hasAnyAuthority("Admin","Editor","Salesperson","Shipper")
+                .antMatchers("/states/listByCountry/**").hasAnyAuthority("Admin","Salesperson")
+                .antMatchers("/users/**","/countries/**","/states/**","/settings/**").hasAnyAuthority("Admin","Viewer")
                 .antMatchers("/products/new","/products/delete/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/products/edit/**","/products/save","/products/editProduct").hasAnyAuthority("Admin","Editor","Salesperson")
-                .antMatchers("products/**").hasAnyAuthority("Admin","Editor")
+                .antMatchers("/products","/products/","/products/detail/**","/products/page/**").hasAnyAuthority("Admin","Editor","Salesperson","Shipper")
+                .antMatchers("/categories/**","/brands/**","/articles/**","/menus/**","/sections/**","/products/**").hasAnyAuthority("Admin","Editor")
                 .antMatchers("/orders","/orders/","/orders/page/**","/orders/detail/**").hasAnyAuthority("Admin","Salesperson","Shipper")
+                .antMatchers("/products/detail/**", "/customers/detail/**").hasAnyAuthority("Admin", "Editor", "Salesperson", "Assistant")
+                .antMatchers("/customers/**","/orders/**","/get_shipping_cost").hasAnyAuthority("Admin","Salesperson")
                 .antMatchers("/orders_shipper/update/**").hasAuthority("Shipper")
+                .antMatchers("/reviews/**", "/questions/**").hasAnyAuthority("Admin", "Assistant")
 
 
+                .antMatchers("/shipping/**").hasAnyAuthority("Admin","Salesperson")
 
-                .antMatchers("/customers/**","/orders/**","/get_shipping_cost","/report/**").hasAnyAuthority("Admin","Salesperson")
-                .antMatchers("articles/**").hasAnyAuthority("Admin","Editor")
-                .antMatchers("menu/**").hasAnyAuthority("Admin","Editor")
+
                 .antMatchers("/assets/**", "/assets/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")
