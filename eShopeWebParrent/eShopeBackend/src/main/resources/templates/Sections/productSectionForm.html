@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:replace="Fragments/fragment::page_head('Home Page Customization | ${pageTitle} ','none')"/>
+<head th:replace="Fragments/fragment::page_head('Home Page Customization | [[${pageTitle}]]' ,'none')"/>
 
 <body>
 
@@ -44,9 +44,9 @@
               <div th:replace="sections/generalSectionForm :: content">General Section Form</div>
               <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Products:</label>
-                <div class="col-sm-10">
-                  <a th:href="@{'/orders/search_product'}" id="addProduct" class="btn btn-success">Add a Product</a>
-                </div>
+                <a class="col-sm-10 col-form-label" th:href="@{'/orders/search_product'}"  >
+                  <button class="btn btn-style btn-style-1 text-left " id="addProduct">Add Product</button>
+                </a>
               </div>
               <div class="row" id="productList">
                 <th:block th:each="productSection, status : ${section.productSections}">
@@ -82,26 +82,33 @@
 </div>
 
 
-<div class="modal fade text-center" id="addProductModal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+<!--ADD PRODUCT MODAL-->
+<div class="modal fade " id="addProductModal" role="dialog">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" >Add Product</h5>
 
-      <div class="modal-header">
-        <h4 class="modal-title" id="modalTitle">Add Product</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close closeBtn" >
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item"></iframe>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item" style="height: 50rem!important;"></iframe>
+        </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-style btn-style-1 text-left " data-dismiss="modal">Close</button>
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 closeBtn" >Close</button>
+        </div>
       </div>
 
     </div>
   </div>
 </div>
+<!--  /ADD PRODUCT MODAL    -->
 
 <!--    COMMON JAVASCRIPT  -->
 <div th:replace="Fragments/fragment::common_JS"></div>
@@ -112,5 +119,46 @@
 
 <!--</script>-->
 
+//SHOWING ADD PRODUCT MODAL
+<script>
+
+
+
+
+  $("#addProduct").on("click",function(e){
+  e.preventDefault();
+     $('#addProductModal').modal("show")
+  })
+
+  $('#addProductModal').on('show.bs.modal', function (event) {
+  var myLink=contextPath+"orders/search_product";
+  $(this).find("iframe").attr("src",myLink);
+})
+
+  $(".closeBtn1").on("click",function(e){
+  $('#myModal1').modal("hide")
+  })
+
+  $(".closeBtn2").on("click",function(e){
+  $('#addProductModal').modal("hide")
+  })
+
+  $(".closeBtn3").on("click",function(e){
+  $('#modalDialog').modal("hide")
+  })
+
+
+
+</script>
+<script>
+  windowURL=window.location.href;
+  const regex = /([^/]*\/){3}/;
+  contextPath=windowURL.match(regex)[0];
+  var csrfHeaderName="[[${_csrf.headerName}]]";
+  var csrfValue="[[${_csrf.token}]]";
+
+</script>
+
+<script th:src="@{/assets/js/product_section_form.js}"></script>
 </body>
 </html>

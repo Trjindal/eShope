@@ -10,6 +10,7 @@ import javax.validation.constraints.*;
 @Entity
 @Getter
 @Setter
+@Table(name = "shipping_rates")
 public class ShippingRate {
 
     @Id

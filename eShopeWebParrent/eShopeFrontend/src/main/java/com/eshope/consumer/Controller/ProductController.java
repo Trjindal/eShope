@@ -111,12 +111,16 @@ public class ProductController {
                 }
             }
 
+            int numberOfQuestions = questionService.getNumberOfQuestions(product.getId());
+            int numberOfAnsweredQuestions = questionService.getNumberOfAnsweredQuestions(product.getId());
 
             model.addAttribute("pageTitle",product.getShortName());
             model.addAttribute("listCategoryParents",listCategoryParents);
             model.addAttribute("product",product);
             model.addAttribute("listReviews",listReviews);
             model.addAttribute("listQuestions",listQuestions);
+            model.addAttribute("numberOfQuestions", numberOfQuestions);
+            model.addAttribute("numberOfAnsweredQuestions", numberOfAnsweredQuestions);
             return "product_detail";
         }catch (UsernameNotFoundException ex){
             return "error/404";

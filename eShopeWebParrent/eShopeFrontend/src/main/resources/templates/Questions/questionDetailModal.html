@@ -1,0 +1,52 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<div class="modal-header border-bottom-0">
+    <h5 class="modal-title text-center" id="viewQuestionLabel">Question Details</h5>
+    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body product-block" th:object="${question}">
+    <div class="input-grids">
+        <div class="row form-group">
+            <label class="col-form-label col-sm-2">Product Name : </label>
+            <input type="text" th:field="*{product.shortName}" placeholder="product" readonly class="contact-input col-sm-10"/>
+        </div>
+        <div class="row form-group mb-3">
+            <label class="col-form-label col-sm-2">Question : </label>
+            <div class="contact-input col-sm-10">
+                <input type="text" th:field="*{questionContent}" readonly placeholder="question content" maxlength="254" class="w-100 mb-1"  />
+                <span class="text-muted ">&nbsp; Asked by : <b>[[${question.asker.fullName}]]</b> on [[${question.askTime}]]</span>
+            </div>
+        </div>
+        <div class="row form-group" th:if="${question.answer!=''}">
+            <label class="col-form-label col-sm-2">Answer : </label>
+            <div class="contact-input col-sm-10">
+                <textarea type="text" th:field="*{answer}" readonly placeholder="answer" maxlength="254"  class="w-100 mb-1"/>
+                <span th:if="${question.answer!=null}">
+                  <span th:if="${question.answer!=''}" class="text-muted ">&nbsp; Answered by : <b>[[${question.answerer.fullName}]]</b> on [[${question.answerTime}]]</span>
+        </span>
+            </div>
+        </div>
+        <div class="row form-group mb-2">
+            <label class="col-form-label col-3">Approved : </label>
+            <span th:if="${question.approved==true}" class="text-success col-form-label col-9">Approved</span>
+            <span th:if="${question.approved==false}" class="text-danger col-form-label col-9">Not Approved</span>
+
+        </div>
+        <div class="row form-group" th:if="${question.answer==''}">
+            <span class="col-form-label col-12 text-center text-warning">This question has not been answered yet.</span>
+        </div>
+    </div>
+
+
+</div>
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn btn-style btn-style-3 " data-dismiss="modal">Close</button>
+</div>
+</html>
+

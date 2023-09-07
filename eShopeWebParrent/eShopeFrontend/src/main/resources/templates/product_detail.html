@@ -222,24 +222,7 @@
                     </div>
                     <hr>
                   </th:block>
-                </div>
-                <div class="row m-2">
-                  <div class="col-md-4 col-12">
-
-                    <div th:if="${customerCanReview}">
-                      <!--                  <a class="text-primary " id="addReview" type="button" data-toggle="modal" data-target="#addReviewModal" data-whatever="${product.Id}">Write your review</a>-->
-                      <a class="text-primary " id="reviewBtn" type="button" data-toggle="modal"
-                         data-target="#addReviewModal" th:attr="data-whatever=${product.Id}">Write your review</a>
-                    </div>
-                    <div th:if="${customerReviewed}">
-                      <span class="text-muted">You already reviewed this product.</span>
-                    </div>
-                    <div  th:if="${product.reviewCount>3}" >
-                      <a class="text-primary text-left" th:href="@{'/ratings/'+${product.alias}}" type="button" data-toggle="modal"
-                         data-target="#reviewModal">See more reviews</a>
-                    </div>
-                  </div>
-
+                  <div th:replace="Questions/questionAnswer :: content"></div>
                 </div>
               </div>
             </div>
@@ -318,6 +301,34 @@
 </div>
 <!--  /See reviews MODAL    -->
 
+<!--See question MODAL-->
+<div class="modal fade " id="questionModal" role="dialog" th:alias="${product.alias}">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title">Questions</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item" style="height: 20rem!important;"></iframe>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 " data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--  /See reviews MODAL    -->
+
 
 
 <!--  ADD REVIEW MODAL -->
@@ -332,7 +343,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="embed-responsive embed-responsive-16by9">-->
+        <div class="embed-responsive embed-responsive-16by9">
           <iframe class="w-100 embed-responsive-item" style="height: 30rem!important;"></iframe>
         </div>
       </div>
@@ -347,9 +358,13 @@
   <!--  /ADD REVIEW MODAL -->
 
 
+<div th:replace="Fragments/fragment::warningModalTemplate"/>
+
 <script type="text/javascript">
 
-  contextPath="[[@{/}]]"
+ windowURL=window.location.href;
+  const regex = /([^/]*\/){3}/;
+  contextPath=windowURL.match(regex)[0];
   var shoppingCart=false
   productId="[[${product.id}]]"
   var csrfHeaderName="[[${_csrf.headerName}]]";
@@ -377,6 +392,15 @@
 
   });
 </script>
+
+
+<script>
+        function warningModalDialog(message) {
+        $("#warningText").text(message);
+        $("#warningModal").modal('show');
+        }
+</script>
+
 <script type="text/javascript" th:src="@{/assets/js/quantity_control.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/add_to_cart.js}"></script>
 
@@ -401,7 +425,7 @@
 
   $('#addProductModal').on('show.bs.modal', function (event) {
   alias=$(this).attr('alias')
-  var myLink="http://localhost:80/eShope/ratings/"+alias;
+  var myLink=contextPath+"ratings/"+alias;
 
   $(this).find("iframe").attr("src",myLink);
 })
@@ -427,7 +451,7 @@ $('#addReviewModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget)
   var recipient = button.data('whatever')
   var modal = $(this)
-  var myLink="http://localhost:80/eShope/write_review/product/"+recipient;
+  var myLink=contextPath+"write_review/product/"+recipient;
   modal.find("iframe").attr("src",myLink);
 })
 
@@ -437,7 +461,49 @@ $('#reviewModal').on('show.bs.modal', function (event) {
   var myLink=button[0].href;
   modal.find("iframe").attr("src",myLink);
 })
+$('#questionModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var modal = $(this)
+  var myLink=button[0].href;
+  modal.find("iframe").attr("src",myLink);
+})
+</script>
+<script>
+  $(document).ready(function() {
+	$("#buttonPostQuestion").on("click", function(e) {
+		e.preventDefault();
+		form = $("#formQuestion")[0];
+		if (form.checkValidity()) {
+			postQuestion();
+		} else {
+			form.reportValidity();
+		}
+	});
+});
 
+function postQuestion() {
+	url = contextPath + "post_question/" + productId;
+	question = $("#question").val();
+
+	jsonData = {questionContent: question};
+
+	$.ajax({
+		type: 'POST',
+		url: url,
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader(csrfHeaderName, csrfValue);
+		},
+		data: JSON.stringify(jsonData),
+		contentType: 'application/json'
+	}).done(function(response) {
+		$("#warningModal").on("hide.bs.modal", function(e) {
+			$("#question").val("");
+		});
+        warningModalDialog("Your question has been posted and awaiting for approval.")
+	}).fail(function() {
+		warningModalDialog("Failed to submit question. May be you have not logged in or session timed out. Try to login and post question again.");
+	});
+}
 </script>
 <!--CHKKK-->
 

@@ -1,0 +1,72 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Reviews','none')"/>
+
+<body>
+
+<!-- header -->
+<div id="site-header" class=" row">
+  <div class="container d-none">
+    <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+      <input type="submit" />
+    </form>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <!-- toggle switch for light and dark theme -->
+      <div class="cont-ser-position ">
+        <nav class="navigation">
+          <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+              <input type="checkbox" id="checkbox">
+              <div class="mode-container">
+                <i class="gg-sun"></i>
+                <i class="gg-moon"></i>
+              </div>
+            </label>
+          </div>
+        </nav>
+      </div>
+      <!-- //toggle switch for light and dark theme -->
+    </nav>
+  </div>
+</div>
+<!-- //header -->
+
+
+<div class="row m-2">
+  <div class="col-12">
+    <th:block th:each="question : ${listAllQuestions}">
+      <div class="row m-2">
+        <div class="col-12 m-2">
+          <h6 class="m-1">Q. [[${question.questionContent}]]</h6>
+          <span class="text-muted">Asked by [[${question.asker.fullName}]] on <span th:replace="Fragments/fragment::format_time(${question.askTime})"></span></span>
+        </div>
+        <div class="col-sm-12 m-2" th:if="${question.answer!=null}">
+          A. &nbsp;  [[${question.answer}]]
+        </div>
+        <div class="col-sm-12 m-2" th:if="${question.answer==null}">
+          Question is not answered yet
+        </div>
+      </div>
+      <hr>
+    </th:block>
+  </div>
+</div>
+</div>
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/questions/'+${productAlias}+'/page/','questions')"/>
+<!-- /pagination -->
+
+
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+
+</body>
+</html>

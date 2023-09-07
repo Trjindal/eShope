@@ -19,9 +19,9 @@
                 <label class="col-form-label col-sm-2">Site Logo : </label>
                 <input type="file" id="fileImage" class="col-form-label col-sm-2 mb-2" name="image"
                        accept="image/png,image/jpeg">
-                <img id="thumbnail" alt="Site Logo Thumbnail" th:if="${SITE_LOGO=='None'||SITE_LOGO=='none'}" class="col-sm-6" style="width:150px; height:100px;"
+                <img id="thumbnail" alt="Site Logo Thumbnail" th:if="${SITE_LOGO=='null'||SITE_LOGO=='none'}" class="col-sm-6" style="width:150px; height:100px;"
                      th:src="@{/assets/images/users/default-user.png}">
-                <img id="thumbnail" alt="Site Logo Thumbnail" th:unless="${SITE_LOGO=='None'||SITE_LOGO=='none'}" class="col-sm-6" style="width:150px; height:100px;"
+                <img id="thumbnail" alt="Site Logo Thumbnail" th:unless="${SITE_LOGO=='null'||SITE_LOGO=='none'}" class="col-sm-6" style="width:150px; height:100px;"
                       th:src="@{${S3_BASE_URI +SITE_LOGO}}">
             </div>
             <div class="row form-group">

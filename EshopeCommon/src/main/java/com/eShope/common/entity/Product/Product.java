@@ -64,6 +64,7 @@ public class Product {
     private float cost;
 
     private float price;
+    @Transient
     private float discountPercentage;
 
     @Digits(integer = 4,fraction = 2,message = "Length issue")

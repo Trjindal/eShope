@@ -80,7 +80,7 @@
 <!--                        <div th:replace="fragments :: status(${section.enabled}, 'section', '/sections/' + ${section.id})" />-->
                     </td>
                     <td>
-                        <a class="fas fa-light fa-pen-to-square" th:href="@{'/sections/edit/'+${section.id}}"
+                        <a class="fas fa-light fa-pen-to-square" th:href="@{'/sections/edit/'+ ${section.type} + '/' +${section.id}}"
                            title="edit this section"></a>
                         <a class="fas fa-light fa-trash " id="deleteBtn" type="button" data-toggle="modal"
                            data-target="#deleteModal" th:attr="data-whatever=${section.id}"></a>
@@ -98,10 +98,17 @@
 <div th:replace="Fragments/fragment::common_JS"></div>
 <!--    /COMMON JAVASCRIPT  -->
 
-<!--THEME CHANGE-->
+<!--THEME CHANGE START-->
 <div th:replace="Fragments/fragment::theme_change"/>
+<!--THEME CHANGE END-->
 
-<!--</script>-->
+
+<!--DELETE USER MODAL START-->
+<div th:replace="Fragments/fragment::deleteModal('Section','sections')"/>
+<!--DELETE USER MODAL END-->
+
+
+
 
 </body>
 

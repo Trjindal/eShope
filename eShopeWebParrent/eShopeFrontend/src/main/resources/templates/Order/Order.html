@@ -205,7 +205,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="embed-responsive embed-responsive-16by9">-->
+                <div class="embed-responsive embed-responsive-16by9">
                     <iframe class="w-100 embed-responsive-item" style="height: 30rem!important;"></iframe>
                 </div>
             </div>
@@ -237,7 +237,9 @@
 <div th:replace="Fragments/fragment::clear_filter('orders')"/>
 
 <script>
-    contextPath="[[@{/}]]"
+    windowURL=window.location.href;
+  const regex = /([^/]*\/){3}/;
+  contextPath=windowURL.match(regex)[0];
     var csrfHeaderName="[[${_csrf.headerName}]]";
     var csrfValue="[[${_csrf.token}]]";
 
@@ -264,7 +266,7 @@ $('#addReviewModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget)
   var recipient = button.data('whatever')
   var modal = $(this)
-  var myLink="http://localhost:80/eShope/write_review/product/"+recipient;
+  var myLink=contextPath+"write_review/product/"+recipient;
   modal.find("iframe").attr("src",myLink);
 })
 

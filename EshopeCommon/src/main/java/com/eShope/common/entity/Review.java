@@ -12,6 +12,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@Table(name = "reviews")
 public class Review {
 
     @Id

@@ -1,0 +1,147 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Questions','none')"/>
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5">
+        <div class="container pt-4 pb-sm-4">
+            <h4 class="inner-text-title pt-5">Your Questions</h4>
+            <ul class="breadcrumbs-custom-path">
+                <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
+                <li class="active">Your Questions</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- //inner banner -->
+
+
+<section class="w3l-contact py-5" id="contact">
+    <div class="px-md-3 py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-md-5 mb-4 " style="max-width:500px;">
+            <h3 class="title-style">Questions Asked by you</h3>
+        </div>
+
+        <div class="table-responsive-class">
+
+            <ul>
+                <li class="alert alert-success text-center" role="alert" th:if="${message!=null}">[[${message}]] </li>
+            </ul>
+
+            <div class="row mb-4">
+                <div class="overview-wrap user-block">
+                    <form th:action="@{/customer/questions/page/1}" class="w-100">
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <div class="d-flex flex-row">
+                            <input type="search" name="keyword" required th:value="${keyword}" class="m-3"
+                                   placeholder="Search box">
+                            <button type="submit" value="search" class=" btn btn-style btn-style-2   text-center"><i
+                                    class="fas fa-regular fa-magnifying-glass"></i></button>
+                            <button type="button" value="Clear" class=" btn btn-style btn-style-2   text-left"
+                                    onclick="clearFilter()">Clear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--        table started-->
+            <div class="full-details">
+                <table class="table table-striped ">
+                    <thead class="table-dark w-100">
+                    <tr>
+                        <th th:replace="~{Fragments/fragment::column_link('customer/questions','id','Id')}"></th>
+                        <th th:replace="~{Fragments/fragment::column_link('customer/questions','product.name','Product')}"></th>
+                        <th th:replace="~{Fragments/fragment::column_link('customer/questions','questionContent','Question')}"></th>
+                        <th th:replace="~{Fragments/fragment::column_link('customer/questions','askTime','Ask Time')}"></th>
+                        <th th:replace="~{Fragments/fragment::column_link('customer/questions','approved','Approved')}"></th>
+                        <th>Answered</th>
+                        <th class="sorting" scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="question: ${listAllQuestions}">
+                        <td scope="row" th:text="${question.id}"></td>
+                        <td>
+                            <a th:href="@{${question.product.URI}}" target="_blank" th:title="${question.product.name}">[[${question.product.shortName}]]</a>
+                        </td>
+                        <td th:text="${question.questionContent}">Question</td>
+                        <td th:text="${question.askTime}">Ask Time</td>
+
+                        <td>
+                            <span class="fas fa"	th:classappend="${question.approved ? 'fa-check-circle icon-green' : 'fa-circle icon-dark'}"></span>
+                        </td>
+
+                        <td>
+                            <span class="fas fa"	th:classappend="${question.answered ? 'fa-check-circle icon-green' : 'fa-circle icon-dark'}"></span>
+                        </td>
+
+                        <td>
+                            <a class="fas fa-file-alt fa icon-green link-detail" th:href="@{'/customer/questions/detail/' + ${question.id}}" title="View details of this question"
+                               data-toggle="modal" data-target="#viewQuestionModal" th:attr="data-whatever=${question.id}"></a>
+                        </td>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="modal fade " id="viewQuestionModal" role="dialog" >
+    <div class="modal-dialog modal-dialog-centered modal-xl " >
+        <div class="modal-content myModal">
+        </div>
+    </div>
+</div>
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/customer/questions/page/','questions')"/>
+<!-- /pagination -->
+
+
+
+
+
+
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--    THEME CHANGE    -->
+<div th:replace="Fragments/fragment::theme_change"/>
+<!--    /THEME CHANGE    -->
+
+
+<!--CLEAR FILTER-->
+<div th:replace="Fragments/fragment::clear_filter('questions')"/>
+
+</body>
+<script>
+
+$('#viewQuestionModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var myLink=button.attr("href");
+  var modal = $(this)
+
+  modal.find('.modal-content').load(myLink)
+})
+
+</script>
+
+</html>
