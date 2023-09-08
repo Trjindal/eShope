@@ -37,7 +37,7 @@ public class MenuController {
         return "Menu/menu.html";
     }
 
-    @GetMapping("menus/new")
+    @GetMapping("/menus/new")
     public String newMenu(Model model) {
         List<Article> listArticles = articleService.listArticlesForMenu();
 

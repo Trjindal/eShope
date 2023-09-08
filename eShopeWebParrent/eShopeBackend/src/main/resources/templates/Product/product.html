@@ -35,7 +35,7 @@
             <div class="overview-wrap">
                 <h3 class="heading-21921 p-3">eShope Products Details</h3>
                 <a th:href="@{/products/new}">
-                    <button class="btn btn-style btn-style-3 text-left" sec:authorize="hasAnyAuthority('Admin','Editor')">Add Product</button>
+                    <button class="btn btn-style btn-style-3 text-left" sec:authorize="hasAnyAuthority('Admin','Editor','Viewer')">Add Product</button>
                 </a>
 
             </div>
@@ -84,7 +84,7 @@
                 <th th:replace="~{Fragments/fragment::product_column_link('name','Product Name')}"></th>
                 <th th:replace="~{Fragments/fragment::product_column_link('brand','Brand')}"></th>
                 <th th:replace="~{Fragments/fragment::product_column_link('category','Category')}"></th>
-                <th th:replace="~{Fragments/fragment::product_column_link('enable','Enable')}" sec:authorize="hasAnyAuthority('Admin','Editor')"></th>
+                <th th:replace="~{Fragments/fragment::product_column_link('enable','Enable')}" sec:authorize="hasAnyAuthority('Admin','Editor','Viewer')"></th>
                 <th class="sorting" scope="col"></th>
             </tr>
             </thead>
@@ -104,14 +104,14 @@
                         <span class="badge myBadge badge-secondary" th:text="${category.name}"></span>
                     </th:block>
                 </td>
-                <td sec:authorize="hasAnyAuthority('Admin','Editor')">
+                <td sec:authorize="hasAnyAuthority('Admin','Editor','Viewer')">
                     <a th:if="${product.enabled==true}" class="fas fa-thin fa-circle-check" th:href="@{'/products/'+${product.id}+'/enabled/false'}" title="Disable this Product"></a>
                     <a th:if="${product.enabled==false}" class="fas fa-thin fa-circle-xmark" th:href="@{'/products/'+${product.id}+'/enabled/true'}" title="Enable this Product"></a>
                 </td>
                 <td>
                     <a type="button" class="fas fa-file-alt" id="viewBtn" th:href="@{'/products/detail/'+${product.id}}" title="view this product details" data-toggle="modal" data-target="#viewProductModal" ></a>
-                    <a class="fas fa-light fa-pen-to-square" th:href="@{'/products/edit/'+${product.id}}" title="edit this product" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson')"></a>
-                    <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${product.Id}" sec:authorize="hasAnyAuthority('Admin','Editor')" ></a>
+                    <a class="fas fa-light fa-pen-to-square" th:href="@{'/products/edit/'+${product.id}}" title="edit this product" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson','Viewer')"></a>
+                    <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${product.Id}" sec:authorize="hasAnyAuthority('Admin','Editor','Viewer')" ></a>
                 </td>
             </tr>
             </tbody>
@@ -136,10 +136,10 @@
                 <div class="col-3">
                     <div class="d-flex flex-row justify-content-center mt-2">
                         <a type="button" class="fas fa-file-alt p-2" id="viewBtn" th:href="@{'/products/detail/'+${product.id}}" title="view this product details" data-toggle="modal" data-target="#viewProductModal" ></a>
-                        <a class="fas fa-light fa-pen-to-square p-2" th:href="@{'/products/edit/'+${product.id}}" title="edit this product" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson')"></a>
+                        <a class="fas fa-light fa-pen-to-square p-2" th:href="@{'/products/edit/'+${product.id}}" title="edit this product" sec:authorize="hasAnyAuthority('Admin','Editor','Salesperson','Viewer')"></a>
                     </div>
                     <div class="d-flex flex-row justify-content-center mt-2">
-                        <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${product.Id}" sec:authorize="hasAnyAuthority('Admin','Editor')" ></a>
+                        <a class="fas fa-light fa-trash " id="deleteBtn"  type="button"  data-toggle="modal" data-target="#deleteModal" th:attr="data-whatever=${product.Id}" sec:authorize="hasAnyAuthority('Admin','Editor','Viewer')" ></a>
                     </div>
                 </div>
             </div>

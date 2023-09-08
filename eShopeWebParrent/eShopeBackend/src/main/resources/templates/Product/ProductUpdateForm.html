@@ -42,7 +42,7 @@
                 <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('product.*')}"
                     th:text="${error}"/>
             </ul>
-            <form action="/eShopeAdmin/products/editProduct" method="post" class="signing-form"
+            <form action="/products/editProduct" method="post" class="signing-form"
                   th:object="${product}" enctype="multipart/form-data">
 
                 <!-- Nav tabs -->

@@ -177,7 +177,6 @@ public class ArticleController {
     @GetMapping("/articles/delete/{id}")
     public String deleteArticle(@PathVariable(name = "id") Integer id, RedirectAttributes ra) {
         try {
-            log.info("HEREEE");
             articleService.deleteArticleById(id);
             ra.addFlashAttribute("message", "The article ID " + id + " has been deleted.");
         } catch (UsernameNotFoundException ex) {

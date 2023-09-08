@@ -57,12 +57,12 @@
                         <a class="nav-link " data-toggle="tab" href="#states" role="tab">States</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link "  data-toggle="tab" href="#mailServer" role="tab">Mail Server</a>
+                        <a class="nav-link "  data-toggle="tab" sec:authorize="hasAuthority('Admin')" href="#mailServer" role="tab">Mail Server</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link "  data-toggle="tab" href="#mailTemplates" role="tab">Mail Templates</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasAuthority('Admin')">
                         <a class="nav-link active"  data-toggle="tab" href="#payment" role="tab">Payment</a>
                     </li>
                 </ul>

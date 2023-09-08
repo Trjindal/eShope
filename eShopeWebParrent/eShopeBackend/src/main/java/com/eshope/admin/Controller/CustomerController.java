@@ -152,28 +152,6 @@ public class CustomerController {
         return "redirect:/customers";
     }
 
-//    @GetMapping("/customers/export/csv")
-//    public void exportToCSV(HttpServletResponse response) throws IOException {
-//        List<Customer> listCustomer=customerService.listAllCustomers();
-//        UserCsvExporter exporter=new UserCsvExporter();
-//        exporter.export(listCustomer,response);
-//    }
-//
-//
-//    @GetMapping("/customers/export/excel")
-//    public void exportToExcel(HttpServletResponse response) throws IOException {
-//        List<Customer> listCustomer=customerService.listAllCustomers();
-//        UserExcelExporter exporter=new UserExcelExporter();
-//        exporter.export(listCustomer,response);
-//    }
-//
-//    @GetMapping("/customers/export/pdf")
-//    public void exportToPdf(HttpServletResponse response) throws IOException {
-//        List<Customer> listCustomer=customerService.listAllCustomers();
-//
-//        UserPdfExporter exporter=new UserPdfExporter();
-//        exporter.export(listCustomer,response);
-//    }
 
 
 
