@@ -57,10 +57,12 @@ public class Category {
    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
    List<CategorySection> categorySectionList=new ArrayList<>();
 
+    @Transient
     @ManyToMany(mappedBy = "categories")
     @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
     private Set<Brand> brands = new HashSet<>();
 
+    @Transient
     @OneToMany(mappedBy = "category")
     private List<Product> products=new ArrayList<>();
 

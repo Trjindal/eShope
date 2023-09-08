@@ -56,7 +56,7 @@ public class ProductsByBrandController {
         model.addAttribute("endCount", endCount);
 
         model.addAttribute("brand", brand);
-        model.addAttribute("products", listProducts);
+        model.addAttribute("listProducts", listProducts);
         model.addAttribute("pageTitle", "Products by " + brand.getName());
 
         return "product/products_by_brand";

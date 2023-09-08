@@ -61,9 +61,10 @@ public class WebSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().and()
-                .authorizeHttpRequests().antMatchers("/customer").authenticated()
+                .authorizeHttpRequests()
+                .antMatchers("/customer").authenticated()
                 .antMatchers("/register/update").authenticated()
-                .antMatchers("/account","/register/update","/cart","/address_book/**","/checkout","/place_order","/process_paypal_order","/orders/**","/write_review/**","/post_review").authenticated()
+                .antMatchers("/account","/register/update","/cart","/address_book/**","/checkout","/place_order","/process_paypal_order","/orders/**","/reviews/**","/write_review/**","/post_review","/ask_question/**", "/post_question/**", "/customer/questions/**").authenticated()
 
                 .anyRequest().permitAll()
                 .and().formLogin().loginPage("/login")

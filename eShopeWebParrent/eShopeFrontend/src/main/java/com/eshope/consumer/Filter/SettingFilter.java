@@ -58,7 +58,7 @@ public class SettingFilter implements Filter {
 
         generalSettings.forEach(setting -> {
             request.setAttribute(setting.getKey(), setting.getValue());
-            System.out.println(setting.getKey() + " == > " + setting.getValue());
+//            System.out.println(setting.getKey() + " == > " + setting.getValue());
         });
 
 //        request.setAttribute("S3_BASE_URI", Constants.S3_BASE_URI);

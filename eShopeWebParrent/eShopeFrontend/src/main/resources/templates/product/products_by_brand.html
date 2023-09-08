@@ -1,0 +1,47 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragments/fragment::page_head(${pageTitle},'none')"/>
+<body>
+
+
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">[[${brand.name}]]</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
+        <li class="active">[[${brand.name}]]</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+
+
+<div th:replace="Fragments/fragment::products_card(${listProducts})"/>
+<!--SHOWING PRODUCTS-->
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/brand/'+${brand.id}+'/page/','product')"/>
+<!-- /pagination -->
+
+<!-- footer -->
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+
+</body>
+</html>
