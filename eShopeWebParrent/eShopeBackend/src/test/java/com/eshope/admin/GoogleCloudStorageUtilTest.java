@@ -19,8 +19,8 @@ public class GoogleCloudStorageUtilTest {
     @Test
     public void testUploadFile() throws FileNotFoundException {
         String folderName = "test-upload";
-        String fileName = "119411.jpg";
-        String filePath = "E:\\wallpapaer\\" + fileName;
+        String fileName = "Tushar.jpg";
+        String filePath = "D:\\docs\\" + fileName;
 
         InputStream inputStream = new FileInputStream(filePath);
 

@@ -8,6 +8,7 @@ public class Constants {
 //        String region = System.getenv("AWS_REGION");
         String pattern = "https://storage.googleapis.com/";
 
+
         S3_BASE_URI = pattern+bucketName;
     }
 

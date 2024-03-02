@@ -2,7 +2,7 @@ spring:
   datasource:
     username: root
     url: jdbc:mysql://localhost:3306/eshope
-    password: root
+    password: password
   hikari:
     minimum-idle:1
     maximum-pool-size:1
@@ -26,8 +26,8 @@ spring:
       client:
         registration:
           google:
-            clientId: 314632000547-kmvv37u0frub77j2n4gqi1hhcmq0cop4.apps.googleusercontent.com
-            client-secret: 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
+            clientId: 917902517560-av4a0gdku75cr4241bl4dudscg7ovqdg.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - email
               - profile

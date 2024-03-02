@@ -4,6 +4,7 @@ import com.eShope.common.entity.User;
 import com.eshope.admin.Security.EshopeUserDetails;
 import com.eshope.admin.Service.UserService;
 import com.eshope.admin.Utility.FileUploadUtil;
+import com.eshope.admin.Utility.GoogleCloudStorageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -71,8 +72,8 @@ public class AccountController {
             existingUser.setPhotos(fileName);
             User savedUser=userService.editUser(existingUser);
             String uploadDir="user-photos/"+savedUser.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+            GoogleCloudStorageUtil.deleteFolder(uploadDir);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName,multipartFile.getInputStream());
         }
 
         //SAVE DETAILS

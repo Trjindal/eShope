@@ -74,7 +74,7 @@ public class GoogleCloudStorageUtil {
     }
 
 //    public static void deleteObject(String objectName) {
-//        BlobId blobId = BlobId.of(BUCKET_NAME, objectName);
+//        BlobId.of(BUCKET_NAME, objectName);
 //        boolean deleted = storage.delete(blobId);
 //
 //        if (deleted) {

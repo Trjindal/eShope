@@ -54,8 +54,7 @@ public class SettingService {
             String uploadDir="site-logo";
             GoogleCloudStorageUtil.deleteFolder(uploadDir);
             GoogleCloudStorageUtil.uploadFile(uploadDir,fileName,multipartFile.getInputStream());
-//            FileUploadUtil.cleanDir(uploadDir);
-//            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+
 
         }
     }
