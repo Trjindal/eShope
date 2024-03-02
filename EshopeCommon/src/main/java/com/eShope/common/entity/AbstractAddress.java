@@ -33,16 +33,16 @@ public abstract class AbstractAddress {
     protected String addressLine2;
 
     @Column(nullable = false,length = 45)
-    @Size(min=2,max=45, message="City must be at least 2 and at most 45 characters long")
+    @Size(min=2,max=45, message="City must be at least 2 and at most 40 characters long")
     protected String city;
 
     @Column(nullable = false,length = 45)
-    @Size(min=2,max=10, message="State must be at least 2 and at most 10 characters long")
+    @Size(min=2,max=40, message="State must be at least 2 and at most 40 characters long")
     protected String state;
 
 
     @Column(nullable = false,length = 10)
-    @Size(min=5,max=6, message="Postal Code must be at least 5 and at most 6 number long")
+    @Size(min=3,max=9, message="Postal Code must be at least 3 and at most 9 number long")
     protected String postalCode;
 
 }

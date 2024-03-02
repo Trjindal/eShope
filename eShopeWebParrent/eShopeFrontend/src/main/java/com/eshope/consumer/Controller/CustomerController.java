@@ -68,7 +68,7 @@ public class CustomerController {
         customerService.registerCustomer(customer);
         sendVerificationEmail(request,customer);
 
-        return "/Register/registerSuccess";
+        return "Register/registerSuccess";
 
     }
 
