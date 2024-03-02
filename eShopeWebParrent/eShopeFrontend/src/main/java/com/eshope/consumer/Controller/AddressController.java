@@ -132,7 +132,7 @@ public class AddressController {
                 model.addAttribute("redirect",redirectOption);
             }
 
-            return "AddressBook/addressUpdateForm.html";
+            return "AddressBook/AddressUpdateForm.html";
         }catch (UsernameNotFoundException ex){
             redirectAttributes.addFlashAttribute("error",ex.getMessage());
 
