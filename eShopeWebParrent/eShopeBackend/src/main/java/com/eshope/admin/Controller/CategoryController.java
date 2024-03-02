@@ -141,7 +141,7 @@ public class CategoryController {
             log.error(category.getImage());
             Category savedCategory = categoryService.saveCategory(category);
             String uploadDir = "category-photos/" + savedCategory.getId();
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName, multipartFile.getInputStream());
             redirectAttributes.addFlashAttribute("message", "The category has been saved successfully");
             return "redirect:/categories";
         }

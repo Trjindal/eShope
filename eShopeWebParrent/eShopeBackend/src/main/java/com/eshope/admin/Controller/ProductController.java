@@ -10,6 +10,7 @@ import com.eshope.admin.Service.BrandService;
 import com.eshope.admin.Service.CategoryService;
 import com.eshope.admin.Service.ProductService;
 import com.eshope.admin.Utility.FileUploadUtil;
+import com.eshope.admin.Utility.GoogleCloudStorageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -374,8 +375,9 @@ public class ProductController {
             String productExtraImagesDir="product-photos/"+id+"/extras";
             String productImageDir="product-photos/"+id;
 
-            FileUploadUtil.removeDir(productExtraImagesDir);
-            FileUploadUtil.removeDir(productImageDir);
+            GoogleCloudStorageUtil.deleteFolder(productExtraImagesDir);
+            GoogleCloudStorageUtil.deleteFolder(productImageDir);
+
 
             redirectAttributes.addFlashAttribute("message","The product ID "+id+" has been deleted successfully");
         }catch (UsernameNotFoundException ex){
@@ -450,8 +452,9 @@ public class ProductController {
         {
             String fileName = StringUtils.cleanPath(mainImageMultipart.getOriginalFilename());
             String uploadDir = "product-photos/" + savedProduct.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, mainImageMultipart);
+            GoogleCloudStorageUtil.deleteFolder(uploadDir);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName, mainImageMultipart.getInputStream());
+
         }
         if(extraImageMultiparts.length>0){
             String uploadDir = "product-photos/" + savedProduct.getId()+"/extras";
@@ -459,7 +462,7 @@ public class ProductController {
                 if(image.isEmpty())
                     continue;
                 String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-                FileUploadUtil.saveFile(uploadDir, fileName, image);
+                GoogleCloudStorageUtil.uploadFile(uploadDir,fileName, image.getInputStream());
                 }}
 
     }

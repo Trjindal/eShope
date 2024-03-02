@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,7 +124,7 @@ public class UserController {
             user.setPhotos(fileName);
             User savedUser=userService.saveUser(user);
             String uploadDir="user-photos/"+savedUser.getId();
-            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName, multipartFile.getInputStream());
         }
 
         //SAVE DETAILS

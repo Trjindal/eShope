@@ -90,9 +90,9 @@ public class Category {
 
     public String getPhotosImagePath(){
         if((Object) id==null ||this.image=="default-user.png")
-            return "/assets/images/users/default-user.png";
+            return "/assets/images/image-thumbnail.png";
 
-//        return "/assets/images/users/default-user.png";
+
         String imgUrl= Constants.changeName(this.image);
         return Constants.S3_BASE_URI+"category-photos/"+this.id+"/"+imgUrl;
     }

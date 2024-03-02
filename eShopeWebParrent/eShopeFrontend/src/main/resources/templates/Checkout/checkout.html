@@ -184,6 +184,7 @@
       $("#paypalForm").submit();
     }
 
+
     paypal.Buttons({
 
       createOrder: function(data,actions){
@@ -207,7 +208,7 @@
                 phone:{
                   phone_type:"MOBILE",
                   phone_number:{
-                      national_number:"[[${customer.phoneNumber}]]"
+                      national_number:"1234567890"
                     }
                 }
             },
@@ -230,12 +231,12 @@
       },
       onCancel:  function(data){
         //buyer cancel payment
-        alert('Payment cancelled by the buyer');
+<!--        alert('Payment cancelled by the buyer');-->
       },
       onError:  function(err){
               //error that prevents buyer from checkout
         console.log(err)
-        alert('Something wrong happened' + err)
+<!--        alert('Something wrong happened' + err)-->
       }
     }).render("#paypal-button-container")
 

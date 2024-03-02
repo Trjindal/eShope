@@ -135,7 +135,7 @@ public class BrandController {
             log.error(brand.getLogo());
             Brand savedBrand = brandRepository.save(brand);
             String uploadDir = "brand-photos/" + savedBrand.getId();
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            GoogleCloudStorageUtil.uploadFile(uploadDir,fileName, multipartFile.getInputStream());
             redirectAttributes.addFlashAttribute("message", "The Brand has been saved successfully");
             return "redirect:/brands";
         }
