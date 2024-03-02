@@ -75,7 +75,7 @@ public class Brand {
     @Transient
     public String getLogoPath(){
         if(this.id==null)
-            return "/assets/images/users/default-user.png";
+            return "/assets/images/image-thumbnail.png";
         String imgUrl=Constants.changeName(this.logo);
         return Constants.S3_BASE_URI+"brand-photos/"+this.id+"/"+imgUrl;
     }
