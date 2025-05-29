@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Home Page Customization','none')"/>
+
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5">
+        <div class="container pt-4 pb-sm-4">
+            <h4 class="inner-text-title pt-5">Home Page Customization</h4>
+            <ul class="breadcrumbs-custom-path">
+                <li><a th:href="@{/home}">Dashboard</a></li>
+                <li class="active"><i class="fas fa-angle-right"></i>[[${pageTitle}]]</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- //inner banner -->
+
+<div class="site-section">
+
+    <div class="table-responsive-class">
+
+        <div class="row mb-4">
+            <div class="overview-wrap">
+                <h3 class="heading-21921 p-3">Home Page Customization | [[${pageTitle}]]</h3>
+            </div>
+            <div class="mb-2">
+                Manage sections that are displayed on the website's home page. The order of sections matters.<br/>
+            </div>
+            <div class="row contact-block">
+                <form th:action="@{/sections/save/all_categories}" th:object="${section}" method="post"
+                      class="signing-form">
+                    <div class=" contact-right">
+                        <div class="input-grids">
+                            <div class="row form-group">
+                                <input type="hidden" th:field="*{id}"/>
+                                <input type="hidden" th:field="*{type}"/>
+                                <input type="hidden" th:field="*{sectionOrder}"/>
+                                <label class="col-form-label col-4">Heading : </label>
+                                <div class="col-8">
+                                    <input type="text" th:field="*{heading}" placeholder="Heading"
+                                           class="contact-input"/>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-form-label col-4">Description : </label>
+                                <div class="col-8">
+                                    <textarea rows="3" th:field="*{description}" placeholder="description"
+                                              class="contact-input"/>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-form-label col-4">Enabled : </label>
+                                <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled"
+                                       class="col-8"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-start">
+                        <button type="submit" class="btn btn-style btn-style-3">Save Section</button>
+                        <a type="button" value="cancel" class="btn btn-style btn-style-3"
+                           th:href="@{/sections}">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--THEME CHANGE-->
+<div th:replace="Fragments/fragment::theme_change"/>
+
+<!--</script>-->
+
+</body>
+</html>

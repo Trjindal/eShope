@@ -1,0 +1,98 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('New Category','none')"/>
+
+<body>
+
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5">
+        <div class="container pt-4 pb-sm-4">
+            <h4 class="inner-text-title pt-5">Categories</h4>
+            <ul class="breadcrumbs-custom-path">
+                <li><a th:href="@{/home}">Dashboard</a></li>
+                <li><i class="fas fa-angle-right"></i><a th:href="@{/categories}">Categories</a></li>
+                <li class="active"><i class="fas fa-angle-right"></i>New Category</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+    <div class="container py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+            <p class="text-uppercase">CREATE NEW CATEGORY</p>
+            <h3 class="title-style">Registration Form</h3>
+        </div>
+        <div class="row contact-block">
+            <div class="col-md-7 contact-right">
+                <ul>
+                    <li class="alert alert-danger" role="alert" th:if="${nameNotUnique!=null}" th:text="${nameNotUnique}"></li>
+                    <li class="alert alert-danger" role="alert" th:if="${aliasNotUnique!=null}" th:text="${aliasNotUnique}"></li>
+                    <div th:each="error : ${#fields.errors('category.*')}">
+                        <li th:if="${!(error.startsWith('Failed to convert property value of type org.springframework.web.multipart'))}" class="alert alert-danger" role="alert" th:text="${error}"></li>
+                    </div>
+<!--                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('category.*')}" th:text="${error}"/>-->
+                </ul>
+                <form th:action="@{/categories/saveCategory}" method="post" class="signing-form"
+                      th:object="${category}" enctype="multipart/form-data">
+                    <div class="input-grids">
+                        <input type="text" th:field="*{name}" placeholder="Name"
+                               class="contact-input"/>
+                        <input type="text" th:field="*{alias}" placeholder="Alias"
+                               class="contact-input"/>
+                        <div class="row form-group">
+                            <label class="col-form-label col-4">Parent Category : </label>
+                            <select class="my-form-control" th:field="*{parent}">
+                                <option value="0">[No Parent]</option>
+                                <th:block th:each="category : ${listCategories}">
+                                    <option th:value="${category.id}">[[${category.name}]]</option>
+                                </th:block>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="row form-group">
+                            <label class="col-form-label col-4">Category Enable : </label>
+                            <input type="checkbox" id="my-chkbox" th:field="*{enabled}" name="enabled" class="col-8"/>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-form-label col-4">Photos : </label>
+                            <input type="file" id="fileImage" class="col-form-label col-8 mb-2" name="image"
+                                   accept="image/png,image/jpeg">
+                            <img id="thumbnail" alt="Photos Preview" class="img-fluid"
+                                 th:src="@{../assets/images/image-thumbnail.png}">
+                        </div>
+<!--                        <input type="file" id="fileImage" name="image" accept="image/png, image/jpeg" class="img-fluid">-->
+<!--                        <img id="thumbnail" alt="Image preview" th:src="@{../assets/images/users/default-user.png}">-->
+                        <div class="text-start">
+                            <button type="submit" class="btn btn-style btn-style-3">Save Category</button>
+                            <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/categories}">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--SHOW IMAGE THUMBNAIL-->
+<script th:src="@{/assets/js/imageThumbnail_ProductDetails.js}"></script>
+
+
+</body>
+
+</html>

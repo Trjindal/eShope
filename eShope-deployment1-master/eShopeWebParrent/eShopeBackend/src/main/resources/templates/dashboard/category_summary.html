@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+  <div class="card shadow-sm border-0 h-100">
+    <div class="card-header bg-transparent border-bottom-0">
+      <h6 class="text-uppercase text-muted mb-0">Categories</h6>
+    </div>
+    <div class="card-body">
+      <h3 class="fw-bold text-primary mb-3">[[${summary.totalCategories}]]</h3>
+
+      <div class="mb-2">
+        <a th:href="@{/categories/new}" class="text-decoration-none">➕ Add Category</a>
+      </div>
+      <div class="mb-2 text-muted">Root: <b>[[${summary.rootCategoriesCount}]]</b></div>
+      <div class="mb-2 text-success">✅ Enabled: <b>[[${summary.enabledCategoriesCount}]]</b></div>
+      <div class="mb-2 text-danger">❌ Disabled: <b>[[${summary.disabledCategoriesCount}]]</b></div>
+      <div>
+        <a th:href="@{/categories}" class="text-decoration-none">📄 View All</a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

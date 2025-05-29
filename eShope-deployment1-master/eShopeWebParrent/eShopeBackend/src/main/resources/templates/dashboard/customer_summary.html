@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+  <div class="card shadow-sm border-0 h-100">
+    <div class="card-header bg-transparent border-bottom-0">
+      <h6 class="text-uppercase text-muted mb-0">
+        <i class="fas fa-user-friends me-1"></i> Customers
+      </h6>
+    </div>
+    <div class="card-body">
+      <h3 class="fw-bold text-primary mb-3">[[${summary.totalCustomers}]]</h3>
+
+      <div class="mb-2">
+        <a th:href="@{/customers}" class="text-decoration-none">📄 View All</a>
+      </div>
+      <div class="mb-2">
+        <a th:href="@{'/customers/page/1?sortField=enabled&sortDir=desc'}"
+           class="text-success text-decoration-none">
+          ✅ Enabled: <b>[[${summary.enabledCustomersCount}]]</b>
+        </a>
+      </div>
+      <div class="mb-2">
+        <a th:href="@{'/customers/page/1?sortField=enabled&sortDir=asc'}"
+           class="text-danger text-decoration-none">
+          ❌ Disabled: <b>[[${summary.disabledCustomersCount}]]</b>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

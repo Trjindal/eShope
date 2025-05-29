@@ -1,0 +1,120 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('New Shipping Rates','none')"/>
+
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">New Shipping Rates</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li><i class="fas fa-angle-right"></i><a th:href="@{/shipping}">Shipping</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>New Shipping Rates</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="container py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+      <p class="text-uppercase">CREATE NEW Shipping Rates</p>
+      <h3 class="title-style">Registration Form</h3>
+    </div>
+    <div class="row contact-block">
+      <div class="col-md-7 contact-right">
+        <ul th:each="error : ${#fields.errors('shippingRate.*')}">
+          <li class="alert alert-danger" role="alert" th:if="${error.startsWith('Failed to convert property value of type java.lang.String to required type int')}" >The number of delivery days cannot be 0. You must provide a minimum of 1.</li>
+          <li class="alert alert-danger" role="alert" th:if="${error.startsWith('Failed to convert property value of type java.lang.String to required type float')}" >The shipping rate cannot be 0. At least 0.01 must be specified.</li>
+          <li class="alert alert-danger" role="alert" th:if="${!(error.startsWith('Failed to convert property '))}" th:text="${error}" />
+        </ul>
+        <ul th:if="${notUnique}!=null">
+          <li class="alert alert-danger" role="alert" th:text="${notUnique}"></li>
+        </ul>
+        <form th:action="@{/shipping/saveRates}" method="post" class="signin-form" th:object="${shippingRate}" >
+          <div class="input-grids">
+            <select class="my-form-control w-100" th:field="*{country}">
+              <th:block th:each="country:${listCountries}">
+                <option th:value="${country.id}">[[${country.name}]]</option>
+              </th:block>
+            </select>
+              <input type="text" th:field="*{state}" placeholder="State" class="contact-input"
+                     list="listStates"/>
+              <datalist id="listStates"></datalist>
+            <input type="number" step="0.1" th:field="*{rate}" placeholder="Shipping Rate"
+                   class="contact-input" min="0"/>
+            <input type="number" th:field="*{days}" placeholder="Number of days to deliver"
+                   class="contact-input" min="0" max="50"/>
+            <div class="row form-group">
+              <label class="col-form-label col-4">COD Enable : </label>
+              <input type="checkbox" id="my-chkbox" th:field="*{CodSupported}" name="enabled"  class="col-8"/>
+            </div>
+            <!--&lt;!&ndash;                    -->
+            <div class="text-start">
+              <button type="submit" class="btn btn-style btn-style-3">Save Shipping Rates</button>
+              <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/shipping}">Cancel</a>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--  SHOW IMAGE THUMBNAIL-->
+<script th:src="@{/assets/js/imageThumbnail_ProductDetails.js}"></script>
+
+
+<script>
+    var dropDownCountry;
+    var dataListState;
+    var fieldState;
+    var contextPath="[[@{/}]]";
+    $(document).ready(function() {
+        dropDownCountry=$("#country");
+        dataListState=$("#listStates");
+        fieldState=$("#state");
+
+        dropDownCountry.on("change",function(){
+            loadStatesForCountry();
+           fieldState.val("").focus();
+        });
+    });
+
+    function loadStatesForCountry(){
+        selectedCountry=$("#country option:selected");
+        console.log(contextPath);
+        countryId=selectedCountry.val();
+        url=contextPath+"states/listByCountry/"+countryId;
+        console.log(url)
+
+        $.get(url,function(responseJSON){
+            dataListState.empty();
+
+            $.each(responseJSON,function(index,state){
+                $("<option>").val(state.name).text(state.name).appendTo (dataListState);
+            })
+        });
+    }
+
+</script>
+
+</body>
+
+</html>

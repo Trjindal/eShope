@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<body>
+<div th:fragment="content">
+    <div class="row"><div class="col"><hr/></div></div>
+    <div sec:authorize="isAuthenticated()">
+        <div>
+
+            <th:block th:if="${numberOfQuestions > 3}">
+                <a class="text-primary text-left" th:href="@{'/questions/' + ${product.alias}}" type="button" data-toggle="modal"
+                   data-target="#questionModal">View all [[${numberOfQuestions}]] questions</a>
+            </th:block>
+        </div>
+        <form class="form-inline my-2" id="formQuestion">
+            <textarea id="question" class="form-control" rows="2" cols="60" placeholder="Type your question here..." required></textarea>
+            &nbsp;&nbsp;
+            <button id="buttonPostQuestion" class="btn btn-secondary my-2">Submit</button>
+        </form>
+    </div>
+    <div sec:authorize="!isAuthenticated()">
+        <form th:action="@{'/ask_question/' + ${product.alias}}">
+            <th:block th:if="${numberOfQuestions > 3}">
+                <a th:href="@{'/questions/' + ${product.alias}}">View all [[${numberOfQuestions}]] questions</a>&nbsp;&nbsp;
+            </th:block>
+            <button class="btn btn-secondary" type="submit">Ask a Question</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

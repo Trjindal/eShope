@@ -1,0 +1,511 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <head th:replace="Fragments/fragment::page_head(${pageTitle},'tag')"/>
+
+
+</head>
+<body>
+
+
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">[[${product.name}]]</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
+        <th:block th:each="parent:${listCategoryParents}">
+          <li><a th:href="@{'/c/'+${parent.alias}}">[[${parent.name}]]</a><i class="fas fa-angle-right"></i></li>
+        </th:block>
+        <li><a th:href="@{'/c/'+${product.category.alias}}">[[${product.category.name}]]</a><i class="fas fa-angle-right"></i></li>
+        <li class="active">[[${product.getShortName}]]</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+
+
+<!--PRODUCT DETAILS START-->
+<div class="row m-5">
+  <ul>
+    <li class="alert alert-danger d-none text-center" id="error"></li>
+    <li class="alert alert-success d-none text-center" id="success"></li>
+  </ul>
+  <div class="col-sm">
+    <div class="d-flex justify-content-center mb-2 ">
+      <img id="bigImage" th:src="@{${product.mainImagePath}}" class="img-fluid" index="0" style="height:350px; border-radius:5px;">
+    </div>
+    <!--    <div class="d-flex flex-row justify-content-center ">-->
+    <div class="col-sm-12">
+      <div class="m-2 d-inline p-1">
+        <img class="image-thumbnail mt-2 border border-secondary p-1" th:src="@{${product.mainImagePath}}" height="50" index="0">
+      </div>
+      <th:block th:each="extraImg,status:${product.images}">
+        <div class="mt-2 d-inline p-1">
+          <img class="image-thumbnail mt-2 border border-secondary p-1" th:src="@{${extraImg.getImagePath}}" height="50" th:index="${status.count}">
+        </div>
+      </th:block>
+    </div>
+  </div>
+  <div class="col-sm p-4">
+
+    <div>
+      <h2>[[${product.name}]]</h2>
+    </div>
+    <div class="d-flex align-items-end">
+      <div class="col-xs">
+        <input type="text" class="product-detail-rating-star" dir="ltr" data-size="md" th:value="${product.averageRating}">
+      </div>
+      <div class="col-xs px-2">
+        <a th:href="@{${product.URI}+'#review'}">[[${product.reviewCount}]] rating(s)</a>
+      </div>
+    </div>
+
+    <div>
+      <span>Brand : [[${product.brand.name}]]</span>
+      <div >
+        List Price :
+        <span th:if="${product.discountPercentage<=0}">
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+           [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+        </span>
+        <del th:if="${product.discountPercentage>0}" style="color:darkred">
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+          <span> [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+        </del>
+      </div>
+      <div th:if="${product.discountPercentage>0}">
+        Price :
+        <span style="font-size:larger;">
+           <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+          [[${#numbers.formatDecimal(product.DiscountPrice,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+          <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+        </span>
+        ([[${product.discountPercentage}]]) % off
+      </div>
+      <div>&nbsp;</div>
+      <div th:utext="${product.shortDescription}"></div>
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <div>
+      <span th:if="${product.inStock}" class="text-success"><b>In Stock</b></span>
+      <span th:unless="${product.inStock}" class="text-danger"><b>Out of Stock</b></span>
+    </div>
+  <th:block  th:if="${product.inStock}">
+    <div th:replace="Cart/quantity_control::quantity-controller(1,${product.id})"></div>
+    <div class="mt-3">
+      <input type="button" value="Add to Cart" id="buttonAddToCart" class="btn btn-style">
+    </div>
+  </th:block>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 p-5">
+    <div><hr/></div>
+    <div>
+      <h3>Product Description :</h3>
+    </div>
+    <div th:utext="${product.fullDescription}" class="p-2"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 p-5">
+    <div><hr/></div>
+    <div>
+      <h3>Product Details :</h3>
+    </div>
+   <th:block th:each="detail:${product.details}" >
+     <div class="p-2">
+       <b>[[${detail.name}]] :</b>
+       <span>[[${detail.value }]]</span>
+     </div>
+   </th:block>
+  </div>
+  <!-- REVIEWS-->
+  <div class="row  p-3" id="review" >
+    <div class="col-12 ">
+      <div class="accordion myModal " id="accordionPanelsStayOpenExample">
+    <div class="accordion-item " style="border:none;">
+      <h2 class="accordion-header">
+        <button class="accordion-button text-center myModal" style="color:inherit;" type="button" data-toggle="collapse" data-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+          Reviews
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse myModal show">
+        <div class="accordion-body tex-center" >
+          <div class="row m-2">
+              <div class="col-12">
+                <th:block th:each="review : ${listReviews}">
+                <div class="row m-2">
+                  <div class="col-12 m-2">
+                    <h6 class="m-1">[[${review.headline}]]</h6>
+                    <input type="text" class="product-detail-rating-star " dir="ltr" data-size="xs" th:value="${review.rating}">
+                    <span class="text-muted">Reviewed by [[${review.customer.fullName}]] on <span th:replace="Fragments/fragment::format_time(${review.reviewTime})"></span></span>
+                  </div>
+                  <div class="col-sm-12 m-2">
+                    [[${review.comment}]]
+                  </div>
+                </div>
+                  <hr>
+                </th:block>
+              </div>
+            <div class="row m-2">
+              <div class="col-md-4 col-12">
+
+                <div th:if="${customerCanReview}">
+<!--                  <a class="text-primary " id="addReview" type="button" data-toggle="modal" data-target="#addReviewModal" data-whatever="${product.Id}">Write your review</a>-->
+                    <a class="text-primary " id="reviewBtn" type="button" data-toggle="modal"
+                     data-target="#addReviewModal" th:attr="data-whatever=${product.Id}">Write your review</a>
+                </div>
+                <div th:if="${customerReviewed}">
+                  <span class="text-muted">You already reviewed this product.</span>
+                </div>
+                <div  th:if="${product.reviewCount>3}" >
+                  <a class="text-primary text-left" th:href="@{'/ratings/'+${product.alias}}" type="button" data-toggle="modal"
+                     data-target="#reviewModal">See more reviews</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    </div>
+  </div>
+  <!-- REVIEWS-->
+
+
+<!--  QUESTIONS-->
+  <div class="row  p-3" id="questions" >
+    <div class="col-12 ">
+      <div class="accordion myModal " >
+        <div class="accordion-item " style="border:none;">
+          <h2 class="accordion-header">
+            <button class="accordion-button text-center myModal" style="color:inherit;" type="button" data-toggle="collapse" data-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+              Frequently Asked Questions
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse myModal show">
+            <div class="accordion-body tex-center" >
+              <div class="row m-2">
+                <div class="col-12">
+                  <th:block th:each="question : ${listQuestions}">
+                    <div class="row m-2">
+                      <div class="col-12 m-2">
+                        <h6 class="m-1">Q. [[${question.questionContent}]]</h6>
+                        <span class="text-muted">Asked by [[${question.asker.fullName}]] on <span th:replace="Fragments/fragment::format_time(${question.askTime})"></span></span>
+                      </div>
+                      <div class="col-sm-12 m-2" th:if="${question.answer!=null}">
+                      A. &nbsp;  [[${question.answer}]]
+                      </div>
+                      <div class="col-sm-12 m-2" th:if="${question.answer==null}">
+                        Question is not answered yet
+                      </div>
+                    </div>
+                    <hr>
+                  </th:block>
+                  <div th:replace="Questions/questionAnswer :: content"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--  QUESTIONS-->
+
+</div>
+<!--PRODUCT DETAILS END-->
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="errorModalBody">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<!-- footer -->
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+
+<div th:replace="Fragments/images_carousel::content"></div>
+
+<!--See reviews MODAL-->
+<div class="modal fade " id="reviewModal" role="dialog" th:alias="${product.alias}">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" >Reviews</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item" style="height: 20rem!important;"></iframe>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 " data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--  /See reviews MODAL    -->
+
+<!--See question MODAL-->
+<div class="modal fade " id="questionModal" role="dialog" th:alias="${product.alias}">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title">Questions</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item" style="height: 20rem!important;"></iframe>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 " data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--  /See reviews MODAL    -->
+
+
+
+<!--  ADD REVIEW MODAL -->
+<div class="modal fade " id="addReviewModal" role="dialog">
+  <div class="modal-dialog ">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="deleteLabel">Add Review</h5>
+
+        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item" style="height: 30rem!important;"></iframe>
+        </div>
+      </div>
+        <div class="modal-footer">
+          <div class="text-end">
+            <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn btn-style btn-style-3 closeBtn" >Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  /ADD REVIEW MODAL -->
+
+
+<div th:replace="Fragments/fragment::warningModalTemplate"/>
+
+<script type="text/javascript">
+
+ windowURL=window.location.href;
+  const regex = /([^/]*\/){3}/;
+  contextPath=windowURL.match(regex)[0];
+  var shoppingCart=false
+  productId="[[${product.id}]]"
+  var csrfHeaderName="[[${_csrf.headerName}]]";
+  var csrfValue="[[${_csrf.token}]]";
+  var decimalDigits=[[${DECIMAL_DIGITS}]];
+  var decimalPointType="[[${DECIMAL_POINT_TYPE}]]"
+  var thousandPointType="[[${THOUSANDS_POINT_TYPE}]]"
+
+  $(document).ready(function(){
+    bigImage=$("#bigImage");
+
+    $(".image-thumbnail").mouseover(function(){
+      currentImageSource=$(this).attr("src");
+      currentImageIndex=$(this).attr("index");
+
+      bigImage.attr("src",currentImageSource);
+      bigImage.attr("index",currentImageIndex);
+    });
+
+    bigImage.on("click",function(){
+      $("#carouselModal").modal("show");
+      imageIndex=parseInt(bigImage.attr("index"));
+      $("#carouselExampleIndicators").carousel(imageIndex);
+    });
+
+  });
+</script>
+
+
+<script>
+        function warningModalDialog(message) {
+        $("#warningText").text(message);
+        $("#warningModal").modal('show');
+        }
+</script>
+
+<script type="text/javascript" th:src="@{/assets/js/quantity_control.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/add_to_cart.js}"></script>
+
+<link th:href="@{/assets/rating-star/css/star-rating.css}" media="all" rel="stylesheet" type="text/css" />
+<script th:src="@{/assets/rating-star/js/star-rating.js}" type="text/javascript"></script>
+<link th:href="@{/assets/rating-star/themes/krajee-svg/theme.css}" media="all" rel="stylesheet" type="text/css" />
+<script th:src="@{/assets/rating-star/themes/krajee-svg/theme.js}"></script>
+<div th:replace="Fragments/fragment::theme_change"></div>
+
+
+//SHOWING ADD PRODUCT MODAL
+<script>
+
+  var alias;
+
+
+  $("#addProduct").on("click",function(e){
+  e.preventDefault();
+     $('#addProductModal').modal("show")
+
+  })
+
+  $('#addProductModal').on('show.bs.modal', function (event) {
+  alias=$(this).attr('alias')
+  var myLink=contextPath+"ratings/"+alias;
+
+  $(this).find("iframe").attr("src",myLink);
+})
+
+
+
+</script>
+
+
+<script>
+  $(".product-detail-rating-star").rating({
+    displayOnly:true,
+    hoverOnClear:false,
+    showCaption:false,
+    theme:'krajee-svg'
+  })
+</script>
+
+<!--CHK-->
+<script>
+
+$('#addReviewModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var recipient = button.data('whatever')
+  var modal = $(this)
+  var myLink=contextPath+"write_review/product/"+recipient;
+  modal.find("iframe").attr("src",myLink);
+})
+
+$('#reviewModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var modal = $(this)
+  var myLink=button[0].href;
+  modal.find("iframe").attr("src",myLink);
+})
+$('#questionModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var modal = $(this)
+  var myLink=button[0].href;
+  modal.find("iframe").attr("src",myLink);
+})
+</script>
+<script>
+  $(document).ready(function() {
+	$("#buttonPostQuestion").on("click", function(e) {
+		e.preventDefault();
+		form = $("#formQuestion")[0];
+		if (form.checkValidity()) {
+			postQuestion();
+		} else {
+			form.reportValidity();
+		}
+	});
+});
+
+function postQuestion() {
+	url = contextPath + "post_question/" + productId;
+	question = $("#question").val();
+
+	jsonData = {questionContent: question};
+
+	$.ajax({
+		type: 'POST',
+		url: url,
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader(csrfHeaderName, csrfValue);
+		},
+		data: JSON.stringify(jsonData),
+		contentType: 'application/json'
+	}).done(function(response) {
+		$("#warningModal").on("hide.bs.modal", function(e) {
+			$("#question").val("");
+		});
+        warningModalDialog("Your question has been posted and awaiting for approval.")
+	}).fail(function() {
+		warningModalDialog("Failed to submit question. May be you have not logged in or session timed out. Try to login and post question again.");
+	});
+}
+</script>
+<!--CHKKK-->
+
+</body>
+</html>

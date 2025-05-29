@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+
+
+    <div  class="d-flex  border" style=" flex-wrap:wrap;">
+        <div class="p-2" th:each="catSection : ${section.categorySections}"  th:with="cat = ${catSection.category}">
+            <div class="p-2 myBorder d-flex align-items-center" style="width:150px; height:100px">
+                <a th:href="@{'/c/'+${cat.alias}}" class="p-2"><img th:src="@{${cat.getPhotosImagePath}}" width="50" style="border-radius:100px;"></a>
+                <div>
+                    <a  th:href="@{'/c/'+${cat.alias}}">[[${cat.name}]]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

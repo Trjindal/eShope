@@ -1,0 +1,123 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Edit Article','none')"/>
+<link rel="stylesheet" th:href="@{/assets/richtext/richtext.min.css}" />
+
+<body>
+
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Edit Article</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li><i class="fas fa-angle-right"></i><a th:href="@{/articles}">Articles</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>Edit Article</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="container py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+      <p class="text-uppercase">EDIT ARTICLE</p>
+      <h3 class="title-style">Registration Form</h3>
+    </div>
+    <div class="row contact-block">
+      <ul>
+        <li class="alert alert-danger" role="alert" th:if="${titleNotUnique!=null}" th:text="${titleNotUnique}"></li>
+        <li class="alert alert-danger" role="alert" th:if="${aliasNotUnique!=null}" th:text="${aliasNotUnique}"></li>
+        <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('article.*')}" th:text="${error}" />
+
+        <!--                    <li class="alert alert-danger" role="alert" th:each="error : ${#fields.errors('category.*')}" th:text="${error}"/>-->
+      </ul>
+      <form th:action="@{/articles/save}" method="post" class="signing-form"
+            th:object="${article}" >
+        <div class=" contact-right">
+          <div class="input-grids">
+            <input type="hidden" th:field="*{id}" placeholder="Name"
+                   class="contact-input"/>
+            <input type="text" th:field="*{title}" placeholder="Name"
+                   class="contact-input"/>
+            <input type="text" th:field="*{alias}" placeholder="Alias"
+                   class="contact-input"/>
+            <div class="row form-group">
+              <label class="col-form-label col-4">Type : </label>
+              <select th:field="*{type}" class="form-control" >
+                <option value="MENU_BOUND">Menu-Bound Article</option>
+                <option value="FREE">Free Article</option>
+              </select>
+            </div>
+            <div class="col-form-label form-group">
+              <label class="col-form-label col-4">Published : </label>
+              <input type="checkbox" id="my-chkbox" th:field="*{published}" name="enabled" />
+            </div>
+            <div class="row form-group">
+              <label>Content: </label>
+              <textarea class="form-control p-3" id="content" th:field="*{content}" rows="5"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="text-start">
+          <button type="submit" class="btn btn-style btn-style-3">Save Article</button>
+          <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/articles}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+<script th:src="@{/assets/richtext/jquery.richtext.min.js}"></script>
+<!--SHOW IMAGE THUMBNAIL-->
+<script th:src="@{/assets/js/imageThumbnail_ProductDetails.js}"></script>
+<!--THEME CHANGE-->
+<script>
+    richTextEditor=document.getElementsByClassName('richText-editor');
+    richText=document.getElementsByClassName('richText');
+    $("#content").richText();
+
+     setTimeout(myTheme, 30);
+
+
+    function myTheme(){
+    if(toggleSwitch.checked==true){
+         for(var i=0, len=richTextEditor.length; i<len; i++)
+        {
+            richText[i].style.backgroundColor = "#434242";
+            richTextEditor[i].style.backgroundColor = "#F3EFE0";
+        }
+    }else{
+     for(var i=0, len=richTextEditor.length; i<len; i++)
+    {
+        richText[i].style.backgroundColor = "#fafafa";
+        richTextEditor[i].style.backgroundColor = "white";
+    }
+    console.log("1 white");
+    }
+    }
+
+
+toggleSwitch.addEventListener('click',myTheme)
+
+
+</script>
+
+
+</body>
+
+</html>

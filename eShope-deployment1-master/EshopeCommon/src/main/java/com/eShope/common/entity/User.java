@@ -1,0 +1,121 @@
+package com.eShope.common.entity;
+
+import com.eShope.common.annotation.ChangePasswordValidator;
+import com.eShope.common.entity.Setting.Constants;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.*;
+
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(length = 128,nullable = false,unique = true)
+    @Email(message = "Please provide a valid email address" )
+    @Size(min=5,max=128,message="Email must be at least 5 and at most 128 characters long")
+    private String email;
+    @Column(length = 64,nullable = false)
+    @Size(min=5,max = 64, message="Password must be at least 5 and at most 64 characters long")
+    private String password;
+
+//    @Size(min=5, message="Password must be at least 5 characters long")
+    @ChangePasswordValidator
+    @Transient
+    @Column(length = 64,nullable = true)
+    private String changePassword;
+    @Column(name = "first_name",length = 45,nullable = false)
+    @NotBlank(message="First name must not be blank")
+    @Size(min=3, message="First name must be at least 3 and at most 45 characters long")
+    private String firstName;
+    @Column(name = "last_name",length = 45,nullable = false)
+    @NotBlank(message="Last name must not be blank")
+    @Size(min=3, message="Last name must be at least 3 at most 45 characters long")
+    private String lastName;
+    @Column(length = 64)
+    private String photos;
+    private boolean enabled;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name="users_roles",joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id")
+    )
+    private Set<Role> roles=new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();
+
+    public User(String email, String password, String firstName, String lastName) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
+    public void addRole(Role role){
+        this.roles.add(role);
+    }
+
+    public String getPhotosImagePath(){
+        if((Object) id==null ||photos==null) return "/assets/images/users/default-user.png";
+        String imgUrl= Constants.changeName(this.photos);
+        return Constants.S3_BASE_URI+"user-photos/"+this.id+"/"+imgUrl;
+
+    }
+
+    @Transient
+    public String getFullName(){
+        return firstName+" "+lastName;
+    }
+
+    public List<Article> getArticlesByUser() {
+        // Ensure the articles collection is fetched
+//        Hibernate.initialize(articles);
+
+        List<Article> userArticles = new ArrayList<>();
+        for (Article article : articles) {
+            if (this.equals(article.getUser())) {
+                userArticles.add(article);
+            }
+        }
+        return userArticles;
+    }
+
+    public boolean hasRole(String roleName){
+        Iterator<Role> iterator=roles.iterator();
+
+        while(iterator.hasNext()){
+            Role role=iterator.next();
+            if(role.getName().equals(roleName)){
+                return true;
+            }
+        }
+        return false;
+    }
+}

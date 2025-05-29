@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <!-- Google fonts -->
+    <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Template CSS Style link -->
+    <link rel="stylesheet" href="/eShopeAdmin/assets/css/style-starter.css">
+    <link rel="stylesheet" href="/eShopeAdmin/assets/css/all.css">
+    <!-- common jquery plugin -->
+    <script src="/eShopeAdmin/assets/js/jquery-3.3.1.min.js}"></script>
+    <!-- bootstrap -->
+    <script src="/eShopeAdmin/assets/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+<!-- header -->
+<header id="site-header" class="fixed-top">
+  <div class="container">
+      <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+          <input type="submit" />
+      </form>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a th:if="${SITE_LOGO=='None'||SITE_LOGO=='null'}" th:href="@{/home}" class="navbar-brand"><i class="fas fa-sharp fa-solid fa-cart-shopping"></i>[[${SITE_NAME}]]</a>
+        <a th:unless="${SITE_LOGO=='None'||SITE_LOGO=='null'}" th:href="@{/home}" class="navbar-brand"><img id="siteLogo" width="100" th:src="@{${SITE_LOGO}}"></a>
+    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
+          data-target="#navbarScroll,#searchNavbar" aria-controls="navbarScroll" aria-expanded="false"
+          aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+            <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+        </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
+            <!--  SEARCH BAR  -->
+            <div th:replace="Fragments/fragment::search_nav"></div>
+            <!--  /SEARCH BAR  -->
+
+            <!-- Start of Dynamic Header Menu Items -->
+            <th:block th:each="headerMenu : ${headerMenuItems}">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/m/' + ${headerMenu.alias}}">[[${headerMenu.title}]]</a>
+                </li>
+            </th:block>
+            <!-- End of Dynamic Header Menu Items -->
+
+
+
+<!--            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
+            <a th:href="@{/register}"   class="nav-link">Register</a>
+          </li>
+            <li class="nav-item" >
+                <!--            th:classappend="${#httpServletRequest.getRequestURI() == '/logout' ? 'active':''}"-->
+                <a th:href="@{/contact}" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAnonymous()" >
+                <!--             th:classappend="${#httpServletRequest.getRequestURI() == '/dashboard' ? 'active':''}"-->
+                <a th:href="@{/login}" class="nav-link" >Login</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()" >
+                <!--             th:classappend="${#httpServletRequest.getRequestURI() == '/dashboard' ? 'active':''}"-->
+                <a th:href="@{/cart}" class="nav-link" ><i class="fa-solid fa-cart-shopping"></i></a>
+            </li>
+        </ul>
+          <ul class="navbar-nav ">
+              <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown"> <span class="fas fa-user">&nbsp;</span><span sec:authentication="principal.fullName" class="userName"></span></a>
+                  <div class="dropdown-menu">
+                      <a class="dropdown-item " th:href="@{/account}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShope/account' ? 'active':''}" sec:authenticated()><i class="fa-solid fa-circle-info"></i> &nbsp; My Account</a>
+                      <a class="dropdown-item " th:href="@{/orders}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShope/orders' ? 'active':''}"><i class="fa-solid fa-address-book"></i> &nbsp; My Orders</a>
+                      <a class="dropdown-item " th:href="@{/address_book}" th:classappend="${#httpServletRequest.getRequestURI() == '/eShope/address_book' ? 'active':''}"><i class="fa-solid fa-address-book"></i> &nbsp; Address Book</a>
+                      <a class="dropdown-item " href="" id="logoutLink" ><i class="fas fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
+                  </div>
+              </li>
+          </ul>
+      </div>
+
+      <!-- toggle switch for light and dark theme -->
+      <div class="cont-ser-position">
+        <nav class="navigation">
+          <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+              <input type="checkbox" id="checkbox">
+              <div class="mode-container">
+                <i class="gg-sun"></i>
+                <i class="gg-moon"></i>
+              </div>
+            </label>
+          </div>
+        </nav>
+      </div>
+      <!-- //toggle switch for light and dark theme -->
+    </nav>
+  </div>
+
+</header>
+<!-- //header -->
+
+</body>
+
+</html>

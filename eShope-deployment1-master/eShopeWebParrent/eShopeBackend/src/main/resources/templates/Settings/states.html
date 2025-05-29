@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div>
+        <p>Use this page to manage states/provinces which will be chosen by the customer's in registration form.Click
+            load Country List first.</p>
+        <br>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="toast m-2 d-flex justify-content-center" role="alert" aria-live="polite" aria-atomic="true"
+             data-delay="3000">
+            <div role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-body">
+                    <span id="toastMessage1"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="button" value="Load Country List" id="buttonLoadCountriesForStates"
+               class="btn btn-style btn-style-1"/>
+    </div>
+    <div class="form-group row m-2">
+        <div class="col-sm-2 d-flex flex-row">
+            <label class="col-form-label m-1 " >Selected Country:</label>
+        </div>
+        <div class="col-sm-10">
+            <select class="form-control m-2"  id="dropDownCountriesForStates"></select>
+        </div>
+    </div>
+    <div class="form-group row m-2">
+        <div class="col-sm-2 d-flex flex-row">
+            <label class="col-form-label m-1 " >All States/Provinces:</label>
+        </div>
+        <div class="col-sm-10">
+            <select class="form-control m-2" style="height:300px;" id="statesDropDown" size="3"></select>
+        </div>
+    </div>
+    <div class="form-group d-flex flex-row m-2">
+        <div class="col-sm-2 d-flex flex-row">
+            <label class="col-form-label m-1 " id="labelStateName">State/Provinces Name:</label>
+        </div>
+        <div class="col-sm-6">
+            <input type="text" class="form-control m-2"  id="fieldStateName" />
+        </div>
+        <div class="col-sm-4 d-flex flex-row p-3">
+            <form id="formState">
+                <button  id="buttonAddState"  class="btn btn-style btn-style-2 " value="Add" disabled="disabled">Add</button>
+                <button  id="buttonUpdateState" class="btn btn-style btn-style-2" disabled="disabled">Update</button>
+                <button  id="buttonDeleteState" class="btn btn-style btn-style-2 " disabled="disabled">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

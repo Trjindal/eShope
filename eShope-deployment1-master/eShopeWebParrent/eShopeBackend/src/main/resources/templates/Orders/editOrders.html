@@ -1,0 +1,289 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Orders','none')"/>
+
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Orders</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li><i class="fas fa-angle-right"></i><a th:href="@{/orders}">Orders</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>Edit Order</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="container py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+      <p class="text-uppercase">Edit Existing Order</p>
+      <h3 class="title-style">Order Details</h3>
+    </div>
+    <div class="row ">
+      <div class="col-md contact-right">
+        <!-- Nav tabs -->
+
+        <ul class="nav nav-tabs " id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#overview" role="tab">Overview</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#products" role="tab">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#shipping" role="tab">Shipping</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#track" role="tab">Track</a>
+          </li>
+        </ul>
+        <!-- Tab panes -->
+        <form th:action="@{/orders/save}" method="post" class="signing-form" onsubmit="return processFormBeforeSubmit()">
+          <input type="hidden" th:field="${order.id}"/>
+          <input type="hidden" th:field="${order.customer}"/>
+        <div class="tab-content">
+          <div class="tab-pane  p-3 " id="overview" role="tabpanel">
+            <div th:replace="Orders/editOrdersOverview::content"></div>
+          </div>
+          <div class="tab-pane p-3  " id="products" role="tabpanel">
+            <div th:replace="Orders/editOrdersProducts::content"></div>
+          </div>
+          <div class="tab-pane p-3 " id="shipping" role="tabpanel">
+            <div th:replace="Orders/editOrdersShipping::content"></div>
+          </div>
+          <div class="tab-pane p-3 active" id="track" role="tabpanel">
+            <div th:replace="Orders/editOrdersTrack::content"></div>
+          </div>
+        </div>
+          <!--                            SAVE BUTTON-->
+          <div class="text-start">
+            <button type="submit" class="btn btn-style btn-style-3">Save Product</button>
+            <a type="button" value="cancel" class="btn btn-style btn-style-3" th:href="@{/orders}">Cancel</a>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="col-md-2 login-center text-start">
+  <a th:href="@{/orders}">
+    <button class="btn btn-style btn-style-3 text-left">BACK</button>
+  </a>
+</div>
+
+
+<!--ADD PRODUCT MODAL-->
+<div class="modal fade " id="addProductModal" role="dialog">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" >Add Product</h5>
+
+        <button type="button" class="close closeBtn" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item" style="height: 50rem!important;"></iframe>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 closeBtn" >Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--  /ADD PRODUCT MODAL    -->
+
+
+<div class="modal fade " id="myModal1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="deleteLabel">Delete Confirmation</h5>
+
+        <button type="button" class="close closeBtn1" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="confirmText"></span>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 closeBtn1" >Close</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="modalTitle">Warning !!!</h5>
+
+        <button type="button" class="close closeBtn3" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="modalBody">No shipping rate found for the given destination. You have to enter shipping cost manually.</p>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 closeBtn3" >Close</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div th:replace="Fragments/fragment::deleteModalTemplate"/>
+
+<div th:replace="Fragments/fragment::warningModalTemplate"/>
+<!-- footer -->
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+<script>
+
+<!--chk.forEach(function(i){-->
+<!--  console.log(i.id)-->
+<!--})-->
+
+
+</script>
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--    THEME CHANGE    -->
+<div th:replace="Fragments/fragment::theme_change"/>
+<!--    /THEME CHANGE    -->
+
+//SHOWING ADD PRODUCT MODAL
+<script>
+
+
+
+
+  $("#addProduct").on("click",function(e){
+  e.preventDefault();
+     $('#addProductModal').modal("show")
+  })
+
+  $('#addProductModal').on('show.bs.modal', function (event) {
+  var myLink="http://localhost:8080/orders/search_product";
+  $(this).find("iframe").attr("src",myLink);
+})
+
+  $(".closeBtn1").on("click",function(e){
+  $('#myModal1').modal("hide")
+  })
+
+  $(".closeBtn2").on("click",function(e){
+  $('#addProductModal').modal("hide")
+  })
+
+  $(".closeBtn3").on("click",function(e){
+  $('#modalDialog').modal("hide")
+  })
+
+
+
+</script>
+
+
+<script>
+  contextPath="[[@{/}]]";
+  var csrfHeaderName="[[${_csrf.headerName}]]";
+  var csrfValue="[[${_csrf.token}]]";
+
+</script>
+
+
+<script>
+        function warningModalDialog(message) {
+        $("#warningText").text(message);
+        $("#warningModal").modal('show');
+        }
+</script>
+
+
+<script th:src="@{/assets/js/jquery.number.min.js}"></script>
+<script th:src="@{/assets/js/formatAmountNumber.js}"></script>
+<script th:src="@{/assets/js/addingProductInEditOrder.js}"></script>
+<script th:src="@{/assets/js/removingProductInEditOrder.js}"></script>
+<script th:src="@{/assets/js/order_form_tracks.js}"></script>
+
+
+
+//TO SHOW COUNTRIES/STATE DROPDOWN
+<script>
+    var dropDownCountry;
+    var dataListState;
+    var fieldState;
+    var contextPath="[[@{/}]]";
+    $(document).ready(function() {
+        dropDownCountry=$("#country");
+        dataListState=$("#listStates");
+        fieldState=$("#state");
+
+        dropDownCountry.on("change",function(){
+            loadStatesForCountry();
+           fieldState.val("").focus();
+        });
+    });
+
+    function loadStatesForCountry(){
+        selectedCountry=$("#country option:selected");
+
+        countryId=selectedCountry.val();
+        url=contextPath+"states/listByCountry/"+countryId;
+
+        $.get(url,function(responseJSON){
+            dataListState.empty();
+
+            $.each(responseJSON,function(index,state){
+                $("<option>").val(state.name).text(state.name).appendTo (dataListState);
+            })
+        });
+    }
+
+</script>
+
+
+</body>
+</html>

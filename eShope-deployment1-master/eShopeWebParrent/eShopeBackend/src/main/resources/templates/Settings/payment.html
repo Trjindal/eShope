@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="content" th:remove="tag">
+    <form th:action="@{/settings/save_payment}" method="post">
+        <input type="hidden" name="_csrf" value="${csrf}">
+        <div class="input-grids">
+            <div class="row form-group">
+                <label class="col-form-label col-sm-2">PayPal API Base URL : </label>
+                <input type="text" th:value="${PAYPAL_API_BASE_URL}" placeholder="PAYPAL_API_BASE_URL"
+                       name="PAYPAL_API_BASE_URL" class="contact-input col-sm-10"/>
+            </div>
+            <div class="row form-group">
+                <label class="col-form-label col-sm-2">PayPal Client Id : </label>
+                <input type="text" th:value="${PAYPAL_API_CLIENT_ID}" placeholder="PAYPAL_API_CLIENT_ID"
+                       name="PAYPAL_API_CLIENT_ID" class="contact-input col-sm-10"/>
+            </div>
+            <div class="row form-group">
+                <label class="col-form-label col-sm-2">PayPal Client Secret : </label>
+                <input type="text" th:value="${PAYPAL_API_CLIENT_SECRET}" placeholder="PAYPAL_API_CLIENT_SECRET"
+                       name="PAYPAL_API_CLIENT_SECRET" class="contact-input col-sm-10"/>
+            </div>
+
+
+        </div>
+        <div class="text-start">
+            <button type="submit" class="btn btn-style btn-style-3">Save</button>
+            <a type="button" value="cancel" class="btn btn-style btn-style-3" href="/eShopeAdmin/home">Cancel</a>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

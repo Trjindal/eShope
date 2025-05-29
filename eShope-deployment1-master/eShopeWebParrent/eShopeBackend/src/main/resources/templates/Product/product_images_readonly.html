@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div th:fragment="content" th:remove="tag">
+  <div class="row form-group">
+    <div class="col-sm-4 p-2">
+      <div class="myBorder">
+        <div class="p-2">
+          <label class="my-col-form-label">Main Image : [[${product.mainImage}]]</label>
+        </div>
+        <img alt="Main Image Preview" class="thumbnail img-fluid row mx-auto mb-2"
+             th:src="@{${product.getMainImagePath}}">
+      </div>
+    </div>
+
+    <!--        FOR SHOWING EXTRA IMAGES IN EDIT MODE-->
+    <th:block th:each="productImage,status: ${product.images}">
+      <div class="col-sm-4 p-2">
+        <div class="myBorder">
+          <div class="p-2">
+            <label class="my-col-form-label">Extra Image [[${status.index+1}]]:
+              [[${productImage.name}]]</label>
+          </div>
+          <img th:alt="'Extra Image '+${status.index+1}+' Preview'"
+               class="img-fluid row mx-auto mb-2 thumbnail" th:src="@{${productImage.getImagePath}}">
+        </div>
+      </div>
+    </th:block>
+
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<div class="modal-header border-bottom-0" xmlns:th="http://www.w3.org/1999/xhtml">
+  <h5 class="modal-title text-center" id="viewCustomerLabel">Customer Details</h5>
+  <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body contact-block">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs " id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#general" role="tab">General</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link " data-toggle="tab" href="#address" role="tab">Address</a>
+    </li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane p-3 active " id="general" role="tabpanel">
+      <div class="row form-group">
+        <label class="col-form-label col-sm">Customer Id  </label>
+        <input type="text"  th:field="${customer.id}" placeholder="Id" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+        <label class="col-form-label col-sm">Full Name  </label>
+        <input type="text"  th:field="${customer.FullName}" placeholder="FullName" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+        <label class="col-form-label col-sm">Email : </label>
+        <input type="text"  th:field="${customer.email}" placeholder="email" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+        <label class="col-form-label col-sm">Phone Number : </label>
+        <input type="text"  th:field="${customer.phoneNumber}" placeholder="phoneNumber" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+      <label class="col-form-label col-sm-2"> Enable : </label>
+      <input type="checkbox" id="my-chkbox" th:field="${customer.enabled}" readonly name="enabled"  class="col-8"/>
+      </div>
+      <div class=" form-group d-flex flex-row align-items-center">
+        <label class="col-form-label col-sm"> Created Time : </label>
+        <span  th:text="${#dates.format(customer.createdTime,'yyyy-MM-dd HH:mm:ss')}" placeholder="Name"  class="contact-input col-sm-10"/>
+      </div>
+    </div>
+    <div class="tab-pane p-3 " id="address" role="tabpanel">
+      <div class="row form-group">
+        <label class="col-form-label col-sm">Address Line 1 : </label>
+        <input type="text"  th:field="${customer.addressLine1}" placeholder="addressLine1" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+        <label class="col-form-label col-sm-2">Address Line 2: </label>
+        <input type="text"  th:field="${customer.addressLine2}" placeholder="addressLine2" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+        <label class="col-form-label col-sm-2">Postal Code : </label>
+        <input type="text"  th:field="${customer.postalCode}" placeholder="Postal Code" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+        <label class="col-form-label col-sm-2">Country : </label>
+        <input type="text"  th:field="${customer.country.name}" placeholder="Country" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+        <label class="col-form-label col-sm-2">State : </label>
+        <input type="text"  th:field="${customer.state}" placeholder="State" readonly class="contact-input col-sm-10"/>
+      </div>
+      <div class="row form-group">
+        <label class="col-form-label col-sm-2">City : </label>
+        <input type="text"  th:field="${customer.city}" placeholder="Name"  class="contact-input col-sm-10"/>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn btn-style btn-style-3 " data-dismiss="modal">Close</button>
+</div>

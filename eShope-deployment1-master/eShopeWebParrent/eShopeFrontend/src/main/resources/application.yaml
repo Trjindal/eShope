@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/eshope
+    password: password
+  hikari:
+    minimum-idle:1
+    maximum-pool-size:1
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      javax:
+        persistence:
+          validation:
+            mode: none
+    hibernate:
+      ddl-auto: update
+  mail:
+    properties:
+      smtp:
+        ssl:
+          enable: 'true'
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 917902517560-av4a0gdku75cr4241bl4dudscg7ovqdg.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+
+server:
+#  servlet:
+#    context-path: /eShope
+  port: '8000'

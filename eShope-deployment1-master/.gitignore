@@ -1,0 +1,8 @@
+# Project exclude paths
+/EshopeCommon/target/
+/eShopeWebParrent/eShopeBackend/target/
+/eShopeWebParrent/eShopeFrontend/target/
+/eShopeWebParrent/target/
+ambient-elf-415817-8f6cf129bce7.json
+coherent-ascent-461208-e3-3020940f2d4f.json
+.idea

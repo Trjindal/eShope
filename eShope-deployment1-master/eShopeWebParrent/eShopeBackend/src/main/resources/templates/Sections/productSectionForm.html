@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Home Page Customization | [[${pageTitle}]]' ,'none')"/>
+
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Home Page Customization</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{/home}">Dashboard</a></li>
+        <li class="active"><i class="fas fa-angle-right"></i>[[${pageTitle}]]</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<div class="site-section">
+
+  <div class="table-responsive-class">
+
+    <div class="row mb-4">
+      <div class="overview-wrap">
+        <h3 class="heading-21921 p-3">Home Page Customization | [[${pageTitle}]]</h3>
+      </div>
+      <div class="row contact-block">
+        <form th:action="@{/sections/save/product}" th:object="${section}" method="post"
+            class="signing-form">
+          <div class=" contact-right">
+            <div class="input-grids">
+
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{type}"/>
+                <input type="hidden" th:field="*{sectionOrder}"/>
+              <div th:replace="sections/generalSectionForm :: content">General Section Form</div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Products:</label>
+                <a class="col-sm-10 col-form-label" th:href="@{'/orders/search_product'}"  >
+                  <button class="btn btn-style btn-style-1 text-left " id="addProduct">Add Product</button>
+                </a>
+              </div>
+              <div class="row" id="productList">
+                <th:block th:each="productSection, status : ${section.productSections}">
+                  <div class="col-sm-2" th:id="'col' + ${status.count}" draggable="true" ondragstart="dragProduct(event)" th:with="product = ${productSection.product}">
+                    <input type="hidden" name="productId" th:value="${product.id}" class="product-id-hidden" />
+                    <input type="hidden" name="productSectionId" th:value="${productSection.id}" />
+                    <div class="mt-1">
+                      <a class="fas fa-trash icon-dark link-remove" href="" th:colNumber="${status.count}"></a>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <a class="fas fa-chevron-left icon-dark link-move-left" href="" title="Move this product to the left" th:colNumber="${status.count}"></a>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <a class="fas fa-chevron-right icon-dark link-move-right" href="" title="Move this product to the right" th:colNumber="${status.count}"></a>
+                    </div>
+                    <div><img th:src="@{${product.mainImagePath}}" height="100px" /></div>
+                    <div>
+                      <b>[[${product.name}]]</b>
+                    </div>
+                  </div>
+                </th:block>
+              </div>
+            </div>
+          </div>
+          <div class="text-start">
+            <button type="submit" class="btn btn-style btn-style-3">Save Section</button>
+            <a type="button" value="cancel" class="btn btn-style btn-style-3"
+               th:href="@{/sections}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!--ADD PRODUCT MODAL-->
+<div class="modal fade " id="addProductModal" role="dialog">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content myModal">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" >Add Product</h5>
+
+        <button type="button" class="close closeBtn" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item" style="height: 50rem!important;"></iframe>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-end">
+          <button type="button" class="btn btn btn-style btn-style-3 closeBtn" >Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--  /ADD PRODUCT MODAL    -->
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--THEME CHANGE-->
+<div th:replace="Fragments/fragment::theme_change"/>
+
+<!--</script>-->
+
+//SHOWING ADD PRODUCT MODAL
+<script>
+
+
+
+
+  $("#addProduct").on("click",function(e){
+  e.preventDefault();
+     $('#addProductModal').modal("show")
+  })
+
+  $('#addProductModal').on('show.bs.modal', function (event) {
+  var myLink=contextPath+"orders/search_product";
+  $(this).find("iframe").attr("src",myLink);
+})
+
+  $(".closeBtn1").on("click",function(e){
+  $('#myModal1').modal("hide")
+  })
+
+  $(".closeBtn2").on("click",function(e){
+  $('#addProductModal').modal("hide")
+  })
+
+  $(".closeBtn3").on("click",function(e){
+  $('#modalDialog').modal("hide")
+  })
+
+
+
+</script>
+<script>
+  windowURL=window.location.href;
+  const regex = /([^/]*\/){3}/;
+  contextPath=windowURL.match(regex)[0];
+  var csrfHeaderName="[[${_csrf.headerName}]]";
+  var csrfValue="[[${_csrf.token}]]";
+
+</script>
+
+<script th:src="@{/assets/js/product_section_form.js}"></script>
+</body>
+</html>

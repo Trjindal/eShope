@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div class="m-2">
+      <label>Short Description: </label>
+      <div class="border p-2 m-2" th:utext="${product.shortDescription}"></div>
+    </div>
+    <div class="m-2 mt-3">
+      <label>Full Description: </label>
+      <div class="border p-2 m-2" th:utext="${product.fullDescription}"></div>
+    </div>
+</div>
+
+</body>
+</html>

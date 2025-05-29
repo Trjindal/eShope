@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="page_head(title,remove)" th:remove="${remove}">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[[${SITE_NAME}]]-[[${title}]]</title>
+  <!-- Google fonts -->
+  <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Template CSS Style link -->
+  <link rel="stylesheet" th:href="@{/assets/css/style-starter.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/all.css}">
+</head>
+
+
+  <div th:fragment="common_JS">
+
+    <!-- Js scripts -->
+    <!-- move top -->
+    <button onclick="topFunction()" id="movetop" title="Go to top">
+      <span class="fas fa-level-up-alt" aria-hidden="true"></span>
+    </button>
+    <script>
+
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+            } else {
+                document.getElementById("movetop").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+    <!-- //move top -->
+
+    <!-- common jquery plugin -->
+    <script th:src="@{/assets/js/jquery-3.3.1.min.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- //common jquery plugin -->
+
+    <!-- theme switch js (light and dark)-->
+    <script th:src="@{/assets/js/theme-change.js}"></script>
+    <!-- //theme switch js (light and dark)-->
+
+    <!-- MENU-JS -->
+    <script>
+        $(window).on("scroll", function () {
+            var scroll = $(window).scrollTop();
+
+            if (scroll >= 80) {
+                $("#site-header").addClass("nav-fixed");
+            } else {
+                $("#site-header").removeClass("nav-fixed");
+            }
+        });
+
+        //Main navigation Active Class Add Remove
+        $(".navbar-toggler").on("click", function () {
+            $("header").toggleClass("active");
+        });
+        $(document).on("ready", function () {
+            if ($(window).width() > 991) {
+                $("header").removeClass("active");
+            }
+            $(window).on("resize", function () {
+                if ($(window).width() > 991) {
+                    $("header").removeClass("active");
+                }
+            });
+        });
+
+    </script>
+    <!-- //MENU-JS -->
+
+      <!--    LOGOUT FUNCTIONALITY-->
+      <script>
+            $(document).ready(function(){
+                $("#logoutLink").on("click",function(e){
+                    e.preventDefault();
+                    document.logoutForm.submit();
+               });
+            });
+      </script>
+      <!--   ! LOGOUT FUNCTIONALITY-->
+
+    <!-- disable body scroll which navbar is in active -->
+    <script>
+        $(function () {
+            $('.navbar-toggler').click(function () {
+                $('body').toggleClass('noscroll');
+            })
+        });
+    </script>
+    <!-- //disable body scroll which navbar is in active -->
+<!--      <script>-->
+<!--        var img="[[${SITE_LOGO}]]"-->
+<!--        if(img!=null){-->
+<!--        console.log(img)-->
+<!--          $("#siteLogo").attr("src", img);-->
+<!--        }-->
+<!--    </script>-->
+    <!-- bootstrap -->
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <!-- //bootstrap -->
+    <!-- //Js scripts -->
+  </div>
+
+<div th:fragment="warningModalTemplate">
+    <div class="modal fade " id="warningModal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content myModal">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="warningLabel">Please Note!!! </h5>
+
+                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span id="warningText"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="text-end">
+                        <button type="button" class="btn btn btn-style btn-style-3 closeBtn3" >Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div th:fragment="warningModal(message)">
+
+</div>
+
+<!-- ROW HEADINGS-->
+<th class="sorting" scope="col" th:fragment="column_link(link,fieldName,columnLabel)">
+    <a th:href="@{'/'+${link}+'/page/' + ${currentPage} + '?sortField='+${fieldName}+'&sortDir=' + ${reverseSortDir}+${keyword!=null?'&keyword='+keyword:''}}">[[${columnLabel}]]</a>
+    <span th:if="${sortField!=fieldName}" class="fas fa-sort-up" style="font-size:8px;"></span>
+    <span th:if="${sortField==fieldName}" th:class="${sortDir=='asc'?'fas fa-sort-up':'fas fa-sort-down'}" style="font-size:8px;"></span>
+</th>
+<!--/ ROW HEADINGS-->
+
+
+<div th:fragment="products_card(listProducts)" >
+        <div class="row justify-content-center align-items-center m-5">
+            <th:block th:each="product:${listProducts}">
+                <div class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center mb-3" >
+                    <div class=" w3l-grids-block-5 w-75  ">
+                        <div class="coursecard-single " style="height=500px;">
+                            <a th:href="@{'/p/'+${product.alias}}" class="grids5-info position-relative">
+                                <img th:src="@{${product.getMainImagePath}} "  alt="" class="img-fluid"/>
+                            </a>
+                            <div class="content-main-top">
+                                <div class="content-top mb-4 mt-3">
+                                    <ul class="list-unstyled d-flex align-items-center justify-content-between">
+                                        <li th:if="${product.discountPercentage<=0}">
+                                            <i class="fas fa-regular fa-money-check-dollar"></i>
+                                            <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                            [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+                                            <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                        </li>
+                                        <li th:if="${product.discountPercentage>0}">
+                                            <i class="fas fa-regular fa-money-check-dollar"></i>
+                                            <del style="color:darkred;">
+                                                <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                                [[${#numbers.formatDecimal(product.price,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+                                                <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                            </del>
+                                            &nbsp;
+                                            <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+                                            [[${#numbers.formatDecimal(product.getDiscountPrice,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+                                            <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}">[[${CURRENCY_SYMBOL}]] </span>
+                                        </li>
+                                        <li>
+                                            <th:block th:if="${product.averageRating == 0}">
+                                                <i class="fas fa-star" style="color:#666;"></i> [[${product.averageRating}]]
+                                            </th:block>
+                                            <th:block th:if="${product.averageRating > 0}">
+                                                <i class="fas fa-star" ></i> [[${#numbers.formatDecimal(product.averageRating,1,THOUSANDS_POINT_TYPE,1,DECIMAL_POINT_TYPE)}]]
+                                            </th:block>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <h4><a th:href="@{'/p/'+${product.alias}}">[[${product.getShortName}]]</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+
+    </div>
+
+<!-- pagination -->
+<div th:fragment="pagination(moduleURL,entityName)">
+  <div class="text-center m-1" th:if="${totalItems>0}">
+    <span>Showing [[${entityName}]] # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]] </span>
+  </div>
+  <div class="text-center m-1" th:unless="${totalItems>0}">
+    <span>No [[${entityName}]] Found</span>
+  </div>
+  <div th:if="${totalPages>1}">
+    <div class="pagination-style text-center mt-5 mb-5">
+      <ul>
+        <li>
+          <a th:if="${currentPage > 1}"  th:href="@{${moduleURL}+'1' +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+<!--            th:replace="fragments :: page_link(${moduleURL}, '1')"-->
+            <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+          </a>
+          <a th:unless="${currentPage > 1}" class="not-allowed" disabled="">
+            <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+          </a>
+          <a th:if="${currentPage > 1}" th:href="@{${moduleURL}+ ${currentPage - 1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+            <span class="fa fa-angle-left" aria-hidden="true"></span>
+          </a>
+          <a th:unless="${currentPage > 1}" class="not-allowed" disabled="">
+            <span class="fa fa-angle-left" aria-hidden="true"></span>
+          </a>
+        </li>
+        <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+              <li>
+                  <a th:if="${currentPage != i}" th:href="@{${moduleURL}+ ${i} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">[[${i}]]</a>
+                  <a class="active" th:unless="${currentPage != i}">[[${i}]]</a>
+              </li>
+        </span>
+        <li>
+          <a th:if="${currentPage < totalPages}" th:href="@{${moduleURL}+ ${currentPage + 1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+            <span class="fa fa-angle-right" aria-hidden="true"></span>
+          </a>
+          <a th:unless="${currentPage < totalPages}" class="not-allowed" disabled="">
+            <span class="fa fa-angle-right" aria-hidden="true"></span>
+          </a>
+          <a th:if="${currentPage < totalPages}" th:href="@{${moduleURL}+ ${totalPages} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+            <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+          </a>
+          <a th:unless="${currentPage < totalPages}" class="not-allowed" disabled="">
+            <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!--    /pagination     -->
+
+<div th:fragment="format_currency(amount)" class="d-inline">
+    <span th:if="${CURRENCY_SYMBOL_POSITION=='Before Price'}">[[${CURRENCY_SYMBOL}]] </span>
+    <span>[[${#numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+    <span th:if="${CURRENCY_SYMBOL_POSITION=='After Price'}"> [[${CURRENCY_SYMBOL}]] </span>
+</div>
+
+<div th:fragment="format_time(dateTime)" th:remove="tag">
+    <span th:text="${#dates.format(dateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+</div>
+
+<!--    SEARCH BAR  -->
+<div th:fragment="search_nav" class="row">
+    <div>
+        <nav class="navbar navbar-expand-sm bg-light p-0">
+            <div class="collapse navbar-collapse" id="searchNavbar" style="box-shadow:none;overflow-y:hidden;">
+                <form class="d-flex" th:action="@{/search}" method="get">
+                    <input type="search" name="keyword" class="form-control mr-sm-2" th:value="${keyword}" placeholder="keyword " required/>
+                    <input type="submit" class="btn search-btn i"/>
+                </form>
+<!--                <form action="#" class="subscribe d-flex" method="post">-->
+<!--                    <input type="text" name="text" placeholder="Search" required="">-->
+<!--                    <button class="button-style"><span class="fa fa-paper-plane"-->
+<!--                                                       aria-hidden="true"></span></button>-->
+<!--                </form>-->
+            </div>
+        </nav>
+    </div>
+</div>
+<!--    /SEARCH BAR  -->
+
+<!--    THEME CHANGE    -->
+<div th:fragment="theme_change">
+    <script>
+ function myTheme(){
+    if(toggleSwitch.checked==true){
+    if( document.getElementById('myMenu')!=null){
+     document.getElementById('myMenu').style.backgroundColor="var(--bg-color)";
+    }
+    $(".myModal").each(function(i,element){
+       element.style.backgroundColor="var(--bg-color)";
+    })
+    }else{
+     if( document.getElementById('myMenu')!=null){
+     document.getElementById('myMenu').style.backgroundColor="white";
+    }
+    $(".myModal").each(function(i,element){
+       element.style.backgroundColor="white";
+    })
+    }}
+
+    setTimeout(myTheme, 1);
+
+    toggleSwitch.addEventListener('click',function(){
+        setTimeout(myTheme, 100);
+    });
+    </script>
+</div>
+<!--    /THEME CHANGE    -->
+
+
+<div th:fragment="currency_input_r(amount)" th:remove="tag">
+    <input type="text" th:value="${(CURRENCY_SYMBOL_POSITION=='Before Price'?CURRENCY_SYMBOL:'') + #numbers.formatDecimal(amount,1,THOUSANDS_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION=='After Price'?CURRENCY_SYMBOL:'')}" readonly class="contact-input col-sm-10"/>
+</div>
+
+<div th:fragment="clear_filter(link)">
+    <script>
+        var link="[[${link}]]"
+        function clearFilter(){
+        window.location="/eShope/"+link;
+        }
+
+    </script>
+</div>
+
+<body>
+
+</body>
+</html>

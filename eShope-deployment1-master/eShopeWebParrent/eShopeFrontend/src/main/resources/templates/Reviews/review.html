@@ -1,0 +1,202 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Reviews','none')"/>
+<body>
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+  <div class="w3l-breadcrumb py-lg-5">
+    <div class="container pt-4 pb-sm-4">
+      <h4 class="inner-text-title pt-5">Your Reviews</h4>
+      <ul class="breadcrumbs-custom-path">
+        <li><a th:href="@{'/'}">Home</a><i class="fas fa-angle-right"></i></li>
+        <li class="active">Your Reviews</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- //inner banner -->
+
+<section class="w3l-contact py-5" id="contact">
+  <div class="px-md-3 py-md-5 py-4">
+    <div class="title-main text-center mx-auto mb-md-5 mb-4 " style="max-width:500px;">
+      <h3 class="title-style">Your Reviews</h3>
+    </div>
+
+    <div class="table-responsive-class">
+
+      <ul>
+        <li class="alert alert-success text-center" role="alert" th:if="${message!=null}">[[${message}]] </li>
+      </ul>
+
+      <div class="row mb-4">
+        <div class="overview-wrap user-block">
+          <form th:action="@{/reviews/page/1}" class="w-100">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+            <div class="d-flex flex-row">
+              <input type="search" name="reviewKeyword" required th:value="${reviewKeyword}" class="m-3"
+                     placeholder="Search box">
+              <button type="submit" value="search" class=" btn btn-style btn-style-2   text-center"><i
+                      class="fas fa-regular fa-magnifying-glass"></i></button>
+              <button type="button" value="Clear" class=" btn btn-style btn-style-2   text-left"
+                      onclick="clearFilter()">Clear
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!--        table started-->
+      <div class="full-details">
+        <table class="table table-striped ">
+          <thead class="table-dark w-100">
+          <tr>
+            <th th:replace="~{Fragments/fragment::column_link('reviews','id','Id')}"></th>
+            <th th:replace="~{Fragments/fragment::column_link('reviews','product.name','Product')}"></th>
+            <th th:replace="~{Fragments/fragment::column_link('reviews','headline','Headline')}"></th>
+            <th th:replace="~{Fragments/fragment::column_link('reviews','rating','Rating')}"></th>
+            <th th:replace="~{Fragments/fragment::column_link('reviews','reviewTime','reviewTime')}"></th>
+            <th class="sorting" scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="review: ${listAllReviews}">
+            <td scope="row" th:text="${review.id}"></td>
+            <td>
+              <a th:text="${review.product.shortName}" th:href="@{'/p/'+${review.product.alias}}" class="link-detail-product" title="view this Product details" ></a>
+            </td>
+            <td th:text="${review.headline}" ></td>
+            <td th:text="${review.rating}" ></td>
+            <td th:text="${review.reviewTime}"></td>
+            <td>
+              <a class="fas fa-light fa-file-alt" th:href="@{'/reviews/detail/'+${review.id}}"
+                 title="view this review" data-toggle="modal" data-target="#viewReviewModal" th:attr="data-whatever=${review.id}"></a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- table less-details-->
+      <div class="less-details">
+        <th:block th:each="review: ${listAllReviews}">
+          <div class="col-12 col-md-4">
+            <div class=" w3l-grids-block-5   m-3">
+              <div class="card myModal" style="box-shadow: 0.1px 0.1px 0.1px 2px #ffffff24;">
+                <div class="card-header">
+                  <div class="d-flex">
+                    <div class="col">
+                      <h6>Review Id: # [[${review.id}]]</h6>
+                    </div>
+                    <div class="d-flex ">
+                      <div class="justify-content-center">
+                        <a class="fas fa-light fa-file-alt" th:href="@{'/reviews/detail/'+${review.id}}"
+                           title="view this review" data-toggle="modal" data-target="#viewReviewModal" th:attr="data-whatever=${review.id}"></a>
+                      </div>
+                      &nbsp
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body text-left">
+                  <div class="m-1">
+                    <b>Product:</b>
+                    <a th:text="${review.product.shortName}" th:href="@{'/p/'+${review.product.alias}}" class="link-detail-product" title="view this Product details" ></a>
+                  </div>
+                  <div class="m-1">
+                    <b>Headline:</b>
+                    <span th:text="${review.headline}" ></span>
+                  </div>
+                  <div class="m-1">
+                    <b>Rating:</b>
+                    <span th:text="${review.rating}" ></span>
+                  </div>
+
+
+
+                </div>
+                <div class="card-footer text-muted">
+                  <div class="m-1">
+                    <b>Review Time:</b>
+                    <span th:text="${review.reviewTime}" ></span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </th:block>
+      </div>
+      <!-- table less-details END-->
+
+
+
+    </div>
+
+  </div>
+</section>
+
+<div class="modal fade " id="viewReviewModal" role="dialog" >
+  <div class="modal-dialog modal-dialog-centered modal-xl " >
+    <div class="modal-content myModal">
+    </div>
+  </div>
+</div>
+
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/reviews/page/','reviews')"/>
+<!-- /pagination -->
+
+
+
+
+
+
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--    THEME CHANGE    -->
+<div th:replace="Fragments/fragment::theme_change"/>
+<!--    /THEME CHANGE    -->
+
+
+<!--CLEAR FILTER-->
+<div th:replace="Fragments/fragment::clear_filter('reviews')"/>
+
+<script>
+    contextPath="[[@{/}]]"
+    var csrfHeaderName="[[${_csrf.headerName}]]";
+    var csrfValue="[[${_csrf.token}]]";
+
+</script>
+
+<script>
+
+$('#viewReviewModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var myLink=button.attr("href");
+  var modal = $(this)
+
+  modal.find('.modal-content').load(myLink)
+})
+
+</script>
+
+
+
+</body>
+</html>

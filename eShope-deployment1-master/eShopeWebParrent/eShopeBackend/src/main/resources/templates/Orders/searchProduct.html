@@ -1,0 +1,122 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="Fragments/fragment::page_head('Add Product','none')"/>
+
+<body>
+
+<!-- header -->
+<div id="site-header" class=" row">
+    <div class="container d-none">
+        <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+            <input type="submit" />
+        </form>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <!-- toggle switch for light and dark theme -->
+            <div class="cont-ser-position ">
+                <nav class="navigation">
+                    <div class="theme-switch-wrapper">
+                        <label class="theme-switch" for="checkbox">
+                            <input type="checkbox" id="checkbox">
+                            <div class="mode-container">
+                                <i class="gg-sun"></i>
+                                <i class="gg-moon"></i>
+                            </div>
+                        </label>
+                    </div>
+                </nav>
+            </div>
+            <!-- //toggle switch for light and dark theme -->
+        </nav>
+    </div>
+</div>
+<!-- //header -->
+
+<div class="row">
+    <div class="container py-3 w3l-contact ">
+        <div class="w3l-footer-29-main">
+            <form th:action="@{/orders/search_product}" class="subscribe d-flex" >
+                <input type="search" name="keyword" placeholder="product name"  class="w-75" required>
+                <button class="button-style w-25"><span class="fa fa-paper-plane" aria-hidden="true"></span></button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--SHOWING PRODUCTS-->
+
+
+<div th:replace="Fragments/fragment::products_card(${listProducts})"/>
+<!--SHOWING PRODUCTS-->
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/orders/search_product/','products')"/>
+<!-- /pagination -->
+
+
+<div class="modal fade " id="myModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content myModal">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title" id="deleteLabel">Warning!!</h5>
+
+                <button type="button" class="close closeBtn2" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="confirmText"></span>
+            </div>
+
+            <div class="modal-footer">
+                <div class="text-end">
+                    <button type="button" class="btn btn btn-style btn-style-3 closeBtn2" >Close</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+<!--    THEME CHANGE    -->
+<div th:replace="Fragments/fragment::theme_change"/>
+<!--    /THEME CHANGE    -->
+
+
+
+<script>
+
+     $(".closeBtn2").on("click",function(e){
+  console.log($(this));
+  $('#myModal').modal("hide")
+  })
+
+
+    $(".linkProduct").on("click",function(e){
+        e.preventDefault();
+        productId=$(this).attr("pid");
+        productName=$("#pname"+productId).text();
+
+        if(window.parent.isProductAlreadyAdded(productId)){
+
+      $('#myModal').modal('show');
+      $('#confirmText').text("The product "+productName+" was already added.");
+    }else{
+            window.parent.addProduct(productId,productName);
+    }
+
+    })
+</script>
+
+</body>
+</html>

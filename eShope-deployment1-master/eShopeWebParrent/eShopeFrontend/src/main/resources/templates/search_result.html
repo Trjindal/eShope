@@ -1,0 +1,43 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="Fragments/fragment::page_head('Eshope:Search - '+${keyword},'none')"/>
+<body>
+
+
+
+<!-- header -->
+<div th:replace="~{Fragments/header :: header}">...</div>
+<!-- //header -->
+
+
+<!-- inner banner -->
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5">
+        <div class="container pt-4 pb-sm-4">
+            <h4 class="inner-text-title pt-5">Search Results for '[[${keyword}]]'</h4>
+        </div>
+    </div>
+</section>
+<!-- //inner banner -->
+
+<!--SHOWING PRODUCTS-->
+<div th:replace="Fragments/fragment::products_card(${listResult})"/>
+<!--SHOWING PRODUCTS-->
+
+<!-- pagination -->
+<div th:replace="Fragments/fragment::pagination('/search'+'/page/','product')"/>
+<!-- /pagination -->
+
+<!-- footer -->
+<div th:replace="~{Fragments/footer :: footer}">...</div>
+<!-- //footer -->
+
+<!--    COMMON JAVASCRIPT  -->
+<div th:replace="Fragments/fragment::common_JS"></div>
+<!--    /COMMON JAVASCRIPT  -->
+
+
+</body>
+</html>
